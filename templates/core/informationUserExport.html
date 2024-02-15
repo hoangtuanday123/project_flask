@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Export Information User</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <style>
+    .avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid #fff;
+    }
+    .line {
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 20px;
+    }
+    .cv-section {
+      margin-bottom: 40px;
+    }
+    .cv-section h3 {
+      border-bottom: 2px solid #333;
+      padding-bottom: 10px;
+      text-align: left;
+    }
+    .cv-section p {
+      margin-bottom: 5px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <div class="card">
+        <div class="card-body text-center">
+          <img src="{{ url_for('static', filename='source/' + image_path) }}" alt="Avatar" class="avatar mb-3">
+          <h2 class="card-title">Fullname</h2>
+          <h5 class="card-subtitle mb-3 text-muted">Position(Software Engineer)</h5>
+          <div class="line"></div>
+          
+          <!-- User Information Section -->
+          <div class="cv-section">
+            <h3>User Information</h3>
+            <p><strong>Full Name:</strong> example</p>
+            <p><strong>Nick Name:</strong> example</p>
+            <p><strong>Email:</strong> john@example.com</p>
+            <p><strong>Contact Address:</strong> New York, USA</p>
+            <p><strong>Phone Number:</strong> example</p>
+            <p><strong>Linked In:</strong> example</p>
+            <p><strong>Year of Experience:</strong> example</p>
+            <p><strong>Location:</strong> example</p>
+            <p><strong>Marital Status:</strong> example</p>
+            <p><strong>Ethnic Group:</strong> example</p>
+            <p><strong>Religion:</strong> example</p>
+          </div>
+
+          <!-- Latest Employee Section -->
+          <div class="cv-section">
+            <h3>Latest Employee</h3>
+            <p><strong>Employer:</strong> Jane Smith</p>
+            <p><strong>Job Tittle:</strong> Software Engineer</p>
+            <p><strong>Annual Salary:</strong> IT</p>
+            <p><strong>Annual Bonus:</strong> January 20, 2024</p>
+            <p><strong>Retention Bonus:</strong> example</p>
+            <p><strong>Retention Bonus Expired Date:</strong> example</p>
+            <p><strong>Stock Option:</strong> example</p>
+            <p><strong>Start Date:</strong> example</p>
+            <p><strong>End Date:</strong> example</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

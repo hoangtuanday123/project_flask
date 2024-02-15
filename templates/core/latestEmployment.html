@@ -1,0 +1,261 @@
+{% extends "core/user_profile.html" %}
+
+{% block content_body %}
+          
+              <!-- child template -->
+              {{form.csrf_token}}
+           
+              <div class="col-lg-8">
+                <div class="card mb-4">
+                  <div class="card-body">
+                    <form action="{{ url_for('core.edit_latestEmployment', col='Employer',informationuserid=informationuserid,fullname=fullname) }}" role="form" method="POST">
+                      <div id = "" class="row">
+                        <div class="col-sm-3">
+                          <label for="Employer" class="mb-0">Employer</label>
+                        </div>
+                        <div class="col-sm-9" id="Employer-container">
+                          <input type="hidden" id="edit_mode_Employer" name="edit_mode" value="{{ edit_mode }}">
+                          
+                          {% if edit_mode %}
+                            <div class="input-group">
+                              <input type="text" id="Employer" name="Employer" class="form-control" placeholder="{{ form.Employer.data }}" style="margin-right: 5px;">
+                              <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                              </div>
+                            </div>
+                          {% else %}
+                            <p class="text-muted mb-0">
+                              {{ form.Employer.data }}
+                              <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Employer','{{ form.Employer.data }}')"></i>
+                            </p>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </form>
+                    
+                    <hr>
+                    <form action="{{ url_for('core.edit_latestEmployment', col='Jobtittle',informationuserid=informationuserid,fullname=fullname) }}" role="form" method="POST">
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <label for="Jobtittle" class="mb-0">Job Tittle</label>
+                        </div>
+                        <div class="col-sm-9" id="Jobtittle-container">
+                          <input type="hidden" id="edit_mode_Jobtittle" name="edit_mode" value="{{ edit_mode }}">
+                          
+                          {% if edit_mode %}
+                          <div class="input-group">
+                            <input type="text" id="Jobtittle" name="Jobtittle" class="form-control" placeholder="{{form.Jobtittle.data}}" style="margin-right: 5px;">
+                            <div class="input-group-append">
+                              <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                          </div>
+                          {% else %}
+                            <p class="text-muted mb-0">
+                              {{ form.Jobtittle.data }}
+                              <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Jobtittle','{{form.Jobtittle.data}}')"></i>
+                            </p>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </form>
+      
+                    <hr>
+      
+                    <form action="{{ url_for('core.edit_latestEmployment', col='AnnualSalary',informationuserid=informationuserid,fullname=fullname) }}" role="form" method="POST">
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <label for="AnnualSalary" class="mb-0">Annual Salary</label>
+                        </div>
+                        <div class="col-sm-9" id="AnnualSalary-container">
+                          <input type="hidden" id="edit_mode_AnnualSalary" name="edit_mode" value="{{ edit_mode }}">
+                          
+                          {% if edit_mode %}
+                          <div class="input-group">
+                            <input type="text" id="AnnualSalary" name="AnnualSalary" class="form-control" placeholder="{{form.AnnualSalary.data}}" style="margin-right: 5px;">
+                            <div class="input-group-append">
+                              <button type="submit" class="btn btn-primary">Save</button>
+      
+                            </div>
+                          </div>
+                          {% else %}
+                            <p class="text-muted mb-0">
+                              {{ form.AnnualSalary.data }}
+                              <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('AnnualSalary','{{form.AnnualSalary.data}}')"></i>
+                            </p>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </form>
+      
+                    <hr>
+      
+                    <form action="{{ url_for('core.edit_latestEmployment', col='AnnualBonus',informationuserid=informationuserid,fullname=fullname) }}" role="form" method="POST">
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <label for="AnnualBonus" class="mb-0">Annual Bonus</label>
+                        </div>
+                        <div class="col-sm-9" id="AnnualBonus-container">
+                          <input type="hidden" id="edit_mode_AnnualBonus" name="edit_mode" value="{{ edit_mode }}">
+                          
+                          {% if edit_mode %}
+                          <div class="input-group">
+                            <input type="text" id="AnnualBonus" name="AnnualBonus" class="form-control" placeholder="{{form.AnnualBonus.data}}" style="margin-right: 5px;">
+                            <div class="input-group-append">
+                              <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                          </div>
+                          {% else %}
+                            <p class="text-muted mb-0">
+                              {{ form.AnnualBonus.data }}
+                              <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('AnnualBonus','{{form.AnnualBonus.data}}')"></i>
+                            </p>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </form>
+      
+                    <hr>
+      
+                    <form action="{{ url_for('core.edit_latestEmployment', col='RetentionBonus',informationuserid=informationuserid,fullname=fullname) }}" role="form" method="POST">
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <label for="RetentionBonus" class="mb-0">Retention Bonus</label>
+                        </div>
+                        <div class="col-sm-9" id="RetentionBonus-container">
+                          <input type="hidden" id="edit_mode_RetentionBonus" name="edit_mode" value="{{ edit_mode }}">
+                          
+                          {% if edit_mode %}
+                          <div class="input-group">
+                            <input type="text" id="RetentionBonus" name="RetentionBonus" class="form-control" placeholder="{{form.RetentionBonus.data}}" style="margin-right: 5px;">
+                            <div class="input-group-append">
+                              <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                          </div>
+                          {% else %}
+                            <p class="text-muted mb-0">
+                              {{ form.RetentionBonus.data }}
+                              <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('RetentionBonus','{{form.RetentionBonus.data}}')"></i>
+                            </p>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </form>
+      
+                    <hr>
+      
+                    <form action="{{ url_for('core.edit_latestEmployment', col='RetentionBonusExpiredDate',informationuserid=informationuserid,fullname=fullname) }}" role="form" method="POST">
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <label for="RetentionBonusExpiredDate" class="mb-0">Retention Bonus Expired Date</label>
+                        </div>
+                        <div class="col-sm-9" id="RetentionBonusExpiredDate-container">
+                          <input type="hidden" id="edit_mode_RetentionBonusExpiredDate" name="edit_mode" value="{{ edit_mode }}">
+                          
+                          {% if edit_mode %}
+                          <div class="input-group">
+                            <input type="text" id="RetentionBonusExpiredDate" name="RetentionBonusExpiredDate" class="form-control" placeholder="{{form.RetentionBonusExpiredDate.data}}" style="margin-right: 5px;">
+                            <div class="input-group-append">
+                              <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                          </div>
+                          {% else %}
+                            <p class="text-muted mb-0">
+                              {{ form.RetentionBonusExpiredDate.data }}
+                              <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('RetentionBonusExpiredDate','{{form.RetentionBonusExpiredDate.data}}')"></i>
+                            </p>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </form>
+      
+                    <hr>
+      
+                    <form action="{{ url_for('core.edit_latestEmployment', col='StockOption',informationuserid=informationuserid,fullname=fullname) }}" role="form" method="POST">
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <label for="StockOption" class="mb-0">Stock Option</label>
+                        </div>
+                        <div class="col-sm-9" id="StockOption-container">
+                          <input type="hidden" id="edit_mode_StockOption" name="edit_mode" value="{{ edit_mode }}">
+                          
+                          {% if edit_mode %}
+                          <div class="input-group">
+                            <input type="text" id="StockOption" name="StockOption" class="form-control" placeholder="{{form.StockOption.data}}" style="margin-right: 5px;">
+                            <div class="input-group-append">
+                              <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                          </div>
+                          {% else %}
+                            <p class="text-muted mb-0">
+                              {{ form.StockOption.data }}
+                              <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('StockOption','{{form.StockOption.data}}')"></i>
+                            </p>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </form>
+      
+                    <hr>
+      
+                    <form action="{{ url_for('core.edit_latestEmployment', col='StartDate',informationuserid=informationuserid,fullname=fullname) }}" role="form" method="POST">
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <label for="StartDate" class="mb-0">Start Date</label>
+                        </div>
+                        <div class="col-sm-9" id="StartDate-container">
+                          <input type="hidden" id="edit_mode_StartDate" name="edit_mode" value="{{ edit_mode }}">
+                          
+                          {% if edit_mode %}
+                          <div class="input-group">
+                            <input type="text" id="StartDate" name="StartDate" class="form-control" placeholder="{{form.StartDate.data}}" style="margin-right: 5px;">
+                            <div class="input-group-append">
+                              <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                          </div>
+                          {% else %}
+                            <p class="text-muted mb-0">
+                              {{ form.StartDate.data }}
+                              <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('StartDate','{{form.StartDate.data}}')"></i>
+                            </p>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </form>
+      
+                    <hr>
+      
+                    <form action="{{ url_for('core.edit_latestEmployment', col='EndDate',informationuserid=informationuserid,fullname=fullname) }}" role="form" method="POST">
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <label for="EndDate" class="mb-0">End Date</label>
+                        </div>
+                        <div class="col-sm-9" id="EndDate-container">
+                          <input type="hidden" id="edit_mode_EndDate" name="edit_mode" value="{{ edit_mode }}">
+                          
+                          {% if edit_mode %}
+                          <div class="input-group">
+                            <input type="text" id="EndDate" name="EndDate" class="form-control" placeholder="{{form.EndDate.data}}" style="margin-right: 5px;">
+                            <div class="input-group-append">
+                              <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                          </div>
+                          {% else %}
+                            <p class="text-muted mb-0">
+                              {{ form.EndDate.data }}
+                              <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('EndDate','{{form.EndDate.data}}')"></i>
+                            </p>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+         
+    
+  </section>
+
+{%endblock %}

@@ -1,0 +1,229 @@
+{% extends "core/user_profile.html" %}
+
+{% block content_body %}
+          
+              <!-- child template -->
+              {{form.csrf_token}}
+
+              <div class="col-lg-8">
+                  <div class="card mb-4">
+                    <div class="card-body">
+                      <form action="{{ url_for('core.edit_informationcccd', col='No',informationuserid=informationuserid,fullname=fullname) }}" role="form" method="POST">
+                        <div id = "" class="row">
+                          <div class="col-sm-3">
+                            <label for="No" class="mb-0">No</label>
+                          </div>
+                          <div class="col-sm-9" id="No-container">
+                            <input type="hidden" id="edit_mode_No" name="edit_mode" value="{{ edit_mode }}">
+                            
+                            {% if edit_mode %}
+                              <div class="input-group">
+                                <input type="text" id="No" name="No" class="form-control" placeholder="{{ form.No.data }}" style="margin-right: 5px;">
+                                <div class="input-group-append">
+                                  <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                              </div>
+                            {% else %}
+                              <p class="text-muted mb-0">
+                                {{ form.No.data }}
+                                <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('No','{{ form.No.data }}')"></i>
+                              </p>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </form>
+                      
+                      <hr>
+                      <form action="{{ url_for('core.edit_informationcccd', col='FullName',informationuserid=informationuserid,fullname=fullname) }}" role="form" method="POST">
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <label for="FullName" class="mb-0">Full Name</label>
+                          </div>
+                          <div class="col-sm-9" id="FullName-container">
+                            <input type="hidden" id="edit_mode_FullName" name="edit_mode" value="{{ edit_mode }}">
+                            
+                            {% if edit_mode %}
+                            <div class="input-group">
+                              <input type="text" id="FullName" name="FullName" class="form-control" placeholder="{{form.FullName.data}}" style="margin-right: 5px;">
+                              <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                              </div>
+                            </div>
+                            {% else %}
+                              <p class="text-muted mb-0">
+                                {{ form.FullName.data }}
+                                <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('FullName','{{form.FullName.data}}')"></i>
+                              </p>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </form>
+              
+                      <hr>
+              
+                      <form action="{{ url_for('core.edit_informationcccd', col='DateOfbirth',informationuserid=informationuserid,fullname=fullname) }}" role="form" method="POST">
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <label for="DateOfbirth" class="mb-0">Date Of Birth</label>
+                          </div>
+                          <div class="col-sm-9" id="DateOfbirth-container">
+                            <input type="hidden" id="edit_mode_DateOfbirth" name="edit_mode" value="{{ edit_mode }}">
+                            
+                            {% if edit_mode %}
+                            <div class="input-group">
+                              <input type="text" id="DateOfbirth" name="DateOfbirth" class="form-control" placeholder="{{form.DateOfbirth.data}}" style="margin-right: 5px;">
+                              <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary">Save</button>
+              
+                              </div>
+                            </div>
+                            {% else %}
+                              <p class="text-muted mb-0">
+                                {{ form.DateOfbirth.data }}
+                                <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('DateOfbirth','{{form.DateOfbirth.data}}')"></i>
+                              </p>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </form>
+              
+                      <hr>
+                      <form action="{{ url_for('core.edit_informationcccd', col='PlaceOfBirth',informationuserid=informationuserid,fullname=fullname) }}" role="form" method="POST">
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <label for="PlaceOfBirth" class="mb-0">Place Of Birth</label>
+                          </div>
+                          <div class="col-sm-9" id="PlaceOfBirth-container">
+                            <input type="hidden" id="edit_mode_PlaceOfBirth" name="edit_mode" value="{{ edit_mode }}">
+                            
+                            {% if edit_mode %}
+                            <div class="input-group">
+                              <input type="text" id="PlaceOfBirth" name="PlaceOfBirth" class="form-control" placeholder="{{form.PlaceOfBirth.data}}" style="margin-right: 5px;">
+                              <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                              </div>
+                            </div>
+                            {% else %}
+                              <p class="text-muted mb-0">
+                                {{ form.PlaceOfBirth.data }}
+                                <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('PlaceOfBirth','{{form.PlaceOfBirth.data}}')"></i>
+                              </p>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </form>
+              
+                      <hr>
+              
+                      <form action="{{ url_for('core.edit_informationcccd', col='Address',informationuserid=informationuserid,fullname=fullname) }}" role="form" method="POST">
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <label for="Address" class="mb-0">Address</label>
+                          </div>
+                          <div class="col-sm-9" id="Address-container">
+                            <input type="hidden" id="edit_mode_Address" name="edit_mode" value="{{ edit_mode }}">
+                            
+                            {% if edit_mode %}
+                            <div class="input-group">
+                              <input type="text" id="Address" name="Address" class="form-control" placeholder="{{form.Address.data}}" style="margin-right: 5px;">
+                              <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                              </div>
+                            </div>
+                            {% else %}
+                              <p class="text-muted mb-0">
+                                {{ form.Address.data }}
+                                <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Address','{{form.Address.data}}')"></i>
+                              </p>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </form>
+              
+                      <hr>
+              
+                      <form action="{{ url_for('core.edit_informationcccd', col='IssueOn',informationuserid=informationuserid,fullname=fullname) }}" role="form" method="POST">
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <label for="IssueOn" class="mb-0">Issue On</label>
+                          </div>
+                          <div class="col-sm-9" id="IssueOn-container">
+                            <input type="hidden" id="edit_mode_IssueOn" name="edit_mode" value="{{ edit_mode }}">
+                            
+                            {% if edit_mode %}
+                            <div class="input-group">
+                              <input type="text" id="IssueOn" name="IssueOn" class="form-control" placeholder="{{form.IssueOn.data}}" style="margin-right: 5px;">
+                              <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                              </div>
+                            </div>
+                            {% else %}
+                              <p class="text-muted mb-0">
+                                {{ form.IssueOn.data }}
+                                <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('IssueOn','{{form.IssueOn.data}}')"></i>
+                              </p>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </form>
+                      
+                      <br>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <p class="mb-0" style="color:red">Upload CCCD image</p>
+                              </div>             
+                            </div>
+              
+                            <form role="form" method="POST" action="{{url_for('core.uploadCCCD', informationuserid=informationuserid)}}" enctype="multipart/form-data">
+              
+                              <div class="row">
+                                <div class="col-sm-3">
+                                  <p class="mb-0">Front side</p>
+                                </div>             
+                              </div>              
+                          
+                                <input type=file name=fileCCCD_front alt="front CCCD image">
+                                <div class="image-container">
+                                  {% if front_cccd %}
+                                      <div class="spacer"></div>
+                                      <div style="width: 150px; height: auto;">
+                                          <img src="{{ url_for('display_image', filename=front_cccd) }}" class="rotated-image" alt="front CCCD image">
+                                      </div>
+                                  {% endif %}
+                              </div>
+              
+                                <div class="row">
+                                  <div class="col-sm-3">
+                                    <p class="mb-0">Back side</p>
+                                  </div>             
+                                </div>              
+                  
+                                <input type=file name=fileCCCD_back alt="back CCCD image">
+                                <div class="image-container">
+                                  {% if front_cccd %}
+                                      <div class="spacer"></div>
+                                      <div style="width: 150px; height: auto;">
+                                          <img src="{{ url_for('display_image', filename=back_cccd) }}" class="rotated-image" alt="back CCCD image">
+                                      </div>
+                                  {% endif %}
+                              </div>
+                                <div class="row">
+                                  <div class="col-sm-3">
+                                    <input type=submit value=Upload, style="margin-top: 10px;">
+                                  </div>
+                                  
+                                </div>
+                                
+                              </form>
+                      
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        
+    </div>
+  
+  </section>
+
+  {%endblock %}

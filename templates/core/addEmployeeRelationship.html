@@ -1,0 +1,96 @@
+{% extends "core/user_profile.html" %}
+
+{% block content_body %}
+          
+<!-- child template -->
+
+
+<div class="col-lg-8">
+  <div class="card mb-4">
+    <div class="card-body">
+      {{form.csrf_token}}
+      <form role="form" action="{{ url_for('employee.addemployeerelative', informationuserid=informationuserid) }}" method="post">
+        <div class="form-group">
+          <label >Relationship</label>
+          <!-- Flask-WTF form field rendering -->
+          {{ form.Relationship(placeholder=" Enter Relationship", class="form-control mb-2") }}
+        </div>
+  
+  
+        <div class="form-group">
+          <label >Phone Number</label>
+          <!-- Flask-WTF form field rendering -->
+          {{ form.phone(placeholder=" Enter Phone Number", class="form-control mb-2") }}
+        </div>
+  
+  
+        <div class="form-group">
+          <label >Email</label>
+          <!-- Flask-WTF form field rendering -->
+          {{ form.email(placeholder=" Enter Email", class="form-control mb-2") }}
+        </div>
+  
+  
+        <div class="form-group">
+          <label >Contact Address</label>
+          <!-- Flask-WTF form field rendering -->
+          {{ form.contactaddress(placeholder=" Enter Contact Address", class="form-control mb-2") }}
+        </div>
+  
+  
+        <div class="form-group">
+          <label >Career</label>
+          <!-- Flask-WTF form field rendering -->
+          {{ form.career(placeholder=" Enter Career", class="form-control mb-2") }}
+        </div>
+  
+  
+        <div class="form-group">
+          <label >Citizen Identification No</label>
+          <!-- Flask-WTF form field rendering -->
+          {{ form.citizenIdentificationNo(placeholder=" Enter Citizen Identification No", class="form-control mb-2") }}
+        </div>
+  
+  
+        <div class="form-group">
+          <label >Full Name</label>
+          <!-- Flask-WTF form field rendering -->
+          {{ form.fullname(placeholder=" Enter Your Full Name", class="form-control mb-2") }}
+        </div>
+  
+  
+        <div class="form-group">
+          <label >Date Of Birth</label>
+          <!-- Flask-WTF form field rendering -->
+          {{ form.dateofbirth(placeholder=" Enter Your Date Of Birth(Y/M/D)", class="form-control mb-2") }}
+        </div>
+  
+  
+        <div class="form-group">
+          <label>Place Of Birth</label>
+          <!-- Flask-WTF form field rendering -->
+          {{ form.placeofbirth(placeholder=" Enter Your Place Of Birth", class="form-control mb-2") }}
+        </div>
+  
+  
+        <div class="form-group">
+          <label>Address</label>
+          <!-- Flask-WTF form field rendering -->
+          {{ form.address(placeholder=" Enter Your Address", class="form-control mb-2") }}
+        </div>
+  
+        <div class="form-group">
+          <label>Issued</label>
+          <!-- Flask-WTF form field rendering -->
+          {{ form.issued(placeholder=" Enter Your Issued(Y/M/D) ", class="form-control mb-2") }}
+        </div>
+        <br>
+        <button type="submit" class="btn btn-success">Save</button>
+      </form>
+      
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

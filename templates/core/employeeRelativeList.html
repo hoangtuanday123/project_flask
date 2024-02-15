@@ -1,0 +1,60 @@
+{% extends "core/user_profile.html" %}
+
+{% block content_body %}
+          
+              <!-- child template -->
+<div class="col-lg-8">
+  <div class="card mb-4">
+    <div class="card-body">
+
+      <h1>Relationship List</h1>
+
+      <!-- Display existing records -->
+      <table class="table">
+          <thead>
+              <tr>
+                  <th hidden>ID</th>
+                  <th>FullName</th>
+                  <th>Relationship</th>
+                  <th>Detail</th>
+                  <th>Delete</th>
+
+              </tr>
+          </thead>
+          <tbody>
+            {% for user in employeerelativelist %}
+                  <tr>
+                      <td hidden>{{ user[0] }}</td>
+                      <td>{{ user[1] }}</td>
+                      <td>{{ user[2] }}</td>
+                      <td>
+                        
+                        <label class="mb-0 tab_hover " for="userinformation1">View </label>
+                        <button id="userinformation1" hidden onclick="location.href='/employeepage/informationuserjob/employeerelative/{{employeerelativelist[0][0]}}/{{informationuserid}}'" ></button>
+
+                        
+                      <td>
+                        <a href=""
+                         class="btn btn-danger btn-sm">
+                          <i class="fas fa-trash-alt"></i> 
+                      </a>
+                      </td>
+
+                  </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+      <form action="{{ url_for('employee.addemployeerelative', informationuserid=informationuserid) }}">
+        <button type="submit" class="btn btn-link">
+            <i class="fas fa-plus-circle"></i> <!-- Icon của Font Awesome -->
+        </button>
+    </form>
+    
+      
+
+</div>
+  </div>
+</div>
+  </section>
+
+{%endblock %}

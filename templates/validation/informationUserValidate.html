@@ -1,0 +1,77 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<body class="body_login">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <main class="form-signin w-100 m-auto">
+                <form role="form" method="post" action="">
+                    {{ form.csrf_token }}
+                    <h1 class="h3 mb-3 fw-normal text-center">USER INFORMATION </h1>
+                    <div class="form-floating" style="border-radius: 20px;">
+                        {{ form.Fullname(placeholder="Fullname", class="form-control mb-2") }}
+                        {{ form.Fullname.label }}
+                        {% if form.Fullname.errors %}
+                            {% for error in form.Fullname.errors %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="form-floating" style="border-radius: 20px;">
+                        {{ form.Nickname(placeholder="Nickname", class="form-control mb-2") }}
+                        {{ form.Nickname.label }}
+                        {% if form.Nickname.errors %}
+                            {% for error in form.Nickname.errors %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    {{ error }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    {% if current_user.authenticated_by != "google" %}
+                        <div class="form-floating" style="border-radius: 20px;">
+                            {{ form.Email(placeholder="Email", class="form-control mb-2") }}
+                            {{ form.Email.label }}
+                            {% if form.Email.errors%}
+                                {% for error in form.Email.errors %}
+                                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                        {{ error }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    <div class="form-floating" style="border-radius: 20px;">
+                        {{ form.Contactaddress(placeholder="Contact address", class="form-control mb-2") }}
+                        {{ form.Contactaddress.label }}
+                        {% if form.Contactaddress.errors %}
+                            {% for error in form.Contactaddress.errors %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    {{ error }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <button class="button login__submit" type="submit" style="background-color:rgb(181, 181, 244);">
+                        <span class="button__text">SIGN IN</span>
+                        <i class="button__icon fas fa-chevron-right" style="color:rgb(224, 18, 52)"></i>
+                    </button>
+                </form>
+            </main>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+
+</body>
+
+{% endblock %}

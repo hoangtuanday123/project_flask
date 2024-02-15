@@ -1,0 +1,376 @@
+{% extends "core/user_profile.html" %}
+
+{% block content_body %}
+          
+<!-- child template -->
+<div class="col-lg-8">
+  <div class="card mb-4">
+    <div class="card-body">
+      <div id="" class="row">
+        <div class="col-sm-3">
+          <label for="id" class="mb-0">ID</label>
+        </div>
+        <div  class="col-sm-9" id="id-container">
+          <p class="text-muted mb-0">
+            {{employeerelative.id}}
+          </p>
+        </div>
+      <hr>
+
+      <form action="" role="form" method="POST">
+        <div id = "" class="row">
+          <div class="col-sm-3">
+            <label for="Relationship" class="mb-0">Relationship</label>
+          </div>
+          <div class="col-sm-9" id="Relationship-container">
+            <input type="hidden" id="edit_mode_Relationship" name="edit_mode" value="{{ edit_mode }}">
+            
+            {% if edit_mode %}
+              <div class="input-group">
+                <input type="text" id="Relationship" name="Relationship" class="form-control" placeholder="{{employeerelative.Relationship}}" style="margin-right: 5px;">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            {% else %}
+              <p class="text-muted mb-0">
+                {{employeerelative.Relationship}}
+                <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Relationship','{{employeerelative.Relationship}}')"></i>
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      </form>
+      
+      <hr>
+      <form action="" role="form" method="POST">
+        <div id = "" class="row">
+          <div class="col-sm-3">
+            <label for="phone" class="mb-0">Phone</label>
+          </div>
+          <div class="col-sm-9" id="phone-container">
+            <input type="hidden" id="edit_mode_phone" name="edit_mode" value="{{ edit_mode }}">
+            
+            {% if edit_mode %}
+              <div class="input-group">
+                <input type="text" id="phone" name="phone" class="form-control" placeholder="{{employeerelative.phone}}" style="margin-right: 5px;">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            {% else %}
+              <p class="text-muted mb-0">
+                {{employeerelative.phone}}
+                <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('phone','{{employeerelative.phone}}')"></i>
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      </form>
+      
+      <hr>
+
+      <form action="" role="form" method="POST">
+        <div id = "" class="row">
+          <div class="col-sm-3">
+            <label for="email" class="mb-0">Email</label>
+          </div>
+          <div class="col-sm-9" id="email-container">
+            <input type="hidden" id="edit_mode_email" name="edit_mode" value="{{ edit_mode }}">
+            
+            {% if edit_mode %}
+              <div class="input-group">
+                <input type="text" id="email" name="email" class="form-control" placeholder="{{employeerelative.email}}" style="margin-right: 5px;">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            {% else %}
+              <p class="text-muted mb-0">
+                {{employeerelative.email}}
+                <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('phone','{{employeerelative.phone}}')"></i>
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      </form>
+      
+      <hr>
+
+      <form action="" role="form" method="POST">
+        <div id = "" class="row">
+          <div class="col-sm-3">
+            <label for="contactaddress" class="mb-0">Contact Address</label>
+          </div>
+          <div class="col-sm-9" id="contactaddress-container">
+            <input type="hidden" id="edit_mode_contactaddress" name="edit_mode" value="{{ edit_mode }}">
+            
+            {% if edit_mode %}
+              <div class="input-group">
+                <input type="text" id="contactaddress" name="contactaddress" class="form-control" placeholder="{{employeerelative.contactaddress}}" style="margin-right: 5px;">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            {% else %}
+              <p class="text-muted mb-0">
+                {{employeerelative.contactaddress}}
+                <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('contactaddress','{{employeerelative.contactaddress}}')"></i>
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      </form>
+      
+      <hr>
+
+      <form action="" role="form" method="POST">
+        <div id = "" class="row">
+          <div class="col-sm-3">
+            <label for="career" class="mb-0">Career</label>
+          </div>
+          <div class="col-sm-9" id="career-container">
+            <input type="hidden" id="edit_mode_career" name="edit_mode" value="{{ edit_mode }}">
+            
+            {% if edit_mode %}
+              <div class="input-group">
+                <input type="text" id="career" name="career" class="form-control" placeholder="{{employeerelative.career}}" style="margin-right: 5px;">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            {% else %}
+              <p class="text-muted mb-0">
+                {{employeerelative.career}}
+                <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('career','{{employeerelative.career}}')"></i>
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      </form>
+      
+      <hr>
+
+      <form action="" role="form" method="POST">
+        <div id = "" class="row">
+          <div class="col-sm-3">
+            <label for="citizenIdentificationNo" class="mb-0">Citizen Identification No</label>
+          </div>
+          <div class="col-sm-9" id="citizenIdentificationNo-container">
+            <input type="hidden" id="edit_mode_citizenIdentificationNo" name="edit_mode" value="{{ edit_mode }}">
+            
+            {% if edit_mode %}
+              <div class="input-group">
+                <input type="text" id="citizenIdentificationNo" name="citizenIdentificationNo" class="form-control" placeholder="{{employeerelative.citizenIdentificationNo}}" style="margin-right: 5px;">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            {% else %}
+              <p class="text-muted mb-0">
+                {{employeerelative.citizenIdentificationNo}}
+                <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('citizenIdentificationNo','{{employeerelative.citizenIdentificationNo}}')"></i>
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      </form>
+      
+      <hr>
+
+      <form action="" role="form" method="POST">
+        <div id = "" class="row">
+          <div class="col-sm-3">
+            <label for="fullname" class="mb-0">Full Name</label>
+          </div>
+          <div class="col-sm-9" id="fullname-container">
+            <input type="hidden" id="edit_mode_fullname" name="edit_mode" value="{{ edit_mode }}">
+            
+            {% if edit_mode %}
+              <div class="input-group">
+                <input type="text" id="fullname" name="fullname" class="form-control" placeholder="{{employeerelative.fullname}}" style="margin-right: 5px;">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            {% else %}
+              <p class="text-muted mb-0">
+                {{employeerelative.fullname}}
+                <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('fullname','{{employeerelative.fullname}}')"></i>
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      </form>
+      
+      <hr>
+
+      <form action="" role="form" method="POST">
+        <div id = "" class="row">
+          <div class="col-sm-3">
+            <label for="dateofbirth" class="mb-0">Date Of Birth</label>
+          </div>
+          <div class="col-sm-9" id="dateofbirth-container">
+            <input type="hidden" id="edit_mode_dateofbirth" name="edit_mode" value="{{ edit_mode }}">
+            
+            {% if edit_mode %}
+              <div class="input-group">
+                <input type="text" id="dateofbirth" name="dateofbirth" class="form-control" placeholder="{{employeerelative.dateofbirth}}" style="margin-right: 5px;">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            {% else %}
+              <p class="text-muted mb-0">
+                {{employeerelative.dateofbirth}}
+                <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('dateofbirth','{{employeerelative.dateofbirth}}')"></i>
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      </form>
+      
+      <hr>
+
+      <form action="" role="form" method="POST">
+        <div id = "" class="row">
+          <div class="col-sm-3">
+            <label for="placeofbirth" class="mb-0">Place Of Birth</label>
+          </div>
+          <div class="col-sm-9" id="placeofbirth-container">
+            <input type="hidden" id="edit_mode_placeofbirth" name="edit_mode" value="{{ edit_mode }}">
+            
+            {% if edit_mode %}
+              <div class="input-group">
+                <input type="text" id="placeofbirth" name="placeofbirth" class="form-control" placeholder="{{employeerelative.placeofbirth}}" style="margin-right: 5px;">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            {% else %}
+              <p class="text-muted mb-0">
+                {{employeerelative.placeofbirth}}
+                <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('placeofbirth','{{employeerelative.placeofbirth}}')"></i>
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      </form>
+      
+      <hr>
+
+      <form action="" role="form" method="POST">
+        <div id = "" class="row">
+          <div class="col-sm-3">
+            <label for="issuedon" class="mb-0">Issued On</label>
+          </div>
+          <div class="col-sm-9" id="issuedon-container">
+            <input type="hidden" id="edit_mode_issuedon" name="edit_mode" value="{{ edit_mode }}">
+            
+            {% if edit_mode %}
+              <div class="input-group">
+                <input type="text" id="issuedon" name="issuedon" class="form-control" placeholder="{{employeerelative.issuedon}}" style="margin-right: 5px;">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            {% else %}
+              <p class="text-muted mb-0">
+                {{employeerelative.issuedon}}
+                <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('issuedon','{{employeerelative.issuedon}}')"></i>
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      </form>
+      
+      <hr>
+
+      
+      <form action="" role="form" method="POST">
+        <div id = "" class="row">
+          <div class="col-sm-3">
+            <label for="address" class="mb-0">Address</label>
+          </div>
+          <div class="col-sm-9" id="address-container">
+            <input type="hidden" id="edit_mode_address" name="edit_mode" value="{{ edit_mode }}">
+            
+            {% if edit_mode %}
+              <div class="input-group">
+                <input type="text" id="address" name="address" class="form-control" placeholder="{{employeerelative.address}}" style="margin-right: 5px;">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            {% else %}
+              <p class="text-muted mb-0">
+                {{employeerelative.address}}
+                <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('address','{{employeerelative.address}}')"></i>
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      </form>
+      
+      <hr>
+
+
+        
+
+<form method="POST" action="{{ url_for('employee.uploadDocument',  employeerelativeid=employeerelativeid,informationuserid=informationuserid) }}" enctype="multipart/form-data" id="uploadDocument">            
+  <div class="row">
+    <div class="col-sm-3">
+      <p class="mb-0" style="color:red">Upload Notarized Document</p>
+    </div>             
+  </div>
+  <div class="row">
+    <div class="col-sm-9">
+      <input type="file" name="document_notarized" alt="document_notarized image">
+      <button type="submit">Upload</button>
+    </div>
+  </div>
+</form>
+<hr>
+<div class="row">
+  <div class="col-sm-3">
+    <p class="mb-0" style="color:red">The document list</p>
+  </div>
+  <div class="col-md-4"></div>
+</div>
+<!-- Display existing records -->
+{% if temp %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Document No</th>
+            <th>Document Name</th>
+            <th>Dowload</th>
+            <th>Delete</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in temp %}
+            <tr>
+                <td>{{ record[0] }}</td>
+                <td>{{ record[1] }}</td>
+                <td>
+                  <a href="{{ record[2] }}" target="_blank">{{ record[1] }}</a>
+                </td>
+                <td>
+                  <a href=""
+                   class="btn btn-danger btn-sm">
+                    <i class="fas fa-trash-alt"></i> 
+                </a>
+                </td>
+
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No documents available.</p>
+{% endif %}
+
+
+{% endblock %}

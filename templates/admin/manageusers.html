@@ -1,0 +1,250 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<div >
+    
+
+    <div >
+      <main >
+        <div class="container py-5">
+          <div class="row">
+              <div class="col-sm-3">
+                  <h3 class="mb-0" style="color:red">List Of Accounts</h3>
+      
+              </div>
+            </div>
+            <!-- Display existing records -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="text-align: center;">Email</th>
+                        <th style="text-align: center;">Role</th>
+                        <th style="text-align: center;">Is Active</th>
+                        <th style="text-align: center;">Detail</th>
+                        <th style="text-align: center;">Update</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for user in usersrole %}
+                        <tr>
+                            <td >{{ user[1] }}</td>
+                            <td style="text-align: center;">{{ user[2] }}</td>
+                            <td style="text-align: center;">{{ user[3] }}</td>
+                            <td style="text-align: center;">
+                              <form action="{{url_for('core.userinformation',idaccount = user[0],totp=totp) }}">
+                                <label class="mb-0 tab_hover view-btn " for="userinformation">View </label>
+                                <input  type = "submit" id="userinformation"  hidden></input>
+                              </form>
+                              <!-- <button onclick="location.href='/userinformation/{{user[0]}}/{{totp}}'" >view</button> -->
+                            </td>
+                            <td style="text-align: center;">
+                              <form action="{{ url_for('admin.assignrole', idaccount=user[0]) }}">
+                                <label class="mb-0 tab_hover view-btn " for="assignrole"><i class="fas fa-edit"></i></label>
+                                <input  type = "submit" id="assignrole"  hidden></input>
+                              </form>
+                              <!-- <button onclick="location.href='/adminpage/usersmanager/assignrole/{{user[0]}}'"><i class="fas fa-edit"></i></button> -->
+                                
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>   
+      
+          <hr>
+          <div class="col-sm-3">
+            <h3 class="mb-0" style="color:rgb(58, 29, 223)">List Of Blocked Users 
+      </div>
+      <!-- Display existing records -->
+      <table class="table">
+          <thead>
+              <tr>
+                  <th style="text-align: center;">Email</th>
+                  <th style="text-align: center;">Role</th>
+                  <th style="text-align: center;">Is Active</th>
+                  <th style="text-align: center;">Detail</th>
+                  <th style="text-align: center;">Unblock</th>
+              </tr>
+          </thead>
+          <tbody>
+            {% for user in usersblock %}
+                  <tr>
+                      <td>{{ user[1] }}</td>
+                      <td style="text-align: center;">{{ user[2] }}</td>
+                      <td style="text-align: center;">{{ user[3] }}</td>
+                      <td style="text-align: center;">
+                        <form action="{{url_for('core.userinformation',idaccount = user[0],totp=totp) }}">
+                          <label class="mb-0 tab_hover view-btn " for="userinformation1">View </label>
+                          <input  type = "submit" id="userinformation1"  hidden></input>
+                        </form>
+                        <!-- <button onclick="location.href='/userinformation/{{user[0]}}/{{totp}}'" >view</button> -->
+                      </td>
+                      <td style="text-align: center;">
+                        <form action="{{ url_for('admin.openblock', idaccount=user[0]) }}">
+                          <label class="mb-0 tab_hover view-btn " for="assignrole1"><i class="fas fa-lock-open"></i> </label>
+                          <input  type = "submit" id="assignrole1"  hidden></input>
+                        </form>
+                        <!-- <button onclick="location.href='/adminpage/usersmanager/openblock/{{user[0]}}'"><i class="fas fa-lock-open"></i></button> -->
+                         
+                      </td>
+                  </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+      
+      <hr>
+          <div>
+            <div class="col-sm-3">
+              <h3  class="mb-0" style="color:rgb(21, 223, 14)">List Of Users
+            </div>
+            <div>
+              <form method="post">
+                <div class="row">
+                  <div class="col-sm-9">
+                    <label for="roletype" class="mb-0"> Select Role Type</label>
+                </div>
+                  <select id="roletype" name="roletype" class="form-select">
+                      {% for type in roletype %}
+                          <option value="{{ type }}">{{ type }}</option>
+                      {% endfor %}
+                  </select>
+                </div>
+                  <br>
+                  <div class="col-md-6" >
+                    <input type="submit" name="fillter" value="fillter" class="btn btn-primary">
+                  </div>
+                </div>
+              </form>
+            </div>
+            <!-- <button onclick="location.href='/adminpage/usersmanager/exportfileexcel/{{table}}'">export all users file excel</button>
+            <button onclick="location.href='/adminpage/usersmanager/exportfilepdf/all'">export all users file pdf</button> -->
+          </div>
+          <div >
+            <table class="table">
+              <thead>
+                <tr>
+                    <th>Check</th>
+                    <th hidden> id</th>
+                    <th  style="padding: 20px;">fullname</th>
+                    <th style="padding: 20px;">Nickname</th>
+                    <th style="padding: 20px;">email</th>
+                    <th style="padding: 20px;">contactaddress</th>
+                    <th style="padding: 20px;">phone</th>
+                    <th style="padding: 20px;">linkedln</th>
+                    <th style="padding: 20px;">years</th>
+                    <th style="padding: 20px;">location</th>
+                    <th style="padding: 20px;">maritalstatus</th>
+                    <th style="padding: 20px;">ethnicgroup</th>
+                    <th style="padding: 20px;">religion</th>
+                    <th style="padding: 20px;">role name</th>
+                    
+                    
+                    
+                </tr>
+              </thead>
+              <tbody> 
+                <form method="post">
+                  {% for user in Alluser %}
+                    
+                    <tr>
+                      
+                      <td style="text-align: center;">
+                        
+                        <input type="checkbox" name="{{user[0]}}" value="{{user[0]}}">
+                        
+                        
+                      </td>
+                      <td hidden><div hidden>{{user[0]}}</div></td>
+                      <td  >
+                        <div >
+                        {{user[1]}}
+                
+                      
+                        </div>
+                      </td>
+                      <td >
+                
+                        <div >
+                          {{user[2]}}
+                  
+                        
+                          </div>
+                      
+                        
+                      </td>
+                      <td >
+                        <div >
+                          {{user[3]}}
+                          </div> 
+                      </td>
+                      <td style="text-align: center;">
+                        <div >
+                          {{user[4]}}
+                          </div> 
+                      </td>
+                      <td style="text-align: center;">
+                        <div >
+                          {{user[5]}}
+                          </div> 
+                      </td>
+                      <td style="text-align: center;">
+                        <div >
+                          {{user[6]}}
+                          </div> 
+                      </td>
+                      <td style="text-align: center;">
+                        <div >
+                          {{user[7]}}
+                          </div> 
+                      </td>
+                      <td style="text-align: center;">
+                        <div >
+                          {{user[8]}}
+                          </div> 
+                      </td>
+                      <td style="text-align: center;">
+                        <div >
+                          {{user[9]}}
+                          </div> 
+                      </td>
+                      <td style="text-align: center;">
+                        <div >
+                          {{user[10]}}
+                          </div> 
+                      </td>
+                      <td style="text-align: center;">
+                        <div >
+                          {{user[11]}}
+                          </div> 
+                      </td>
+                      <td style="text-align: center;">
+                
+                        <div >
+                          {{user[12]}}
+                  
+                        
+                          </div>
+                      
+                        
+                      </td>
+                      <td style="text-align: center;">
+                        <div >
+                          {{user[13]}}
+                          </div> 
+                      </td>
+        
+                    </tr>
+                
+                  {% endfor %}
+                  <button type="submit" name="exportexcel" value="exportexcel" class="btn btn-success"><i class="fas fa-file-excel"></i> export file excel</button>
+                  <button type="submit" name="exportpdf" value="exportpdf" class="btn btn-warning"><i class="fa-solid fa-file-pdf"></i> export file pdf</button>
+                    
+                </form>
+              </tbody>
+            </table>
+          </div>
+      </main>
+    </div>
+    <div class="col-md-4"></div>
+  </div>
+  
+  {% endblock %}

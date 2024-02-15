@@ -1,0 +1,313 @@
+{% extends "core/user_profile.html" %}
+
+{% block content_body %}
+          
+<!-- child template -->
+{{form.csrf_token}}
+
+<div class="col-lg-8">
+    <div class="card mb-4">
+      <div class="card-body">
+        <form action="{{ url_for('core.edit_userInformation', col='Fullname',informationuserid=informationuserid) }}" role="form" method="POST">
+          <div id = "" class="row">
+            <div class="col-sm-3">
+              <label for="fullname" class="mb-0">Full Name</label>
+            </div>
+            <div class="col-sm-9" id="Fullname-container">
+              <input type="hidden" id="edit_mode_Fullname" name="edit_mode" value="{{ edit_mode }}">
+              
+              {% if edit_mode %}
+                <div class="input-group">
+                  <input type="text" id="Fullname" name="Fullname" class="form-control" placeholder="{{ form.Fullname.data }}" style="margin-right: 5px;">
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                  </div>
+                </div>
+              {% else %}
+                <p class="text-muted mb-0">
+                  {{ form.Fullname.data }}
+                  <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Fullname','{{ form.Fullname.data }}')"></i>
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        </form>
+        
+        <hr>
+        <form action="{{ url_for('core.edit_userInformation', col='Nickname',informationuserid=informationuserid) }}" role="form" method="POST">
+          <div class="row">
+            <div class="col-sm-3">
+              <label for="Nickname" class="mb-0">Nickname</label>
+            </div>
+            <div class="col-sm-9" id="Nickname-container">
+              <input type="hidden" id="edit_mode_Nickname" name="edit_mode" value="{{ edit_mode }}">
+              
+              {% if edit_mode %}
+              <div class="input-group">
+                <input type="text" id="Nickname" name="Nickname" class="form-control" placeholder="{{form.Nickname.data}}" style="margin-right: 5px;">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+              {% else %}
+                <p class="text-muted mb-0">
+                  {{ form.Nickname.data }}
+                  <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Nickname','{{form.Nickname.data}}')"></i>
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        </form>
+
+        <hr>
+
+        <form action="{{ url_for('core.edit_userInformation', col='Email',informationuserid=informationuserid) }}" role="form" method="POST">
+          <div class="row">
+            <div class="col-sm-3">
+              <label for="email" class="mb-0">Email</label>
+            </div>
+            <div class="col-sm-9" id="Email-container">
+              <input type="hidden" id="edit_mode_Email" name="edit_mode" value="{{ edit_mode }}">
+              
+              {% if edit_mode %}
+              <div class="input-group">
+                <input type="text" id="fullname" name="fullname" class="form-control" placeholder="{{form.Email.data}}" style="margin-right: 5px;">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary">Save</button>
+
+                </div>
+              </div>
+              {% else %}
+                <p class="text-muted mb-0">
+                  {{ form.Email.data }}
+                  <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Email','{{form.Email.data}}')"></i>
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        </form>
+
+        <hr>
+        <form action="{{ url_for('core.edit_userInformation', col='Contactaddress',informationuserid=informationuserid) }}" role="form" method="POST">
+          <div class="row">
+            <div class="col-sm-3">
+              <label for="Contactaddress" class="mb-0">Contact Address</label>
+            </div>
+            <div class="col-sm-9" id="Contactaddress-container">
+              <input type="hidden" id="edit_mode_Contactaddress" name="edit_mode" value="{{ edit_mode }}">
+              
+              {% if edit_mode %}
+              <div class="input-group">
+                <input type="text" id="Contactaddress" name="Contactaddress" class="form-control" placeholder="{{form.Contactaddress.data}}" style="margin-right: 5px;">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+              {% else %}
+                <p class="text-muted mb-0">
+                  {{ form.Contactaddress.data }}
+                  <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Contactaddress','{{form.Contactaddress.data}}')"></i>
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        </form>
+
+        <hr>
+
+        <form action="{{ url_for('core.edit_userInformation', col='Phone',informationuserid=informationuserid) }}" role="form" method="POST">
+          <div class="row">
+            <div class="col-sm-3">
+              <label for="Phone" class="mb-0">Phone Number</label>
+            </div>
+            <div class="col-sm-9" id="Phone-container">
+              <input type="hidden" id="edit_mode_Phone" name="edit_mode" value="{{ edit_mode }}">
+              
+              {% if edit_mode %}
+              <div class="input-group">
+                <input type="text" id="Phone" name="Phone" class="form-control" placeholder="{{form.Phone.data}}" style="margin-right: 5px;">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+              {% else %}
+                <p class="text-muted mb-0">
+                  {{ form.Phone.data }}
+                  <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Phone','{{form.Phone.data}}')"></i>
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        </form>
+
+        <hr>
+
+        <form action="{{ url_for('core.edit_userInformation', col='LinkedIn',informationuserid=informationuserid) }}" role="form" method="POST">
+          <div class="row">
+            <div class="col-sm-3">
+              <label for="LinkedIn" class="mb-0">Linked In</label>
+            </div>
+            <div class="col-sm-9" id="LinkedIn-container">
+              <input type="hidden" id="edit_mode_LinkedIn" name="edit_mode" value="{{ edit_mode }}">
+              
+              {% if edit_mode %}
+              <div class="input-group">
+                <input type="text" id="LinkedIn" name="LinkedIn" class="form-control" placeholder="{{form.LinkedIn.data}}" style="margin-right: 5px;">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+              {% else %}
+                <p class="text-muted mb-0">
+                  {{ form.LinkedIn.data }}
+                  <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('LinkedIn','{{form.LinkedIn.data}}')"></i>
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        </form>
+
+        <hr>
+
+        <form action="{{ url_for('core.edit_userInformation', col='Years',informationuserid=informationuserid) }}" role="form" method="POST">
+          <div class="row">
+            <div class="col-sm-3">
+              <label for="Years" class="mb-0">Year of Experience</label>
+            </div>
+            <div class="col-sm-9" id="Years-container">
+              <input type="hidden" id="edit_mode_Years" name="edit_mode" value="{{ edit_mode }}">
+              
+              {% if edit_mode %}
+              <div class="input-group">
+                <input type="text" id="Years" name="Years" class="form-control" placeholder="{{form.Years.data}}" style="margin-right: 5px;">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+              {% else %}
+                <p class="text-muted mb-0">
+                  {{ form.Years.data }}
+                  <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Years','{{form.Years.data}}')"></i>
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        </form>
+
+        <hr>
+
+        <form action="{{ url_for('core.edit_userInformation', col='Location',informationuserid=informationuserid) }}" role="form" method="POST">
+          <div class="row">
+            <div class="col-sm-3">
+              <label for="Location" class="mb-0">Location</label>
+            </div>
+            <div class="col-sm-9" id="Location-container">
+              <input type="hidden" id="edit_mode_Location" name="edit_mode" value="{{ edit_mode }}">
+              
+              {% if edit_mode %}
+              <div class="input-group">
+                <input type="text" id="Location" name="Location" class="form-control" placeholder="{{form.Location.data}}" style="margin-right: 5px;">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+              {% else %}
+                <p class="text-muted mb-0">
+                  {{ form.Location.data }}
+                  <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Location','{{form.Location.data}}')"></i>
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        </form>
+
+        <hr>
+
+        <form action="{{ url_for('core.edit_userInformation', col='Maritalstatus',informationuserid=informationuserid) }}" role="form" method="POST">
+          <div class="row">
+            <div class="col-sm-3">
+              <label for="Maritalstatus" class="mb-0">Marital Status</label>
+            </div>
+            <div class="col-sm-9" id="Maritalstatus-container">
+              <input type="hidden" id="edit_mode_Maritalstatus" name="edit_mode" value="{{ edit_mode }}">
+              
+              {% if edit_mode %}
+              <div class="input-group">
+                <input type="text" id="Maritalstatus" name="Maritalstatus" class="form-control" placeholder="{{form.Maritalstatus.data}}" style="margin-right: 5px;">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+              {% else %}
+                <p class="text-muted mb-0">
+                  {{ form.Maritalstatus.data }}
+                  <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Maritalstatus','{{form.Maritalstatus.data}}')"></i>
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        </form>
+        
+        <hr>
+
+        <form action="{{ url_for('core.edit_userInformation', col='Ethnicgroup',informationuserid=informationuserid) }}" role="form" method="POST">
+          <div class="row">
+            <div class="col-sm-3">
+              <label for="Ethnicgroup" class="mb-0">Ethnic Group</label>
+            </div>
+            <div class="col-sm-9" id="Ethnicgroup-container">
+              <input type="hidden" id="edit_mode_Ethnicgroup" name="edit_mode" value="{{ edit_mode }}">
+              
+              {% if edit_mode %}
+              <div class="input-group">
+                <input type="text" id="Ethnicgroup" name="Ethnicgroup" class="form-control" placeholder="{{form.Ethnicgroup.data}}" style="margin-right: 5px;">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+              {% else %}
+                <p class="text-muted mb-0">
+                  {{ form.Ethnicgroup.data }}
+                  <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Ethnicgroup','{{form.Ethnicgroup.data}}')"></i>
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        </form>
+
+        
+        <hr>
+
+        <form action="{{ url_for('core.edit_userInformation', col='Religion',informationuserid=informationuserid) }}" role="form" method="POST">
+          <div class="row">
+            <div class="col-sm-3">
+              <label for="Religion" class="mb-0">Religion</label>
+            </div>
+            <div class="col-sm-9" id="Religion-container">
+              <input type="hidden" id="edit_mode_Religion" name="edit_mode" value="{{ edit_mode }}">
+              
+              {% if edit_mode %}
+              <div class="input-group">
+                <input type="text" id="Religion" name="Religion" class="form-control" placeholder="{{form.Religion.data}}" style="margin-right: 5px;">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+              {% else %}
+                <p class="text-muted mb-0">
+                  {{ form.Religion.data }}
+                  <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Religion','{{form.Religion.data}}')"></i>
+                </p>
+              {% endif %}
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+    </div>
+  </section>
+
+{%endblock %}
+

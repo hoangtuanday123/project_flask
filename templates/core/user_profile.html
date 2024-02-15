@@ -1,0 +1,230 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<style>
+ /* Style the image container */
+ .image-container {
+            text-align: center;
+            margin: 20px;
+        }
+
+        /* Style the rotated image */
+        .rotated-image {
+            width: 150px; /* Set your desired width */
+            height: auto;
+            display: block; /* Make the image a block element */
+            margin: 0 auto; /* Center the image horizontally */
+            /* transform: rotate(-90deg); Rotate the image 90 degrees */
+        }
+
+        /* Add some space below the image */
+        .spacer {
+            min-height: 10px; /* Set your desired minimum height */
+        }
+        .tab_hover:hover {
+        
+          color: blue;
+
+    }
+    .dropdown-checkbox {
+    display: none;
+}
+
+#dropdownLabel {
+    cursor: pointer;
+}
+
+.dropdown-checkbox:checked + .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu {
+    display: none;
+    /* Other styles for the dropdown menu */
+}
+
+/* CSS */
+.dropdown-menu-wide {
+    min-width: 200px; /* Điều chỉnh độ rộng của dropdown menu */
+    padding: 0.5rem; /* Thêm padding để tạo khoảng cách với các phần tử xung quanh */
+}
+
+    
+
+  /* CSS để thêm đường kẻ phân chia */
+  table {
+      border-collapse: collapse;
+      width: 100%;
+  }
+
+  th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+  }
+
+  th {
+      background-color: #f2f2f2;
+  }
+
+    </style>
+</style>
+  <section style="background-color: #eee;">
+    <div class="container py-5">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="card mb-4">
+              <div class="card-body text-center">
+                  <img id="avatarImage" src="{{ url_for('static', filename='source/' + image_path) }}" alt="avatar"
+                  style="border-radius: 50%; width: 90px; height: 90px;">
+                <h5 class="my-3">{{fullname}}</h5>
+
+                
+                <label class="custom-file-label" for="customFile">Choose File <i class="fas fa-plus"></i></label>
+                <div class="d-flex justify-content-center mb-2">
+                  <form  role="form" method="POST" action="/update_avatar" enctype="multipart/form-data">  
+                    <input type="file" class="btn"  id="customFile" name="avatar" aria-describedby="inputGroupFileAddon" hidden>          
+                    <input  type = "submit" class="btn btn-success-soft btn-block"  value="Update"></input>
+                </form>
+
+                <div style="margin-left: 10px;"></div> 
+                <form role="form" method="POST" action="/remove_avatar" >
+                    <input type="submit" class="btn btn-danger-soft" value = "Remove"></input>
+                </form>
+                </div>
+              </div>
+            </div>
+            <div class="card mb-4 mb-lg-0">
+              <div class="card-body p-0">
+                
+                <ul class="list-group list-group-flush rounded-3">
+
+                  <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                    <form action="{{url_for('core.userinformation',idaccount=(idaccount),totp=totp)}}">
+                      <i class="fas fa-user"></i>
+                      <label class="mb-0 tab_hover " for="userinformation">User Information </label>
+                      <input  type = "submit" id="userinformation"  hidden></input>
+                    </form>
+                  </li>
+
+                  <li class="list-group-item d-flex justify-content-between align-items-center p-3">   
+                    <form action="{{url_for('core.latestEmployment',informationuserid = informationuserid,fullname=fullname,totp=totp)}}">
+                      <i class="fas fa-briefcase"></i>
+                        <label class="mb-0 tab_hover" for="latestEmployment">Latest Employment </label>
+                        <input  type = "submit" id="latestEmployment"  hidden></input>
+                    </form>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                    
+                    <form action="{{url_for('core.usercccd',informationuserid = informationuserid,fullname=fullname,totp=totp)}}">
+                      <i class="far fa-id-card"></i>
+                      
+                        <label class="mb-0 tab_hover" for="usercccd">Citizen identification Card </label>
+                        <input  type = "submit" id="usercccd"  hidden></input>
+                    </form>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                    
+                    <form action="{{url_for('core.healthCheckCertificates',informationuserid = informationuserid,fullname=fullname,totp=totp)}}">
+                      <i class="fas fa-heartbeat"></i>
+                        <label class="mb-0 tab_hover" for="healthCheckCertificates">Health Check Certificates </label>
+                        <input  type = "submit" id="healthCheckCertificates"  hidden></input>
+                    </form>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                    <form action="{{url_for('core.educationbackground',informationuserid = informationuserid,fullname=fullname,totp=totp)}}">
+                      <i class="fas fa-graduation-cap"></i>
+                      <label class="mb-0 tab_hover" for="Education">Education </label>
+                      <input  type = "submit" id="Education"  hidden></input>
+                    </form>
+
+                  </li>
+
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                  <form action="{{url_for('core.qualification',informationuserid = informationuserid,fullname=fullname,totp=totp)}}">
+                    <i class="fas fa-certificate"></i>
+                      <label class="mb-0 tab_hover" for="Qualification">Qualification </label>
+                      <input  type = "submit" id="Qualification"  hidden></input>
+                  </form>
+                  
+                </li>
+
+                {% if roleuser == "employee"%}
+
+                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                  <div class="dropdown">
+                      <i class="fas fa-address-card"></i>
+                      <label for="dropdownMenuLink" class="mb-0 tab_hover" id="dropdownLabel">Employee Information</label>
+                      <input type="checkbox" id="dropdownMenuLink" class="dropdown-checkbox">
+                      <i class="fa-solid fa-angle-down"></i>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                          <li><a class="dropdown-item" href="{{url_for('employee.informationuserjob',informationuserid = informationuserid)}}">Employee Information Job</a></li>
+                          <li><a class="dropdown-item mb-0" href="{{url_for('employee.employeerelativelist',informationuserid = informationuserid)}}">Employee Relationship</a></li>
+                      </ul>
+                  </div>
+              </li>
+                {%endif%}
+                </ul>
+              </div>
+            </div>
+          </div>
+                
+              <!-- child template -->
+            {%block content_body%}
+
+            {%endblock%}
+        
+    </div>
+    <script>
+      // get img tag from avatr image to send pass for navigation.html
+      localStorage.setItem('avatarSrc', "{{ url_for('static', filename='source/' + image_path) }}");
+
+
+      function enableEdit(col,placeholderValue) {
+    // Set edit_mode to true to switch to input mode
+    document.getElementById('edit_mode_' + col).value = 'true';
+    
+    // Create an input element
+    var inputElement = document.createElement('input');
+    inputElement.type = 'text';
+    inputElement.id = col;
+    inputElement.name = col;
+    inputElement.className = 'form-control';
+    inputElement.value = placeholderValue;  // Set the placeholder dynamically
+
+    // Create a "Save" button
+    var saveButton = document.createElement('button');
+    saveButton.type = 'submit';
+    saveButton.className = 'btn btn-primary edit_icon';
+    saveButton.textContent = 'Save';
+
+    // Create a container div
+    var containerDiv = document.getElementById(col + '-container');
+    containerDiv.innerHTML = '';  // Clear the container first
+
+    // Append the input and button to the container
+    containerDiv.appendChild(inputElement);
+    containerDiv.appendChild(saveButton);
+}
+
+  // droplist employee
+   // JavaScript for hiding dropdown menu when clicking outside
+   document.addEventListener('DOMContentLoaded', function() {
+    var dropdownMenu = document.querySelector('.dropdown-menu');
+    dropdownMenu.style.display = 'none';
+});
+
+   document.getElementById('dropdownMenuLink').addEventListener('click', function() {
+    var dropdownMenu = document.querySelector('.dropdown-menu');
+    if (dropdownMenu.style.display === 'none') {
+        dropdownMenu.style.display = 'block';
+    } else {
+        dropdownMenu.style.display = 'none';
+    }
+});
+
+    </script>
+  </section>
+
+{%endblock %}

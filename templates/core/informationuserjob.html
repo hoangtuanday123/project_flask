@@ -1,0 +1,419 @@
+
+{% extends "_base.html" %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+    <main class="form-signin w-100 m-auto">
+      <h1 class="h3 mb-3 fw-normal text-center">INFORMATION EMPLOYEE</h1>
+      <div >
+        <label> employee no: </label>
+        <input type="text" placeholder="{{userjob.EmployeeNo}}">
+      </div>
+      <div >
+        <label> Company site code: </label>
+        <input type="text" placeholder="{{userjob.Companysitecode}}">
+      </div>
+      <!-- <div>
+        <label for="companysite">choose company site code:</label>
+          <select id="companysite" name="companysite">
+              {% for code in companysite %}
+                  <option value="{{ code }}">{{ code }}</option>
+              {% endfor %}
+          </select>
+      </div> -->
+      <div >
+        <label> Department: </label>
+        <input type="text" placeholder="{{userjob.Department}}">
+      </div>
+      <div>
+        <label> Direct manager: </label>
+        <input type="text" placeholder="{{userjob.Directmanager}}">
+      </div>
+      <div >
+        <label> Workforce type: </label>
+        <input type="text" placeholder="{{userjob.Workforcetype}}">
+      </div>
+      <div >
+        <label> Working phone: </label>
+        <input type="text" placeholder="{{userjob.Workingphone}}">
+      </div>
+      <div >
+        <label> Working email: </label>
+        <input type="text" placeholder="{{userjob.Workingemail}}">
+      </div>
+      <form method="post">
+        <div class="form-floating">
+          {{ form.Bankaccount(placeholder="Bankaccount", class="form-control mb-2") }}
+          {{ form.Bankaccount.label }}
+            {% if form.Bankaccount.errors %}
+              {% for error in form.Bankaccount.errors %}
+              <div class="alert alert-danger" role="alert">
+                {{ error }}
+              </div>
+              {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-floating">
+          {{ form.bankname(placeholder="Bankaccount", class="form-control mb-2") }}
+          {{ form.bankname.label }}
+            {% if form.bankname.errors %}
+              {% for error in form.bankname.errors %}
+              <div class="alert alert-danger" role="alert">
+                {{ error }}
+              </div>
+              {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-floating">
+          {{ form.Taxcode(placeholder="Taxcode", class="form-control mb-2") }}
+          {{ form.Taxcode.label }}
+            {% if form.Taxcode.errors %}
+              {% for error in form.Taxcode.errors %}
+              <div class="alert alert-danger" role="alert">
+                {{ error }}
+              </div>
+              {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-floating">
+          {{ form.Socialinsurancecode(placeholder="Socialinsurancecode", class="form-control mb-2") }}
+          {{ form.Socialinsurancecode.label }}
+            {% if form.Socialinsurancecode.errors %}
+              {% for error in form.Socialinsurancecode.errors %}
+              <div class="alert alert-danger" role="alert">
+                {{ error }}
+              </div>
+              {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-floating">
+          {{ form.Healthinsurancecardcode(placeholder="Healthinsurancecardcode", class="form-control mb-2") }}
+          {{ form.Healthinsurancecardcode.label }}
+            {% if form.Healthinsurancecardcode.errors %}
+              {% for error in form.Healthinsurancecardcode.errors %}
+              <div class="alert alert-danger" role="alert">
+                {{ error }}
+              </div>
+              {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-floating">
+          {{ form.Registeredhospitalname(placeholder="Healthinsurancecardcode", class="form-control mb-2") }}
+          {{ form.Registeredhospitalname.label }}
+            {% if form.Registeredhospitalname.errors %}
+              {% for error in form.Registeredhospitalname.errors %}
+              <div class="alert alert-danger" role="alert">
+                {{ error }}
+              </div>
+              {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-floating">
+          {{ form.Registeredhospitalcode(placeholder="Healthinsurancecardcode", class="form-control mb-2") }}
+          {{ form.Registeredhospitalcode.label }}
+            {% if form.Registeredhospitalcode.errors %}
+              {% for error in form.Registeredhospitalcode.errors %}
+              <div class="alert alert-danger" role="alert">
+                {{ error }}
+              </div>
+              {% endfor %}
+            {% endif %}
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">SAVE</button>
+        <div>
+          <h1 class="h3 mb-3 fw-normal text-center">Private insurance: </h1>
+          <div>
+            <form method="post">
+              <label for="Employeerelative">choose employee relative:</label>
+              <select id="Employeerelative1" name="Employeerelative1">
+                  {% for person in Employeerelative %}
+                      <option value="{{ person[0] }}">{{ person[1] }}</option>
+                  {% endfor %}
+              </select>
+              <br>
+              <button type="submit" name="Privateinsurance" value="Privateinsurance"> submit</button>
+            </form>
+            <div class="form-signin w-100 m-auto" style="overflow-x: auto;  width: 600px; border: 1px solid #ccc;  padding: 10px;">
+              <table border="1">
+                <thead>
+                  <tr>
+                    <th hidden>id</th>
+                    <th>fullname</th>
+                    <th style="padding: 20px;">employee relative</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user in temp1 %}
+                  <tr>
+                    <td hidden><div hidden>{{user[0]}}</div></td>
+                  <td  >
+                    <div >
+                    {{user[1]}}
+            
+                  
+                    </div>
+                  </td>
+                  <td style="padding: 20px;">
+            
+                    <div >
+                      {{user[2]}}
+              
+                    
+                      </div>
+                  
+                    
+                  </td>
+      
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h1 class="h3 mb-3 fw-normal text-center">Additional Private insurance: </h1>
+          <div>
+            <form method="post">
+              <label for="Employeerelative">choose employee relative:</label>
+              <select id="Employeerelative2" name="Employeerelative2">
+                  {% for person in Employeerelative %}
+                      <option value="{{ person[0] }}">{{ person[1] }}</option>
+                  {% endfor %}
+              </select>
+              <br>
+              <button type="submit" name="Additionalprivateinsurance" value="Additionalprivateinsurance"> submit</button>
+            </form>
+            <div class="form-signin w-100 m-auto" style="overflow-x: auto;  width: 600px; border: 1px solid #ccc;  padding: 10px;">
+              <table border="1">
+                <thead>
+                  <tr>
+                    <th hidden>id</th>
+                    <th>fullname</th>
+                    <th style="padding: 20px;">employee relative</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user in temp2 %}
+                  <tr>
+                    <td hidden><div hidden>{{user[0]}}</div></td>
+                  <td  >
+                    <div >
+                    {{user[1]}}
+            
+                  
+                    </div>
+                  </td>
+                  <td style="padding: 20px;">
+            
+                    <div >
+                      {{user[2]}}
+              
+                    
+                      </div>
+                  
+                    
+                  </td>
+      
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h1 class="h3 mb-3 fw-normal text-center">Dependant: </h1>
+          <div>
+            <form method="post">
+              <label for="Employeerelative">choose employee relative:</label>
+              <select id="Employeerelative3" name="Employeerelative3">
+                  {% for person in Employeerelative %}
+                      <option value="{{ person[0] }}">{{ person[1] }}</option>
+                  {% endfor %}
+              </select>
+              <br>
+              <button type="submit" name="Dependant" value="Dependant"> submit</button>
+            </form>
+            <div class="form-signin w-100 m-auto" style="overflow-x: auto;  width: 600px; border: 1px solid #ccc;  padding: 10px;">
+              <table border="1">
+                <thead>
+                  <tr>
+                    <th hidden>id</th>
+                    <th>fullname</th>
+                    <th style="padding: 20px;">employee relative</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user in temp3 %}
+                  <tr>
+                    <td hidden><div hidden>{{user[0]}}</div></td>
+                  <td  >
+                    <div >
+                    {{user[1]}}
+            
+                  
+                    </div>
+                  </td>
+                  <td style="padding: 20px;">
+            
+                    <div >
+                      {{user[2]}}
+              
+                    
+                      </div>
+                  
+                    
+                  </td>
+      
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h1 class="h3 mb-3 fw-normal text-center">Emergency contact: </h1>
+          <div>
+            <form method="post">
+              <label for="Employeerelative">choose employee relative:</label>
+              <select id="Employeerelative4" name="Employeerelative4">
+                  {% for person in Employeerelative %}
+                      <option value="{{ person[0] }}">{{ person[1] }}</option>
+                  {% endfor %}
+              </select>
+              <br>
+              <button type="submit" name="Emergencycontact" value="Emergencycontact"> submit</button>
+            </form>
+            <div class="form-signin w-100 m-auto" style="overflow-x: auto;  width: 600px; border: 1px solid #ccc;  padding: 10px;">
+              <table border="1">
+                <thead>
+                  <tr>
+                    <th hidden>id</th>
+                    <th>fullname</th>
+                    <th style="padding: 20px;">employee relative</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user in temp4 %}
+                  <tr>
+                    <td hidden><div hidden>{{user[0]}}</div></td>
+                  <td  >
+                    <div >
+                    {{user[1]}}
+            
+                  
+                    </div>
+                  </td>
+                  <td style="padding: 20px;">
+            
+                    <div >
+                      {{user[2]}}
+              
+                    
+                      </div>
+                  
+                    
+                  </td>
+      
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h1 class="h3 mb-3 fw-normal text-center">Beneficiary contact: </h1>
+          <div>
+            <form method="post">
+              <label for="Employeerelative">choose employee relative:</label>
+              <select id="Employeerelative5" name="Employeerelative5">
+                  {% for person in Employeerelative %}
+                      <option value="{{ person[0] }}">{{ person[1] }}</option>
+                  {% endfor %}
+              </select>
+              <br>
+              <button type="submit" name="Beneficiarycontact" value="Beneficiarycontact"> submit</button>
+            </form>
+            <div class="form-signin w-100 m-auto" style="overflow-x: auto;  width: 600px; border: 1px solid #ccc;  padding: 10px;">
+              <table border="1">
+                <thead>
+                  <tr>
+                    <th hidden>id</th>
+                    <th>fullname</th>
+                    <th style="padding: 20px;">employee relative</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user in temp5 %}
+                  <tr>
+                    <td hidden><div hidden>{{user[0]}}</div></td>
+                  <td  >
+                    <div >
+                    {{user[1]}}
+            
+                  
+                    </div>
+                  </td>
+                  <td style="padding: 20px;">
+            
+                    <div >
+                      {{user[2]}}
+              
+                    
+                      </div>
+                  
+                    
+                  </td>
+      
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit" name="save" value="save">SAVE</button>
+      </form>
+      <!-- <div >
+        <label> Bank account: </label>
+        <input type="text" placeholder="{{userjob.Bankaccount}}">
+      </div>
+      <div >
+        <label> Bank name: </label>
+        <input type="text" placeholder="{{userjob.Bankname}}">
+      </div>
+      <div >
+        <label> Taxcode: </label>
+        <input type="text" placeholder="{{userjob.Taxcode}}">
+      </div>
+      <div >
+        <label> Social insurance code: </label>
+        <input type="text" placeholder="{{userjob.Socialinsurancecode}}">
+      </div>
+      <div >
+        <label> Health insurance card code: </label>
+        <input type="text" placeholder="{{userjob.Healthinsurancecardcode}}">
+      </div>
+      <div >
+        <label> Registered hospital name: </label>
+        <input type="text" placeholder="{{userjob.Registeredhospitalname}}">
+      </div>
+      <div >
+        <label> Registered hospital code: </label>
+        <input type="text" placeholder="{{userjob.Registeredhospitalcode}}">
+      </div> -->
+      
+    </main>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "core/user_profile.html" %}
+
+{% block content_body %}
+
+<div class="col-lg-8">
+  <div class="card mb-4">
+    <div class="card-body">
+        <div class="row">
+              <div class="col-sm-3">
+                <label for="idcontract" class="mb-0">ID Contract</label>
+              </div>
+              <div class="col-sm-9" >
+                <p class="text-muted mb-0">
+                  {{contract.idcontract}}
+                </p>
+              </div>
+              
+        </div>
+
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="LaborcontractNo" class="mb-0">Labor Contract No</label>
+          </div>
+          <div class="col-sm-9" >
+            <p class="text-muted mb-0">
+              {{contract.LaborcontractNo}}
+            </p>
+            
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="Laborcontracttype" class="mb-0">Labor Contract Type</label>
+          </div>
+          <div class="col-sm-9" >
+
+            <p class="text-muted mb-0">
+              {{contract.Laborcontracttype}}
+            </p>
+            
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="Laborcontractterm" class="mb-0">Labor Contract Term</label>
+          </div>
+          <div class="col-sm-9" >
+            <p class="text-muted mb-0">
+              {{contract.Laborcontractterm}}
+            </p>
+            
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="Commencementdate" class="mb-0">Commencement Date</label>
+          </div>
+          <div class="col-sm-9" >
+            <p class="text-muted mb-0">
+              {{contract.Commencementdate}}
+            </p>
+            
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="Position" class="mb-0">Position</label>
+          </div>
+          <div class="col-sm-9" >
+            <p class="text-muted mb-0">
+              {{contract.Position}}
+            </p>
+            
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="Employeelevel" class="mb-0">Employee Level</label>
+          </div>
+          <div class="col-sm-9" >
+            <p class="text-muted mb-0">
+              {{contract.Employeelevel}}
+            </p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

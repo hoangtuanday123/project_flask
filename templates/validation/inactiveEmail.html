@@ -1,0 +1,25 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<body style="background-color: rgb(212, 170, 118);">
+  <div class="container_announcement">
+    <br />
+    <p>
+      A email confirmation has been sent to your email address. 
+    </p>
+
+    <p>      
+      If you have not confirmed your account yet, please check your inbox (and your spam folder) 
+    </p>
+
+    <p>
+      you should have received an email with a confirmation link.
+    </p>
+    <p>
+      Did not get the email?
+      <a href="{{ url_for('validation.resend_confirmation') }}">Resend</a>.
+    </p>
+  </div>
+</body>
+
+{% endblock %}

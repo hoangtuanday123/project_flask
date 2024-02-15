@@ -1,0 +1,86 @@
+
+<div class="w3-top">
+    <!-- navigation when user login successfully -->
+    {% if current_user.is_authenticated %}
+    <div>
+        <div class="w3-bar w3-white w3-card" id="myNavbar" style="line-height: 2.8;font-family: Verdana,sans-serif">
+            <a href="/home" class="w3-bar-item w3-button w3-wide">CONNEXUS</a>
+            <div class="w3-right w3-hide-small">
+                <!-- Chỗ này chỉ hiển thị khi người dùng đã đăng nhập -->
+            {%if image_path %}
+                <div class="profile-dropdown" >
+                    <div onclick="toggle()" class="profile-dropdown-btn">
+                        <img id="avatarImage" src="{{ url_for('static', filename='source/' + image_path) }}" alt="avatar" style="border-radius: 50%; width: 40px; height: 40px;">
+                        <span>{{fullname }}<i class="fa-solid fa-angle-down"></i></span>
+                    </div> 
+                </div>
+            </div>
+        </div >
+        <div class="w3-right w3-hide-small">
+            <ul class="profile-dropdown-list">
+                </p>
+                    <p class="profile-dropdown-list-item" >
+                        <a href="\userinformation\{{current_user.id}}\None">
+                            <i class="fa-regular fa-user"></i>
+                            Profile
+                        </a>
+                </p>
+                <p class="profile-dropdown-list-item">
+                    <a href="/extractCCCD">
+                        <i class="fa-regular fa-envelope"></i>
+                        Inbox
+                    </a>
+                </p>
+                <p class="profile-dropdown-list-item">
+                    <a href="\getcodechangepassword">
+                        <i class="fa-solid fa-key"></i>
+                        Change Password
+                    </a>
+                </p>
+                <p class="profile-dropdown-list-item">
+                    <a href="#">
+                        <i class="fa-regular fa-circle-question"></i>
+                        Help & Support
+                    </a>
+                </p>
+                <hr />
+                <p class="profile-dropdown-list-item">
+                    <a href="{{url_for('authentication.logout')}}">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        Log out
+                    </a>
+                </p>
+            </ul>
+            {%endif%}
+        </div>
+    </div>
+       
+       
+       
+    {% else %}
+        <!-- navigation when user does not log in -->
+        <div class="w3-bar w3-white w3-card" id="myNavbar" style="line-height: 2.8;font-family: Verdana,sans-serif">
+            <a href="/startPage" class="w3-bar-item w3-button w3-wide">CONNEXUS</a>
+            <div class="w3-right w3-hide-small">
+                <!-- Chỗ này chỉ hiển thị khi người dùng chưa đăng nhập -->
+                <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT</a>
+                <a href="/signin" class="w3-bar-item w3-button">SIGN IN</a>
+                <a href="/register" class="w3-bar-item w3-button">REGISTER</a>
+                <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button">CONTACT</a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+<script>
+    let profileDropdownList = document.querySelector(".profile-dropdown-list");
+    let btn = document.querySelector(".profile-dropdown-btn");
+
+    let classList = profileDropdownList.classList;
+
+    const toggle = () => classList.toggle("active");
+
+    window.addEventListener("click", function (e) {
+        if (!btn.contains(e.target)) classList.remove("active");
+    });
+
+</script>

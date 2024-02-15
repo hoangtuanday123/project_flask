@@ -1,0 +1,29 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<div class="row justify-content-center bg-purple-light py-4" style="background-color:rgb(170, 229, 237)">
+  <div class="col-md-6">
+    <main class="form-signin">
+        <h1 class="h3 mb-3 fw-normal text-center">Assign Role</h1>
+        <form method="post">
+            <div class="mb-3">
+                <label for="inputEmail" class="form-label">Email:</label>
+                <div>{{ email[0] }}</div>
+            </div>
+            <div class="mb-3">
+                <label for="roles" class="form-label">Select a Role:</label>
+                <select id="roles" name="roles" class="form-select">
+                    {% for role in roles %}
+                        <option value="{{ role }}">{{ role }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary me-2">Assign</button> 
+            <button type="button" onclick="location.href='/adminpage/usersmanager/blockuser/{{ idaccount }}'" class="btn btn-danger">Block</button>
+        </form>
+    </main>
+  </div>
+</div>
+
+{% endblock %}

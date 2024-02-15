@@ -1,0 +1,76 @@
+{% extends "admin/adminpage.html" %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+    <main class="form-signin w-100 m-auto">
+        <h1 class="h3 mb-3 fw-normal text-center" style="color:red">List Role</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Role</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data %}
+                <tr>
+                    <td>
+                        <div hidden>{{item[0]}}</div>
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ item[1] }}
+                        </div>
+                    </td>
+                    <td>
+                      <a href="/adminpage/updatepage/{{ item[0] }}" class="btn btn-warning">
+                          <i class="fas fa-edit"></i> 
+                      </a>
+                  </td>
+                  
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div id="createRoleForm" style="display: none;">
+          <form role="form" method="post" action="">
+            {{ form.csrf_token }}
+            <h2 class="h3 mb-3 fw-normal text-center">Create Role</h2>
+            <div class="form-floating">
+              {{ form.role(placeholder="role", class="form-control mb-2") }}
+              {{ form.role.label }}
+                {% if form.role.errors %}
+                  {% for error in form.otp.errors %}
+                  <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                  </div>
+                  {% endfor %}
+                {% endif %}
+            </div>
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Create</button>
+          </form>
+        </div>
+        <button id="toggleCreateRoleForm" class="btn btn-success w-100 mb-3">
+          <i class="fas fa-plus"></i> Create Role
+        </button>
+    </main>
+  </div>
+  <div class="col-md-4"></div>
+</div>
+
+<script>
+  document.getElementById("toggleCreateRoleForm").addEventListener("click", function() {
+    var createRoleForm = document.getElementById("createRoleForm");
+    var toggleCreateRoleBtn = document.getElementById("toggleCreateRoleForm");
+    if (createRoleForm.style.display === "none") {
+      createRoleForm.style.display = "block";
+      toggleCreateRoleBtn.style.display = "none";
+    } else {
+      createRoleForm.style.display = "none";
+      toggleCreateRoleBtn.style.display = "block";
+    }
+  });
+</script>
+
+{% endblock %}

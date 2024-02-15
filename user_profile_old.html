@@ -1,0 +1,757 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<style>
+ /* Style the image container */
+ .image-container {
+            text-align: center;
+            margin: 20px;
+        }
+
+        /* Style the rotated image */
+        .rotated-image {
+            width: 150px; /* Set your desired width */
+            height: auto;
+            display: block; /* Make the image a block element */
+            margin: 0 auto; /* Center the image horizontally */
+            /* transform: rotate(-90deg); Rotate the image 90 degrees */
+        }
+
+        /* Add some space below the image */
+        .spacer {
+            min-height: 10px; /* Set your desired minimum height */
+        }
+    </style>
+</style>
+  <section style="background-color: #eee;">
+    <form role="form" method='post' action="/user_information">
+      {{form.csrf_token}}
+    </form>
+    <div class="container py-5">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="card mb-4">
+              <div class="card-body text-center">
+                  <img id="avatarImage" src="{{ url_for('static', filename='source/' + image_path) }}" alt="avatar"
+                  style="border-radius: 50%; width: 90px; height: 90px;">
+                <h5 class="my-3">{{form.Fullname.data}}</h5>
+
+                
+                <label class="custom-file-label" for="customFile">Choose File <i class="fas fa-plus"></i></label>
+                <div class="d-flex justify-content-center mb-2">
+                  <form  role="form" method="POST" action="/update_avatar" enctype="multipart/form-data">  
+                    <input type="file" class="btn"  id="customFile" name="avatar" aria-describedby="inputGroupFileAddon" hidden>          
+                    <input  type = "submit" class="btn btn-success-soft btn-block"  value="Update"></input>
+                </form>
+
+                <div style="margin-left: 10px;"></div> 
+                <form role="form" method="POST" action="/remove_avatar" >
+                    <input type="submit" class="btn btn-danger-soft" value = "Remove"></input>
+                </form>
+                </div>
+                
+            
+            </div>
+          </div>
+          <div class="card mb-4 mb-lg-0">
+            <div class="card-body p-0">
+              
+              <ul class="list-group list-group-flush rounded-3">
+                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                  <i class="fas fa-globe fa-lg text-warning"></i>
+                  <p class="mb-0">https://mdbootstrap.com</p>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                  <i class="fab fa-github fa-lg" style="color: #333333;"></i>
+                  <p class="mb-0">mdbootstrap</p>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                  <i class="fab fa-twitter fa-lg" style="color: #55acee;"></i>
+                  <p class="mb-0">@mdbootstrap</p>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                  <i class="fab fa-instagram fa-lg" style="color: #ac2bac;"></i>
+                  <p class="mb-0">mdbootstrap</p>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                  <i class="fab fa-facebook-f fa-lg" style="color: #3b5998;"></i>
+                  <p class="mb-0">mdbootstrap</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="card mb-4">
+            <div class="card-body">
+              <form action="{{ url_for('core.edit_userInformation', col='Fullname') }}" role="form" method="POST">
+                <div id = "" class="row">
+                  <div class="col-sm-3">
+                    <label for="fullname" class="mb-0">Full Name</label>
+                  </div>
+                  <div class="col-sm-9" id="Fullname-container">
+                    <input type="hidden" id="edit_mode_Fullname" name="edit_mode" value="{{ edit_mode }}">
+                    
+                    {% if edit_mode %}
+                      <div class="input-group">
+                        <input type="text" id="Fullname" name="Fullname" class="form-control" placeholder="{{ form.Fullname.data }}" style="margin-right: 5px;">
+                        <div class="input-group-append">
+                          <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                      </div>
+                    {% else %}
+                      <p class="text-muted mb-0">
+                        {{ form.Fullname.data }}
+                        <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Fullname','{{ form.Fullname.data }}')"></i>
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+              </form>
+              
+              <hr>
+              <form action="{{ url_for('core.edit_userInformation', col='Nickname') }}" role="form" method="POST">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <label for="Nickname" class="mb-0">Nickname</label>
+                  </div>
+                  <div class="col-sm-9" id="Nickname-container">
+                    <input type="hidden" id="edit_mode_Nickname" name="edit_mode" value="{{ edit_mode }}">
+                    
+                    {% if edit_mode %}
+                    <div class="input-group">
+                      <input type="text" id="Nickname" name="Nickname" class="form-control" placeholder="{{form.Nickname.data}}" style="margin-right: 5px;">
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                      </div>
+                    </div>
+                    {% else %}
+                      <p class="text-muted mb-0">
+                        {{ form.Nickname.data }}
+                        <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Nickname','{{form.Nickname.data}}')"></i>
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+              </form>
+
+              <hr>
+
+              <form action="{{ url_for('core.edit_userInformation', col='Email') }}" role="form" method="POST">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <label for="email" class="mb-0">Email</label>
+                  </div>
+                  <div class="col-sm-9" id="Email-container">
+                    <input type="hidden" id="edit_mode_Email" name="edit_mode" value="{{ edit_mode }}">
+                    
+                    {% if edit_mode %}
+                    <div class="input-group">
+                      <input type="text" id="fullname" name="fullname" class="form-control" placeholder="{{form.Email.data}}" style="margin-right: 5px;">
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Save</button>
+
+                      </div>
+                    </div>
+                    {% else %}
+                      <p class="text-muted mb-0">
+                        {{ form.Email.data }}
+                        <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Email','{{form.Email.data}}')"></i>
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+              </form>
+
+              <hr>
+              <form action="{{ url_for('core.edit_userInformation', col='Contactaddress') }}" role="form" method="POST">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <label for="Contactaddress" class="mb-0">Contact Address</label>
+                  </div>
+                  <div class="col-sm-9" id="Contactaddress-container">
+                    <input type="hidden" id="edit_mode_Contactaddress" name="edit_mode" value="{{ edit_mode }}">
+                    
+                    {% if edit_mode %}
+                    <div class="input-group">
+                      <input type="text" id="Contactaddress" name="Contactaddress" class="form-control" placeholder="{{form.Contactaddress.data}}" style="margin-right: 5px;">
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                      </div>
+                    </div>
+                    {% else %}
+                      <p class="text-muted mb-0">
+                        {{ form.Contactaddress.data }}
+                        <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Contactaddress','{{form.Contactaddress.data}}')"></i>
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+              </form>
+
+              <hr>
+
+              <form action="{{ url_for('core.edit_userInformation', col='Phone') }}" role="form" method="POST">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <label for="Phone" class="mb-0">Phone Number</label>
+                  </div>
+                  <div class="col-sm-9" id="Phone-container">
+                    <input type="hidden" id="edit_mode_Phone" name="edit_mode" value="{{ edit_mode }}">
+                    
+                    {% if edit_mode %}
+                    <div class="input-group">
+                      <input type="text" id="Phone" name="Phone" class="form-control" placeholder="{{form.Phone.data}}" style="margin-right: 5px;">
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                      </div>
+                    </div>
+                    {% else %}
+                      <p class="text-muted mb-0">
+                        {{ form.Phone.data }}
+                        <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Phone','{{form.Phone.data}}')"></i>
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+              </form>
+
+              <hr>
+
+              <form action="{{ url_for('core.edit_userInformation', col='LinkedIn') }}" role="form" method="POST">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <label for="LinkedIn" class="mb-0">Linked In</label>
+                  </div>
+                  <div class="col-sm-9" id="LinkedIn-container">
+                    <input type="hidden" id="edit_mode_LinkedIn" name="edit_mode" value="{{ edit_mode }}">
+                    
+                    {% if edit_mode %}
+                    <div class="input-group">
+                      <input type="text" id="LinkedIn" name="LinkedIn" class="form-control" placeholder="{{form.LinkedIn.data}}" style="margin-right: 5px;">
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                      </div>
+                    </div>
+                    {% else %}
+                      <p class="text-muted mb-0">
+                        {{ form.LinkedIn.data }}
+                        <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('LinkedIn','{{form.LinkedIn.data}}')"></i>
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+              </form>
+
+              <hr>
+
+              <form action="{{ url_for('core.edit_userInformation', col='Years') }}" role="form" method="POST">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <label for="Years" class="mb-0">Year of Experience</label>
+                  </div>
+                  <div class="col-sm-9" id="Years-container">
+                    <input type="hidden" id="edit_mode_Years" name="edit_mode" value="{{ edit_mode }}">
+                    
+                    {% if edit_mode %}
+                    <div class="input-group">
+                      <input type="text" id="Years" name="Years" class="form-control" placeholder="{{form.Years.data}}" style="margin-right: 5px;">
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                      </div>
+                    </div>
+                    {% else %}
+                      <p class="text-muted mb-0">
+                        {{ form.Years.data }}
+                        <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Years','{{form.Years.data}}')"></i>
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+              </form>
+
+              <hr>
+
+              <form action="{{ url_for('core.edit_userInformation', col='Jobtitle') }}" role="form" method="POST">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <label for="Jobtitle" class="mb-0">Job Tittle</label>
+                  </div>
+                  <div class="col-sm-9" id="Jobtitle-container">
+                    <input type="hidden" id="edit_mode_Jobtitle" name="edit_mode" value="{{ edit_mode }}">
+                    
+                    {% if edit_mode %}
+                    <div class="input-group">
+                      <input type="text" id="Jobtitle" name="Jobtitle" class="form-control" placeholder="{{form.Jobtitle.data}}" style="margin-right: 5px;">
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                      </div>
+                    </div>
+                    {% else %}
+                      <p class="text-muted mb-0">
+                        {{ form.Jobtitle.data }}
+                        <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Jobtitle','{{form.Jobtitle.data}}')"></i>
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+              </form>
+
+              <hr>
+
+              <form action="{{ url_for('core.edit_userInformation', col='Annualsalary') }}" role="form" method="POST">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <label for="Annualsalary" class="mb-0">Annual Salary</label>
+                  </div>
+                  <div class="col-sm-9" id="Annualsalary-container">
+                    <input type="hidden" id="edit_mode_Annualsalary" name="edit_mode" value="{{ edit_mode }}">
+                    
+                    {% if edit_mode %}
+                    <div class="input-group">
+                      <input type="text" id="Annualsalary" name="Annualsalary" class="form-control" placeholder="{{form.Annualsalary.data}}" style="margin-right: 5px;">
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                      </div>
+                    </div>
+                    {% else %}
+                      <p class="text-muted mb-0">
+                        {{ form.Annualsalary.data }}
+                        <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Annualsalary','{{form.Annualsalary.data}}')"></i>
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+              </form>
+
+              <hr>
+
+              <form action="{{ url_for('core.edit_userInformation', col='Annualbonus') }}" role="form" method="POST">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <label for="Annualbonus" class="mb-0">Annual Bonus</label>
+                  </div>
+                  <div class="col-sm-9" id="Annualbonus-container">
+                    <input type="hidden" id="edit_mode_Annualbonus" name="edit_mode" value="{{ edit_mode }}">
+                    
+                    {% if edit_mode %}
+                    <div class="input-group">
+                      <input type="text" id="Annualbonus" name="Annualbonus" class="form-control" placeholder="{{form.Annualbonus.data}}" style="margin-right: 5px;">
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                      </div>
+                    </div>
+                    {% else %}
+                      <p class="text-muted mb-0">
+                        {{ form.Annualbonus.data }}
+                        <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Annualbonus','{{form.Annualbonus.data}}')"></i>
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+              </form>
+
+              <hr>
+
+              <form action="{{ url_for('core.edit_userInformation', col='Retentionbonus') }}" role="form" method="POST">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <label for="Retentionbonus" class="mb-0">Retention Bonus</label>
+                  </div>
+                  <div class="col-sm-9" id="Retentionbonus-container">
+                    <input type="hidden" id="edit_mode_Retentionbonus" name="edit_mode" value="{{ edit_mode }}">
+                    
+                    {% if edit_mode %}
+                    <div class="input-group">
+                      <input type="text" id="Retentionbonus" name="Retentionbonus" class="form-control" placeholder="{{form.Retentionbonus.data}}" style="margin-right: 5px;">
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                      </div>
+                    </div>
+                    {% else %}
+                      <p class="text-muted mb-0">
+                        {{ form.Retentionbonus.data }}
+                        <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Retentionbonus','{{form.Retentionbonus.data}}')"></i>
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+              </form>
+
+              <hr>
+
+              <form action="{{ url_for('core.edit_userInformation', col='RetentionBonusExpiredDate') }}" role="form" method="POST">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <label for="RetentionBonusExpiredDate" class="mb-0">Retention Bonus Expired Date</label>
+                  </div>
+                  <div class="col-sm-9" id="RetentionBonusExpiredDate-container">
+                    <input type="hidden" id="edit_mode_RetentionBonusExpiredDate" name="edit_mode" value="{{ edit_mode }}">
+                    
+                    {% if edit_mode %}
+                    <div class="input-group">
+                      <input type="text" id="RetentionBonusExpiredDate" name="RetentionBonusExpiredDate" class="form-control" placeholder="{{form.RetentionBonusExpiredDate.data}}" style="margin-right: 5px;">
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                      </div>
+                    </div>
+                    {% else %}
+                      <p class="text-muted mb-0">
+                        {{ form.RetentionBonusExpiredDate.data }}
+                        <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('RetentionBonusExpiredDate','{{form.RetentionBonusExpiredDate.data}}')"></i>
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+              </form>
+
+              <hr>
+
+              <form action="{{ url_for('core.edit_userInformation', col='Stockoption') }}" role="form" method="POST">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <label for="Stockoption" class="mb-0">Stock Option</label>
+                  </div>
+                  <div class="col-sm-9" id="Stockoption-container">
+                    <input type="hidden" id="edit_mode_Stockoption" name="edit_mode" value="{{ edit_mode }}">
+                    
+                    {% if edit_mode %}
+                    <div class="input-group">
+                      <input type="text" id="Stockoption" name="Stockoption" class="form-control" placeholder="{{form.Stockoption.data}}" style="margin-right: 5px;">
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                      </div>
+                    </div>
+                    {% else %}
+                      <p class="text-muted mb-0">
+                        {{ form.Stockoption.data }}
+                        <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Stockoption','{{form.Stockoption.data}}')"></i>
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+              </form>
+
+              <hr>
+
+              <form action="{{ url_for('core.edit_userInformation', col='Location') }}" role="form" method="POST">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <label for="Location" class="mb-0">Location</label>
+                  </div>
+                  <div class="col-sm-9" id="Location-container">
+                    <input type="hidden" id="edit_mode_Location" name="edit_mode" value="{{ edit_mode }}">
+                    
+                    {% if edit_mode %}
+                    <div class="input-group">
+                      <input type="text" id="Location" name="Location" class="form-control" placeholder="{{form.Location.data}}" style="margin-right: 5px;">
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                      </div>
+                    </div>
+                    {% else %}
+                      <p class="text-muted mb-0">
+                        {{ form.Location.data }}
+                        <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Location','{{form.Location.data}}')"></i>
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+              </form>
+
+              <hr>
+
+              <form action="{{ url_for('core.edit_userInformation', col='Previousemployer') }}" role="form" method="POST">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <label for="Previousemployer" class="mb-0">Previous Employer</label>
+                  </div>
+                  <div class="col-sm-9" id="Previousemployer-container">
+                    <input type="hidden" id="edit_mode_Previousemployer" name="edit_mode" value="{{ edit_mode }}">
+                    
+                    {% if edit_mode %}
+                    <div class="input-group">
+                      <input type="text" id="Previousemployer" name="Previousemployer" class="form-control" placeholder="{{form.Previousemployer.data}}" style="margin-right: 5px;">
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                      </div>
+                    </div>
+                    {% else %}
+                      <p class="text-muted mb-0">
+                        {{ form.Previousemployer.data }}
+                        <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Previousemployer','{{form.Previousemployer.data}}')"></i>
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+              </form>
+
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-4"><span class="text-primary font-italic me-1">Citizen Identification Card</span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">No</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0"></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Full name</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0"></p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Date of birth</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0"></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Sex</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0"></p>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Nationality</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0"></p>
+                </div>
+              </div>
+
+              <br>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0" style="color:red">Upload CCCD image</p>
+                </div>             
+              </div>
+
+              <form role="form" method="POST" action="/uploadCCCD" enctype="multipart/form-data">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Front side</p>
+                  </div>             
+                </div>              
+            
+                  <input type=file name=fileCCCD_front alt="front CCCD image">
+                  <div class="image-container">
+                    {% if front_cccd %}
+                        <div class="spacer"></div>
+                        <div style="width: 150px; height: auto;">
+                            <img src="{{ url_for('display_image', filename=front_cccd) }}" class="rotated-image" alt="front CCCD image">
+                        </div>
+                    {% endif %}
+                </div>
+
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Back side</p>
+                    </div>             
+                  </div>              
+    
+                  <input type=file name=fileCCCD_back alt="back CCCD image">
+                  <div class="image-container">
+                    {% if front_cccd %}
+                        <div class="spacer"></div>
+                        <div style="width: 150px; height: auto;">
+                            <img src="{{ url_for('display_image', filename=back_cccd) }}" class="rotated-image" alt="back CCCD image">
+                        </div>
+                    {% endif %}
+                </div>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <input type=submit value=Upload, style="margin-top: 10px;">
+                    </div>
+                    
+                  </div>
+                  
+                </form>
+
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-4"><span class="text-primary font-italic me-1">Health Insurance</span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">No</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0"></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Full name</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0"></p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Date of birth</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0"></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Sex</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0"></p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Registration Place</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0"></p>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Expiration date</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0"></p>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0" style="color:red">Upload Healthy Insurance image</p>
+                </div>             
+              </div>
+
+              <form role="form" method="POST" action="/upload_healthyInsurance" enctype="multipart/form-data">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Front side</p>
+                  </div>             
+                  
+                </div>              
+                  <input type=file name=fileHI_front alt="front Healthy Insurance image">
+                  <div class="image-container">
+                    {% if front_cccd %}
+                        <div class="spacer"></div>
+                        <div style="width: 150px; height: auto;">
+                            <img src="{{ url_for('display_image', filename=front_healthyInsurance) }}" class="rotated-image" alt="front HI image">
+                        </div>
+                    {% endif %}
+                </div>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Back side</p>
+                    </div>             
+                  </div>              
+                  
+                  <input type=file name=fileHI_back alt="back Healthy Insurance image">
+                  <div class="image-container">
+                    {% if front_cccd %}
+                        <div class="spacer"></div>
+                        <div style="width: 150px; height: auto;">
+                            <img src="{{ url_for('display_image', filename=back_healthyInsurance) }}" class="rotated-image" alt="back HI image">
+                        </div>
+                    {% endif %}
+                </div>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <input type=submit value=Upload, style="margin-top: 10px;">
+                    </div>
+                    
+                  </div>
+                  
+                </form>
+                <br>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0" style="color:red">Upload Attached Resume</p>
+                </div>             
+              </div>
+                <hr>
+                <form role="form" method="POST" action="/upload_attachedResume" enctype="multipart/form-data">
+                  
+                    <input type=file name=attachedResume >
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <input type=submit value=Upload, style="margin-top: 10px;">
+                      </div>
+                      
+                    </div>
+                    
+                  </form>
+
+                  <p>file resume {{drive_file_url}} </p>
+                  <a href="{{drive_file_url}}">{{attachedFileName}}</a>
+            </div>
+          </div>
+        
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // get img tag from avatr image to send pass for navigation.html
+      localStorage.setItem('avatarSrc', "{{ url_for('static', filename='source/' + image_path) }}");
+
+
+      function enableEdit(col,placeholderValue) {
+    // Set edit_mode to true to switch to input mode
+    document.getElementById('edit_mode_' + col).value = 'true';
+    
+    // Create an input element
+    var inputElement = document.createElement('input');
+    inputElement.type = 'text';
+    inputElement.id = col;
+    inputElement.name = col;
+    inputElement.className = 'form-control';
+    inputElement.value = placeholderValue;  // Set the placeholder dynamically
+
+    // Create a "Save" button
+    var saveButton = document.createElement('button');
+    saveButton.type = 'submit';
+    saveButton.className = 'btn btn-primary edit_icon';
+    saveButton.textContent = 'Save';
+
+    // Create a container div
+    var containerDiv = document.getElementById(col + '-container');
+    containerDiv.innerHTML = '';  // Clear the container first
+
+    // Append the input and button to the container
+    containerDiv.appendChild(inputElement);
+    containerDiv.appendChild(saveButton);
+}
+    </script>
+  </section>
+
+{%endblock %}

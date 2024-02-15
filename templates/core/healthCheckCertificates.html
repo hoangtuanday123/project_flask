@@ -1,0 +1,89 @@
+{% extends "core/user_profile.html" %}
+
+{% block content_body %}
+          
+              <!-- child template -->
+<div class="col-lg-8">
+  <div class="card mb-4">
+    <div class="card-body">
+
+      <h1>Upload Health Check Certificates</h1>
+      <form accept-charset="UTF-8" action="{{url_for('core.upload_HCC', informationuserid=informationuserid)}}" enctype="multipart/form-data" method="POST" target="_blank">
+        <br>
+        <div class="form-group">
+          <label for="documentno">Document Name</label>
+          <input type="text" name="documentname" class="form-control" id="documentname" placeholder="Enter Document Name" required="required">
+        </div>
+        <br>
+        <label >Notarized</label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="notarized" id="notarized_yes">
+          <label class="form-check-label" for="notarized_yes">
+            Yes
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="notarized" id="notarized_no" checked>
+          <label class="form-check-label" for="notarized_no">
+            No
+          </label>
+        </div>
+        <hr>
+        <div class="form-group mt-3">
+            <label class="mr-2">Upload your Health Check Certificates:</label>
+            <input type="file" name="filehcc">
+        </div>
+        <button type="submit" class="btn btn-primary">Upload</button>
+      </form>
+      <hr>
+      <div class="row">
+        <div class="col-sm-3">
+            <p class="mb-0" style="color:red">The document list</p>
+        </div>
+      </div>
+
+      <!-- Display existing records -->
+      {% if temp %}
+      <table class="table">
+          <thead>
+              <tr>
+                  <th>Document No</th>
+                  <th>Document Name</th>
+                  <th>Notarized</th>
+                  <th>Dowload</th>
+                  <th>Delete</th>
+
+              </tr>
+          </thead>
+          <tbody>
+              {% for record in temp %}
+                  <tr>
+                      <td>{{ record[0] }}</td>
+                      <td>{{ record[2] }}</td>
+                      <td>{{ record[3] }}</td>
+                      <td>
+                        <a href="{{ record[4] }}" target="_blank">Dowload</a>
+                      </td>
+                      <td>
+                        <a href=""
+                         class="btn btn-danger btn-sm">
+                          <i class="fas fa-trash-alt"></i> 
+                      </a>
+                      </td>
+
+                  </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+  {% else %}
+      <p>No documents available.</p>
+  {% endif %}
+      
+    </div>
+  </div>
+</div>
+  </section>
+
+{%endblock %}
+
+

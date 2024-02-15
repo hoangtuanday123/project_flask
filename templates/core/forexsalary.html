@@ -1,0 +1,85 @@
+{% extends "core/user_profile.html" %}
+
+{% block content_body %}
+
+<div class="col-lg-8">
+  <div class="card mb-4">
+    <div class="card-body">
+        <div class="row">
+              <div class="col-sm-3">
+                <label for="idcontract" class="mb-0">Forex Type</label>
+              </div>
+              <div class="col-sm-9" >
+                <p class="text-muted mb-0">
+                  {{forexSalary.Forex}}
+                </p>
+              </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="LaborcontractNo" class="mb-0">Annual Salary</label>
+          </div>
+          <div class="col-sm-9" >
+            <p class="text-muted mb-0">
+              {{forexSalary.Annualsalary}}
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="Laborcontracttype" class="mb-0">Monthly Salary</label>
+          </div>
+          <div class="col-sm-9" >
+
+            <p class="text-muted mb-0">
+              {{forexSalary.Monthlysalary}}
+            </p>
+            
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="Laborcontractterm" class="mb-0">Monthly Salary In Contract</label>
+          </div>
+          <div class="col-sm-9" >
+            <p class="text-muted mb-0">
+              {{forexSalary.Monthlysalaryincontract}}
+            </p>
+            
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="Commencementdate" class="mb-0">Quaterly Bonus Target</label>
+          </div>
+          <div class="col-sm-9" >
+            <p class="text-muted mb-0">
+              {{forexSalary.Quaterlybonustarget}}
+            </p>
+            
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="Position" class="mb-0">Annual Bonus Target</label>
+          </div>
+          <div class="col-sm-9" >
+            <p class="text-muted mb-0">
+              {{forexSalary.Annualbonustarget}}
+            </p>
+            
+          </div>
+        </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+        

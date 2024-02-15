@@ -1,0 +1,65 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<body class = "body_login">
+	<div class="container_login" >
+		<div class="screen">
+			<div class="screen__content">
+				<form role="form" method="post" action="" class = "login">
+			{{ form.csrf_token }}
+					<div class="login__field">
+						<i class="login__icon fas fa-user"></i>
+						{{ form.email(placeholder="Email", class="login__input" ) }}
+			  <!-- {{ form.email.label }} -->
+				{% if form.email.errors %}
+				  {% for error in form.email.errors %}
+				  <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+					{{ error }}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				  </div>
+				  {% endfor %}
+				{% endif %}
+					</div>
+					<div class="login__field">
+						<i class="login__icon fas fa-lock"></i>
+						{{ form.password(placeholder="Password", class="login__input") }}
+			  <!-- {{ form.password.label }} -->
+				{% if form.password.errors %}
+				  {% for error in form.password.errors %}
+				  <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+					  {{ error }}
+					  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				  {% endfor %}
+				{% endif %}
+				<div class="login__field">
+					<a href="/forgotpassword" >Forgot Password</a>
+				</div>
+				
+					</div>
+					<button class="button login__submit" type="submit", style="margin-top: 5px;">
+						<span class="button__text">SIGN IN</span> 
+						<i class="button__icon fas fa-chevron-right"></i>
+					</button>				
+				</form>
+				<div class="social-login">
+					<h3>sign in via</h3>
+					<div class="social-icons">
+						<a href="/signingoogle" class="social-login__icon fab fa-google-plus-g"></a>
+						<a href="/signinfacebook" class="social-login__icon fab fa-facebook"></a>
+						
+						<a href="#" class="social-login__icon fab fa-linkedin-in"></a>
+					</div>
+				</div>
+			</div>
+			<div class="screen__background">
+				<span class="screen__background__shape screen__background__shape4"></span>
+				<span class="screen__background__shape screen__background__shape3"></span>		
+				<span class="screen__background__shape screen__background__shape2"></span>
+				<span class="screen__background__shape screen__background__shape1"></span>
+			</div>		
+		</div>
+	</div>
+</body>
+
+{% endblock %}
