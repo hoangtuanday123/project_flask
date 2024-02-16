@@ -1,0 +1,83 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+        <main class="form-signin w-100 m-auto">
+            
+            <form role="form" method="post" action="">
+                <h1 class="h3 mb-3 fw-normal text-center">LABOR CONTRACT</h1>
+                {{ form.csrf_token }}
+                <div class="form-floating">
+                    {{ form.Laborcontracttype(placeholder="Laborcontracttype", class="form-control mb-2") }}
+                    {{ form.Laborcontracttype.label }}
+                      {% if form.Laborcontracttype.errors %}
+                        {% for error in form.Laborcontracttype.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ error }}
+                        </div>
+                        {% endfor %}
+                      {% endif %}
+                </div>
+                <div class="form-floating">
+                    {{ form.Laborcontractterm(placeholder="Laborcontractterm", class="form-control mb-2") }}
+                    {{ form.Laborcontractterm.label }}
+                      {% if form.Laborcontractterm.errors %}
+                        {% for error in form.Laborcontractterm.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ error }}
+                        </div>
+                        {% endfor %}
+                      {% endif %}
+                </div>
+                <div class="form-floating">
+                    {{ form.Commencementdate(placeholder="Commencementdate", class="form-control mb-2") }}
+                    {{ form.Commencementdate.label }}
+                      {% if form.Commencementdate.errors %}
+                        {% for error in form.Commencementdate.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ error }}
+                        </div>
+                        {% endfor %}
+                      {% endif %}
+                </div>
+                <div class="form-floating">
+                    {{ form.Position(placeholder="Position", class="form-control mb-2") }}
+                    {{ form.Position.label }}
+                      {% if form.Position.errors %}
+                        {% for error in form.Position.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ error }}
+                        </div>
+                        {% endfor %}
+                      {% endif %}
+                </div>
+                <div class="form-floating">
+                    {{ form.Employeelevel(placeholder="Employeelevel", class="form-control mb-2") }}
+                    {{ form.Employeelevel.label }}
+                      {% if form.Employeelevel.errors %}
+                        {% for error in form.Employeelevel.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ error }}
+                        </div>
+                        {% endfor %}
+                      {% endif %}
+                </div>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">next</button>
+            
+                <!-- <div>
+                    <label for="companysite">choose company site code:</label>
+                    <select id="companysite" name="companysite">
+                        {% for code in companysite %}
+                            <option value="{{ code }}">{{ code }}</option>
+                        {% endfor %}
+                    </select>
+                </div> -->
+    
+            </form
+        </main>
+  </div>
+</div>
+{% endblock %}

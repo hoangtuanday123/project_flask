@@ -125,7 +125,6 @@ def getcodechangepassword():
 @core_bp.route('/userinformation/<idaccount>/<totp>', methods=['post', 'get'])
 @login_required
 def userinformation(idaccount,totp):
-    
     if idaccount==str(current_user.id) and totp=='None':
         global _roleuser
         form = informationUserForm()

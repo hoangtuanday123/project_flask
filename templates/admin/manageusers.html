@@ -31,18 +31,19 @@
                             <td style="text-align: center;">{{ user[2] }}</td>
                             <td style="text-align: center;">{{ user[3] }}</td>
                             <td style="text-align: center;">
-                              <form action="{{url_for('core.userinformation',idaccount = user[0],totp=totp) }}">
+                          
+                              <!-- <form action="{{url_for('core.userinformation',idaccount = user[0],totp=totp) }}">
                                 <label class="mb-0 tab_hover view-btn " for="userinformation">View </label>
                                 <input  type = "submit" id="userinformation"  hidden></input>
-                              </form>
-                              <!-- <button onclick="location.href='/userinformation/{{user[0]}}/{{totp}}'" >view</button> -->
+                              </form> -->
+                              <button onclick="location.href='/userinformation/{{user[0]}}/{{totp}}'" >view</button>
                             </td>
                             <td style="text-align: center;">
-                              <form action="{{ url_for('admin.assignrole', idaccount=user[0]) }}">
+                              <!-- <form action="{{ url_for('admin.assignrole', idaccount=user[0],userrole=user[2]) }}">
                                 <label class="mb-0 tab_hover view-btn " for="assignrole"><i class="fas fa-edit"></i></label>
                                 <input  type = "submit" id="assignrole"  hidden></input>
-                              </form>
-                              <!-- <button onclick="location.href='/adminpage/usersmanager/assignrole/{{user[0]}}'"><i class="fas fa-edit"></i></button> -->
+                              </form> -->
+                              <button onclick="location.href='/adminpage/usersmanager/assignrole/{{user[0]}}/{{user[2]}}'"><i class="fas fa-edit"></i></button>
                                 
                             </td>
                         </tr>
@@ -72,18 +73,18 @@
                       <td style="text-align: center;">{{ user[2] }}</td>
                       <td style="text-align: center;">{{ user[3] }}</td>
                       <td style="text-align: center;">
-                        <form action="{{url_for('core.userinformation',idaccount = user[0],totp=totp) }}">
+                        <!-- <form action="{{url_for('core.userinformation',idaccount = user[0],totp=totp) }}">
                           <label class="mb-0 tab_hover view-btn " for="userinformation1">View </label>
                           <input  type = "submit" id="userinformation1"  hidden></input>
-                        </form>
-                        <!-- <button onclick="location.href='/userinformation/{{user[0]}}/{{totp}}'" >view</button> -->
+                        </form> -->
+                        <button onclick="location.href='/userinformation/{{user[0]}}/{{totp}}'" >view</button>
                       </td>
                       <td style="text-align: center;">
-                        <form action="{{ url_for('admin.openblock', idaccount=user[0]) }}">
+                        <!-- <form action="{{ url_for('admin.openblock', idaccount=user[0]) }}">
                           <label class="mb-0 tab_hover view-btn " for="assignrole1"><i class="fas fa-lock-open"></i> </label>
                           <input  type = "submit" id="assignrole1"  hidden></input>
-                        </form>
-                        <!-- <button onclick="location.href='/adminpage/usersmanager/openblock/{{user[0]}}'"><i class="fas fa-lock-open"></i></button> -->
+                        </form> -->
+                        <button onclick="location.href='/adminpage/usersmanager/openblock/{{user[0]}}'"><i class="fas fa-lock-open"></i></button>
                          
                       </td>
                   </tr>

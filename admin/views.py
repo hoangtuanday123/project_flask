@@ -1,13 +1,17 @@
 from .forms import roleForm,SelectionForm
 import db
+from core.forms import laborcontractForm,forexsalaryForm
+from employee.forms import Employeeinformation
 from flask_login import current_user,login_user,login_required,logout_user
 from flask import Blueprint, flash, redirect, render_template, request, url_for,session, send_file,send_from_directory,make_response,Response
 import pandas as pd
 from tkinter import Tk, filedialog
+
 from io import BytesIO
 import json
 import pyotp
 from validation.forms import informationUserForm
+from core.models import informationUserJob
 from __init__ import file_path_default
 import pdfkit
 from io import BytesIO
@@ -77,7 +81,7 @@ def deleterole(idrole):
 
 @admin.route("/adminpage/usersmanager",methods=["GET", "POST"])
 def displayusers():  
-    #The user has been assigned a role
+    #list account
     totp=pyotp.TOTP('adminroles')
     totp=totp.now()
     session['is_admin']=str(totp)
@@ -235,9 +239,18 @@ def is_all_null(array):
             return False  # Nếu có ít nhất một phần tử không phải None, trả về False
     return True  # Nếu tất cả các phần tử đều là None, trả về True
 
-@admin.route("/adminpage/usersmanager/assignrole/<idaccount>",methods=["GET", "POST"])
-def assignrole(idaccount):
-    
+@admin.route("/adminpage/usersmanager/assignrole/<idaccount>/<userrole>",methods=["GET", "POST"])
+def assignrole(idaccount,userrole):
+    conn=db.connection()
+    cursor=conn.cursor()
+    sql="select id from informationUser where id_useraccount=?"
+    value=(idaccount)
+    cursor.execute(sql,value)
+    idinformation_temp=cursor.fetchone()
+    conn.commit()
+    conn.close()
+    idinformationuser=idinformation_temp[0]
+
     conn=db.connection()
     cursor=conn.cursor()
     sql="select * from role_user"
@@ -283,7 +296,8 @@ def assignrole(idaccount):
             conn.commit()
             conn.close()
             return redirect(url_for("admin.displayusers"))
-    return render_template("admin/updatepageuserrole.html",roles=roles,email=email[0],idaccount=idaccount,roleuser="admin")
+    #return userrole
+    return render_template("admin/updatepageuserrole.html",roles=roles,email=email[0],idaccount=idaccount,roleuser="admin",userrole=userrole,informationuserid=idinformationuser)
 
 @admin.route('/adminpage/usersmanager/blockuser/<idaccount>')
 def blockaccount(idaccount):
@@ -500,24 +514,137 @@ def exportfilepdf(idinformationuser,type):
         pdf=pdfkit.from_string(str(html),False,options={"enable-local-file-access": ""})
         return pdf  
 
-# @admin.route('/adminpage/usersmanager/exportfilepdf/all')
-# def exportallfilepdf():
-#     conn=db.connection()
-#     cursor=conn.cursor()
-#     sql="select id from informationUser "
-#     cursor.execute(sql)
-#     user_temp=cursor.fetchall()
-#     conn.commit()
-#     conn.close()
-#     userpdf=[(user[0]) for user in user_temp]
-#     zip_buffer = BytesIO()
-#     with zipfile.ZipFile(zip_buffer, 'a', zipfile.ZIP_DEFLATED, False) as zip_file:
-#         for user in userpdf:
-#             pdf_content = exportfilepdf( str(user))
-#             zip_file.writestr(f'output'+ str(user)+'.pdf', pdf_content)
-#     zip_buffer.seek(0)
-#     response = Response(zip_buffer.read())
-#     response.headers["Content-Disposition"] = "attachment; filename=your_zip_file_all_user_pdf.zip"
-#     response.headers["Content-Type"] = "application/zip"
+@admin.route('/adminpage/usersmanager/createemployee/<idinformation>',methods=['GET','POST'])
+def createemployeeinfor(idinformation):
+    conn=db.connection()
+    cursor=conn.cursor()
+    sql="select * from informationUserJob where idinformationuser=? and is_active=1"
+    value=(idinformation)
+    cursor.execute(sql,value)
+    informationjob=cursor.fetchone()
+    conn.close()
+    if informationjob is  None:
+        form=Employeeinformation(request.form)
+        userjob=informationUserJob(EmployeeNo=None,Companysitecode=None,Department=None,Directmanager=None,Workforcetype=None,Workingphone=None,Workingemail=None,
+                    Bankaccount=None,Bankname=None,Taxcode=None,Socialinsurancecode=None,Healthinsurancecardcode=None,Registeredhospitalname=None,Registeredhospitalcode=None)
+        temp=(0,' ')
+        companysitecode=[]
+        companysitecode.append(temp)
+        conn=db.connection()
+        cursor=conn.cursor()
+        sql="select * from forextype "
+        cursor.execute(sql)
+        companysitecode_temp=cursor.fetchall()
+        conn.close()
+        for code in companysitecode_temp:
+            temp=(code[0],code[1])
+            companysitecode.append(temp)
+        if form.validate_on_submit():
+            code=request.form['companysitecode']
+            conn=db.connection()
+            cursor=conn.cursor()
+            sql="insert into informationUserJob values(?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            value=(code,form.department.data,form.directmanager.data,
+                form.workfortype.data,form.Bankaccount.data,form.bankname.data,form.Taxcode.data,
+                form.Socialinsurancecode.data,form.Healthinsurancecardcode.data,form.Registeredhospitalname.data,
+                form.Registeredhospitalcode.data,idinformation,1)
+            cursor.execute(sql,value)
+            conn.commit()
+            conn.close()
+            return redirect(url_for('admin.createlaborcontract',idinformation=idinformation)) 
+    else:
+        conn=db.connection()
+        cursor=conn.cursor()
+        sql="""select * from laborContract l join  informationUserJob ij on l.idinformationUserJob=ij.id join informationUser i on ij.idinformationuser=i.id 
+        where i.id=? and l.is_active=1 and ij.is_active=1"""
+        value=(idinformation)
+        cursor.execute(sql,value)
+        labor=cursor.fetchone()  
+        conn.close() 
+        if labor is None:
+            return redirect(url_for('admin.createlaborcontract',idinformation=idinformation)) 
+        else:
+            conn=db.connection()
+            cursor=conn.cursor()
+            sql="""select * from forexSalary f join  informationUserJob ij on f.idinformationUserJob=ij.id join informationUser i on ij.idinformationuser=i.id 
+            where i.id=? and f.is_active=1 and ij.is_active=1"""
+            value=(idinformation)
+            cursor.execute(sql,value)
+            forex=cursor.fetchone()  
+            conn.close()
+            if forex is None:
+                return redirect(url_for('admin.createforexsalary',idinformation=idinformation)) 
+            else:
+                flash('information job employee is exist')
+                return redirect(url_for('admin.displayusers'))
+    return render_template("admin/admininformationuser.html",userjob=userjob,informationuserid=idinformation,form=form,companysitecode=companysitecode)
+                            #,image_path=_image_path,Employeerelative=Employeerelative,temp1=temp1,temp2=temp2,temp3=temp3,temp4=temp4,temp5=temp5)    
+    
+@admin.route('/adminpage/usersmanager/createlaborcontract/<idinformation>',methods=['GET','POST'])
+def createlaborcontract(idinformation):
+    form=laborcontractForm(request.form)
+    # form.Laborcontracttype.data=None
+    # form.Laborcontractterm.data=None
+    # form.Commencementdate.data=None
+    # form.Position.data=None
+    # form.Employeelevel.data=None
+    conn=db.connection()
+    cursor=conn.cursor()
+    sql="select id from informationUserJob where idinformationuser=? and is_active=1"
+    value=(idinformation)
+    cursor.execute(sql,value)
+    idinformationuserjob=cursor.fetchone()
+    conn.commit()
+    conn.close()
+    if form.validate_on_submit():
+        conn=db.connection()
+        cursor=conn.cursor()
+        sql="insert into laborContract values(null,?,?,?,?,?,?,?)"
+        value=(form.Laborcontracttype.data,form.Laborcontractterm.data,form.Commencementdate.data,form.Position.data,form.Employeelevel.data,idinformationuserjob[0],1)
+        cursor.execute(sql,value)
+        conn.commit()
+        conn.close()
+        return redirect(url_for('admin.createforexsalary',idinformation=idinformation))
+    return render_template('admin/adminlaborcontract.html',informationuserid=idinformation,form=form)
 
-#     return response
+@admin.route('/adminpage/usersmanager/createforexsalary/<idinformation>',methods=['GET','POST'])
+def createforexsalary(idinformation):
+    conn=db.connection()
+    cursor=conn.cursor()
+    sql="select id,companysitecode from informationUserJob where idinformationuser=? and is_active=1"
+    value=(idinformation)
+    cursor.execute(sql,value)
+    idinformationuserjob=cursor.fetchone()
+    conn.commit()
+    conn.close()
+    form=forexsalaryForm(request.form)
+    form.forextype.data=idinformationuserjob[1]
+    if form.validate_on_submit():
+        conn=db.connection()
+        cursor=conn.cursor()
+        sql="insert into forexSalary values(?,?,?,?,?,?,?,1)"
+        value=(form.forextype.data,form.Annualsalary.data,form.Monthlysalary.data,
+               form.Monthlysalaryincontract.data,form.Quaterlybonustarget.data,form.Annualbonustarget.data,idinformationuserjob[0])
+        cursor.execute(sql,value)
+        conn.commit()
+        conn.close()
+
+        conn=db.connection()
+        cursor=conn.cursor()
+        sql="select u.id from user_account u join informationUser i on u.id=i.id_useraccount where i.id=?"
+        value=(idinformation)
+        cursor.execute(sql,value)
+        idaccount=cursor.fetchone()
+        conn.commit()
+        conn.close()
+
+        conn=db.connection()
+        cursor=conn.cursor()
+        sql="update user_account set role_id =1 where id=?"
+        value=(idaccount[0])
+        cursor.execute(sql,value)
+        conn.commit()
+        conn.close()
+        flash('create information job employee is successful')
+        return redirect(url_for('admin.displayusers'))
+    return render_template('admin/adminforexsalary.html',idinformation=idinformation,form=form)

@@ -98,6 +98,7 @@ def informationuserjob(informationuserid):
         conn.close()
 
         if user is not None:
+
             form.Bankaccount.data=str(user[5])
             form.bankname.data=str(user[6])
             form.Taxcode.data=str(user[8])
@@ -112,7 +113,7 @@ def informationuserjob(informationuserid):
             userjob=informationUserJob(EmployeeNo=None,Companysitecode=None,Department=None,Directmanager=None,Workforcetype=None,Workingphone=None,Workingemail=None,
                 Bankaccount=None,Bankname=None,Taxcode=None,Socialinsurancecode=None,Healthinsurancecardcode=None,Registeredhospitalname=None,Registeredhospitalcode=None)
         print("id information user before redirect:" + str(informationuserid))     
-        return render_template("core/test.html",userjob=userjob,informationuserid=informationuserid,image_path=_image_path,
+        return render_template("core/informationuserjob.html",userjob=userjob,informationuserid=informationuserid,image_path=_image_path,
                                form=form,Employeerelative=Employeerelative,temp1=temp1,temp2=temp2,temp3=temp3,temp4=temp4,temp5=temp5)
     else:
         flash("You are logging in illegally")

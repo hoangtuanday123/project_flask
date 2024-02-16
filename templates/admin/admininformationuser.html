@@ -1,0 +1,72 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+        <main class="form-signin w-100 m-auto">
+            
+            <form role="form" method="post" action="">
+                <h1 class="h3 mb-3 fw-normal text-center">INFORMATION EMPLOYEE</h1>
+                {{ form.csrf_token }}
+                <div >
+                    
+                
+                        <label for="companysitecode">choose company site code:</label>
+                        <select id="companysitecode" name="companysitecode">
+                            {% for code in companysitecode %}
+                                <option value="{{ code[0] }}">{{ code[1] }}</option>
+                            {% endfor %}
+                        </select>
+
+                </div>
+                <div class="form-floating">
+                    {{ form.department(placeholder="department", class="form-control mb-2") }}
+                    {{ form.department.label }}
+                      {% if form.department.errors %}
+                        {% for error in form.department.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ error }}
+                        </div>
+                        {% endfor %}
+                      {% endif %}
+                </div>
+                <div class="form-floating">
+                    {{ form.directmanager(placeholder="directmanager", class="form-control mb-2") }}
+                    {{ form.directmanager.label }}
+                      {% if form.directmanager.errors %}
+                        {% for error in form.directmanager.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ error }}
+                        </div>
+                        {% endfor %}
+                      {% endif %}
+                </div>
+                <div class="form-floating">
+                    {{ form.workfortype(placeholder="workfortype", class="form-control mb-2") }}
+                    {{ form.workfortype.label }}
+                      {% if form.workfortype.errors %}
+                        {% for error in form.workfortype.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ error }}
+                        </div>
+                        {% endfor %}
+                      {% endif %}
+                </div>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">next</button>
+            
+                <!-- <div>
+                    <label for="companysite">choose company site code:</label>
+                    <select id="companysite" name="companysite">
+                        {% for code in companysite %}
+                            <option value="{{ code }}">{{ code }}</option>
+                        {% endfor %}
+                    </select>
+                </div> -->
+    
+            </form
+        </main>
+  </div>
+</div>
+{% endblock %}

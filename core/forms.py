@@ -38,6 +38,31 @@ class EmployeeRelativeForm(FlaskForm):
                       InputRequired()])
     issued=DateTimeField('enter issued (year/month/day)', format='%Y/%m/%d', validators=[DataRequired()])
 
+class laborcontractForm(FlaskForm):
+    
+    Laborcontracttype = StringField('Enter Laborcontracttype', validators=[
+                      InputRequired()])
+    Laborcontractterm=StringField('Enter Laborcontractterm', validators=[
+                      InputRequired()])
+    Commencementdate=DateTimeField('Enter Commencementdate (year/month/day)', format='%Y/%m/%d', validators=[DataRequired()])
+    Position=StringField('Enter Position', validators=[
+                      InputRequired()])
+    Employeelevel=StringField('Enter Employeelevel', validators=[
+                      InputRequired()])
+
+class forexsalaryForm(FlaskForm):
+    forextype=StringField('Enter forextype', validators=[
+                      InputRequired()])
+    Annualsalary = StringField('Enter Annualsalary', validators=[
+                      InputRequired()])
+    Monthlysalary = StringField('Enter Monthlysalary', validators=[
+                      InputRequired()])
+    Monthlysalaryincontract = StringField('Enter Monthlysalaryincontract', validators=[
+                      InputRequired()])
+    Quaterlybonustarget = StringField('Enter Quaterlybonustarget', validators=[
+                      InputRequired()])
+    Annualbonustarget = StringField('Enter Annualbonustarget', validators=[
+                      InputRequired()])
 class DriveAPI:
     # Define the scopes
     SCOPES = ['https://www.googleapis.com/auth/drive']

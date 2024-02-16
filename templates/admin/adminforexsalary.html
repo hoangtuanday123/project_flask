@@ -1,0 +1,94 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+        <main class="form-signin w-100 m-auto">
+            
+            <form role="form" method="post" action="">
+                <h1 class="h3 mb-3 fw-normal text-center">FOREX SALARY</h1>
+                {{ form.csrf_token }}
+                <div class="form-floating">
+                    {{ form.forextype(placeholder="forextype", class="form-control mb-2") }}
+                    {{ form.forextype.label }}
+                      {% if form.forextype.errors %}
+                        {% for error in form.forextype.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ error }}
+                        </div>
+                        {% endfor %}
+                      {% endif %}
+                </div>
+                <div class="form-floating">
+                    {{ form.Annualsalary(placeholder="Annualsalary", class="form-control mb-2") }}
+                    {{ form.Annualsalary.label }}
+                      {% if form.Annualsalary.errors %}
+                        {% for error in form.Annualsalary.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ error }}
+                        </div>
+                        {% endfor %}
+                      {% endif %}
+                </div>
+                <div class="form-floating">
+                    {{ form.Monthlysalary(placeholder="Monthlysalary", class="form-control mb-2") }}
+                    {{ form.Monthlysalary.label }}
+                      {% if form.Monthlysalary.errors %}
+                        {% for error in form.Monthlysalary.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ error }}
+                        </div>
+                        {% endfor %}
+                      {% endif %}
+                </div>
+                <div class="form-floating">
+                    {{ form.Monthlysalaryincontract(placeholder="Monthlysalaryincontract", class="form-control mb-2") }}
+                    {{ form.Monthlysalaryincontract.label }}
+                      {% if form.Monthlysalaryincontract.errors %}
+                        {% for error in form.Monthlysalaryincontract.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ error }}
+                        </div>
+                        {% endfor %}
+                      {% endif %}
+                </div>
+                <div class="form-floating">
+                    {{ form.Quaterlybonustarget(placeholder="Quaterlybonustarget", class="form-control mb-2") }}
+                    {{ form.Quaterlybonustarget.label }}
+                      {% if form.Quaterlybonustarget.errors %}
+                        {% for error in form.Quaterlybonustarget.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ error }}
+                        </div>
+                        {% endfor %}
+                      {% endif %}
+                </div>
+                <div class="form-floating">
+                    {{ form.Annualbonustarget(placeholder="Annualbonustarget", class="form-control mb-2") }}
+                    {{ form.Annualbonustarget.label }}
+                      {% if form.Annualbonustarget.errors %}
+                        {% for error in form.Annualbonustarget.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ error }}
+                        </div>
+                        {% endfor %}
+                      {% endif %}
+                </div>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">END</button>
+            
+                <!-- <div>
+                    <label for="companysite">choose company site code:</label>
+                    <select id="companysite" name="companysite">
+                        {% for code in companysite %}
+                            <option value="{{ code }}">{{ code }}</option>
+                        {% endfor %}
+                    </select>
+                </div> -->
+    
+            </form
+        </main>
+  </div>
+</div>
+{% endblock %}

@@ -4,7 +4,11 @@ from wtforms.validators import DataRequired, Email, EqualTo, Length,InputRequire
 
 
 class Employeeinformation(FlaskForm):
-    Bankaccount = StringField('Enter bankaccount' )
+    companysitecode=StringField('Enter department',validators=[DataRequired()] )
+    department=StringField('Enter department',validators=[DataRequired()] )
+    directmanager=StringField('Enter directmanager',validators=[DataRequired()] )
+    workfortype=StringField('Enter workfortype' ,validators=[DataRequired()])
+    Bankaccount = StringField('Enter bankaccount')
     bankname = StringField('Enter bankname' )
     Taxcode = StringField('Enter Taxcode')
     Socialinsurancecode = StringField('Enter Socialinsurancecode')

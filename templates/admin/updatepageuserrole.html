@@ -22,6 +22,11 @@
             <button type="submit" class="btn btn-primary me-2">Assign</button> 
             <button type="button" onclick="location.href='/adminpage/usersmanager/blockuser/{{ idaccount }}'" class="btn btn-danger">Block</button>
         </form>
+        {% if userrole=='candidate' %}
+            <button onclick="location.href='/adminpage/usersmanager/createemployee/{{informationuserid}}'">create employee</button>
+            <button>update employee</button>
+            
+        {% endif %}
     </main>
   </div>
 </div>
