@@ -47,13 +47,13 @@ def informationuserjob(informationuserid):
         form=Employeeinformation(request.form)
         conn=db.connection()
         cursor=conn.cursor()
-        sql="select e.fullname from employeeRelative e join informationUser i on e.idinformationuser=i.id where i.id=?  "
+        sql="select e.id,e.fullname from employeeRelative e join informationUser i on e.idinformationuser=i.id where i.id=?  "
         value=(informationuserid)
         cursor.execute(sql,value)
         employeerelative_temp=cursor.fetchall()
         conn.commit()
         conn.close()
-        Employeerelative=[(person[0]) for person in employeerelative_temp]
+        Employeerelative=[(person[0],person[1]) for person in employeerelative_temp]
 
         if request.method=='POST' and request.form.get('Privateinsurance')=='Privateinsurance':
             
@@ -75,18 +75,18 @@ def informationuserjob(informationuserid):
         conn=db.connection()
         cursor=conn.cursor()
         sql="""
-            select ei.id,e.fullname,e.Relationship,ei.col_Privateinsurance,ei.col_Additionalprivateinsurance,ei.col_Dependant,ei.col_Emergencycontact ,ei.col_Beneficiarycontact
+            select ei.id,e.fullname,e.Relationship,ei.col_Privateinsurance,ei.col_Additionalprivateinsurance,ei.col_Dependant,ei.col_Emergencycontact ,ei.col_Beneficiarycontact,e.id
             from employeerelative_informationuser ei join employeeRelative e on ei.idemployeerelative=e.id join informationUser i on i.id=ei.idinformationuser where i.id=?"""
         value=informationuserid
         cursor.execute(sql,value)
         temp=cursor.fetchall()
         conn.commit()
         conn.close() 
-        temp1=[(user[0],user[1],user[2],user[3]) for user in temp if user[3]==True]
-        temp2=[(user[0],user[1],user[2],user[4]) for user in temp if user[4]==True]
-        temp3=[(user[0],user[1],user[2],user[5]) for user in temp if user[5]==True]
-        temp4=[(user[0],user[1],user[2],user[6]) for user in temp if user[6]==True]
-        temp5=[(user[0],user[1],user[2],user[7]) for user in temp if user[7]==True]
+        temp1=[(user[0],user[1],user[2],user[3],user[8]) for user in temp if user[3]==True]
+        temp2=[(user[0],user[1],user[2],user[4],user[8]) for user in temp if user[4]==True]
+        temp3=[(user[0],user[1],user[2],user[5],user[8]) for user in temp if user[5]==True]
+        temp4=[(user[0],user[1],user[2],user[6],user[8]) for user in temp if user[6]==True]
+        temp5=[(user[0],user[1],user[2],user[7],user[8]) for user in temp if user[7]==True]
 
         conn=db.connection()
         cursor=conn.cursor()
@@ -98,7 +98,6 @@ def informationuserjob(informationuserid):
         conn.close()
 
         if user is not None:
-
             form.Bankaccount.data=str(user[5])
             form.bankname.data=str(user[6])
             form.Taxcode.data=str(user[8])
@@ -113,8 +112,8 @@ def informationuserjob(informationuserid):
             userjob=informationUserJob(EmployeeNo=None,Companysitecode=None,Department=None,Directmanager=None,Workforcetype=None,Workingphone=None,Workingemail=None,
                 Bankaccount=None,Bankname=None,Taxcode=None,Socialinsurancecode=None,Healthinsurancecardcode=None,Registeredhospitalname=None,Registeredhospitalcode=None)
         print("id information user before redirect:" + str(informationuserid))     
-        return render_template("core/informationuserjob.html",userjob=userjob,informationuserid=informationuserid,image_path=_image_path,
-                               form=form,Employeerelative=Employeerelative,temp1=temp1,temp2=temp2,temp3=temp3,temp4=temp4,temp5=temp5)
+        return render_template("core/informationuserjob.html",userjob=userjob,informationuserid=informationuserid,image_path=_image_path,fullname=_fullname,
+                               form=form,Employeerelative=Employeerelative,temp1=temp1,temp2=temp2,temp3=temp3,temp4=temp4,temp5=temp5,roleuser=_roleuser)
     else:
         flash("You are logging in illegally")
         return redirect(url_for("authentication.logout"))
@@ -138,7 +137,7 @@ def addlist(informationuserid,employeerelativeid,type):
 @employee.route("/employeepage/informationuserjob/deleterelative/<informationuserid>/<employeerelativeid>/<type>",methods=['GET','POST'])
 @login_required
 def deleterelative(informationuserid,employeerelativeid,type):
-    
+    #return str(employeerelativeid+type)
     conn=db.connection()
     cursor=conn.cursor()
     sql="""
@@ -308,12 +307,12 @@ def employeerelative(employeerelativeid,informationuserid):
         cursor.execute(sql,value)
         employeerelativetemp=cursor.fetchone()
 
-        cursor1 = conn.cursor()
-        sql1="select* from employeeDocument where employeerelativeid=?"
-        cursor1.execute(sql1,employeerelativeid)
-        temp = cursor1.fetchall()
-        conn.commit()
-        conn.close()
+        # cursor1 = conn.cursor()
+        # sql1="select* from employeeDocument where employeerelativeid=?"
+        # cursor1.execute(sql1,employeerelativeid)
+        # temp = cursor1.fetchall()
+        # conn.commit()
+        # conn.close()
         form=EmployeeRelativeForm(request.form)
         if employeerelativetemp is not None:
             employeerelative=employeeRelative(id=employeerelativetemp[0],Relationship=employeerelativetemp[1],phone=employeerelativetemp[2],email=employeerelativetemp[3],
@@ -325,11 +324,11 @@ def employeerelative(employeerelativeid,informationuserid):
                                         contactaddress=None,career=None,citizenIdentificationNo=None,
                                         fullname=None,dateofbirth=None,placeofbirth=None,
                                         issuedon=None,address=None)
-        return render_template("core/employeerelative.html",informationuserid=informationuserid,employeerelative=employeerelative,image_path = _image_path,fullname =_fullname, roleuser=_roleuser,employeerelativeid=employeerelativeid, temp=temp)
+        return render_template("core/employeerelative.html",informationuserid=informationuserid,employeerelative=employeerelative,image_path = _image_path,fullname =_fullname, roleuser=_roleuser,employeerelativeid=employeerelativeid)#, temp=temp)
     
     else:
             flash("You are logging in illegally")
-            return redirect(url_for("authentication.logout"))
+            return redirect(url_for("authentication.logout"))   
     
 @employee.route("/uploadDocument/<employeerelativeid>/<informationuserid>" ,methods=['post','get'])
 @login_required
@@ -387,3 +386,17 @@ def uploadDocument(employeerelativeid,informationuserid):
             flash('Invalid request method')
             idaccount= (current_user.id)
             return redirect(url_for('core.userinformation',idaccount = idaccount))
+        
+@employee.route("/employeepage/informationuserjob/employeerelativelist/delete/<employeerelativeid>/<informationuserid>",methods=['GET','POST'])
+@login_required
+def delete(employeerelativeid,informationuserid):
+    conn=db.connection()
+    cursor=conn.cursor()
+    sql="""
+    SET NOCOUNT ON;
+    exec sp_delete_employeerelative @idemployeerelative=?;"""
+    value=(employeerelativeid)
+    cursor.execute(sql,value)
+    conn.commit()
+    conn.close()
+    return redirect(url_for("employee.employeerelativelist",informationuserid=informationuserid))

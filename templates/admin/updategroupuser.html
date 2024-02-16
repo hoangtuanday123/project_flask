@@ -1,0 +1,97 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+    <main class="form-signin w-100 m-auto">
+        <h1 class="h3 mb-3 fw-normal text-center">group user</h1>
+        <form method="post">
+            <div class="input-group mb-3">
+                <input type="text" id="groupuser" name="groupuser" value="{{ group }}" class="form-control" placeholder="Role Name" aria-label="Role Name" aria-describedby="basic-addon2" required>
+                <div class="input-group-append">
+                    <button name="updategroup" value="updategroup" type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> Update</button>
+                    <button name="deletegroup" value="deletegroup" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</button>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-sm-3">
+                <p class="mb-0" style="color:red">ADD USER</p>    
+            </div>
+        </div>
+        <br>
+        <form method="post">
+            <div class="row">
+              
+              <div class="col-sm-9">
+                  <div class="row">
+                    <div class="col-sm-3">
+                        <label for="chooseuser" class="mb-0">choose user</label>
+                    </div>
+                      <div class="col-md-6">
+                          <select class="form-select" id="usersSelect" name="usersSelect" style="width: 200px;">
+                            {% for user in usersSelect %}
+                            <option value="{{ user[0] }}">{{ user[1] }}</option>
+                            {% endfor %}
+                          </select>
+                      </div>
+                      
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-3">
+                        <label for="chooseuser" class="mb-0">choose group role</label>
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-select" id="grouprole" name="grouprole" style="width: 200px;">
+                          {% for role in grouprole %}
+                          <option value="{{ role[0] }}">{{ role[1] }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                    <button type="submit" value="adduser" name="adduser" class="btn btn-primary">ADD</button>
+                  </div>
+              </div>
+          </div>
+        </form>
+        <!-- Display existing records -->
+
+  <table class="table">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>role group</th>
+            <th>group name</th>
+            <th>created date</th>
+            <th>Delete</th>
+
+        </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+            <tr>
+                <td>{{user[1]}}</td>
+                <td>{{user[2]}}</td>
+                <td>{{user[3]}}</td>
+                <td>{{user[4]}}</td>
+                <td>
+                  <a href="{{url_for('admin.deleteuser',idgroupuserdetail=user[0],idgroup=idgroup)}}"
+                
+                    class="btn btn-danger btn-sm">
+                    <i class="fas fa-trash-alt"></i> 
+                </a>
+                </td>
+
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+    </main>
+  </div>
+  <div class="col-md-4"></div>
+</div>
+
+{% endblock %}

@@ -8,3 +8,7 @@ class roleForm(FlaskForm):
 
 class SelectionForm(FlaskForm):
     selection = BooleanField('Selection')
+
+class groupuserForm(FlaskForm):
+    group = StringField('Enter group', validators=[
+                      InputRequired()])

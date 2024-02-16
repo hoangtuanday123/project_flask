@@ -1,4 +1,4 @@
-from .forms import roleForm,SelectionForm
+from .forms import roleForm,SelectionForm,groupuserForm
 import db
 from core.forms import laborcontractForm,forexsalaryForm
 from employee.forms import Employeeinformation
@@ -6,13 +6,13 @@ from flask_login import current_user,login_user,login_required,logout_user
 from flask import Blueprint, flash, redirect, render_template, request, url_for,session, send_file,send_from_directory,make_response,Response
 import pandas as pd
 from tkinter import Tk, filedialog
-
+from flask_mail import Message
 from io import BytesIO
 import json
 import pyotp
 from validation.forms import informationUserForm
 from core.models import informationUserJob
-from __init__ import file_path_default
+from __init__ import file_path_default,mail,app
 import pdfkit
 from io import BytesIO
 import zipfile
@@ -573,7 +573,7 @@ def createemployeeinfor(idinformation):
             forex=cursor.fetchone()  
             conn.close()
             if forex is None:
-                return redirect(url_for('admin.createforexsalary',idinformation=idinformation)) 
+                return redirect(url_for('admin.createforexsalary',idinformation=idinformation,image_path=file_path_default,roleuser="admin")) 
             else:
                 flash('information job employee is exist')
                 return redirect(url_for('admin.displayusers'))
@@ -605,7 +605,7 @@ def createlaborcontract(idinformation):
         conn.commit()
         conn.close()
         return redirect(url_for('admin.createforexsalary',idinformation=idinformation))
-    return render_template('admin/adminlaborcontract.html',informationuserid=idinformation,form=form)
+    return render_template('admin/adminlaborcontract.html',informationuserid=idinformation,form=form,image_path=file_path_default,roleuser="admin")
 
 @admin.route('/adminpage/usersmanager/createforexsalary/<idinformation>',methods=['GET','POST'])
 def createforexsalary(idinformation):
@@ -647,4 +647,222 @@ def createforexsalary(idinformation):
         conn.close()
         flash('create information job employee is successful')
         return redirect(url_for('admin.displayusers'))
-    return render_template('admin/adminforexsalary.html',idinformation=idinformation,form=form)
+    return render_template('admin/adminforexsalary.html',idinformation=idinformation,form=form,image_path=file_path_default,roleuser="admin")
+
+@admin.route('/adminpage/groupuserpage',methods=['GET','POST'])
+def groupuserpage():
+    conn=db.connection()
+    cursor=conn.cursor()
+    sql="select * from groubuser"
+    cursor.execute(sql)
+    grouptemp=cursor.fetchall()
+    conn.commit()
+    conn.close()
+    groups=[(group[0],group[1],group[2]) for group in grouptemp]
+    form =groupuserForm(request.form)
+    if form.validate_on_submit():
+        conn=db.connection()
+        cursor=conn.cursor()
+        sql="""SET NOCOUNT ON;
+                DECLARE @id int;
+                insert into groubuser(name,createddate) values(?,GETDATE())
+                SET @id = SCOPE_IDENTITY();            
+                SELECT @id AS the_output;"""
+        value=(form.group.data)
+        cursor.execute(sql,value)
+        idgrouptemp=cursor.fetchone()
+        conn.commit()
+        conn.close()
+        return redirect(url_for("admin.updategropuser",idgroup=idgrouptemp[0]))
+    return render_template('admin/groupuserpage.html',groups=groups,image_path=file_path_default,roleuser="admin",form=form)
+
+@admin.route('/adminpage/groupuserpage/updategroupuser/<idgroup>',methods=['GET','POST'])
+def updategropuser(idgroup):
+    conn=db.connection()
+    cursor=conn.cursor()
+    sql="select * from groubuser where id=?"
+    value=(idgroup)
+    cursor.execute(sql,value)
+    group=cursor.fetchone()
+    conn.commit()
+    conn.close()
+    usersSelect=[]
+    usersSelect.append((0,' '))
+    conn=db.connection()
+    cursor=conn.cursor()
+    sql="select id,email from informationUser"
+    cursor.execute(sql)
+    usersSelecttemp=cursor.fetchall()
+    conn.commit()
+    conn.close()
+    for user in usersSelecttemp:
+        usersSelect.append((user[0],user[1]))
+
+
+    grouprole=[]
+    grouprole.append((0,' '))
+    conn=db.connection()
+    cursor=conn.cursor()
+    sql="select * from rolegroupuser"
+    cursor.execute(sql)
+    grouproletemp=cursor.fetchall()
+    conn.commit()
+    conn.close()
+    for role in grouproletemp:
+        grouprole.append((role[0],role[1]))
+
+    conn=db.connection()
+    cursor=conn.cursor()
+    sql="""select gd.id, i.Fullname,r.rolename,g.name,gd.createddate from groupuserdetail gd join informationUser i on i.id=gd.iduser join rolegroupuser r on gd.idrolegroupuser=r.id
+            join groubuser g on gd.idgroupuser=g.id where g.id=?"""
+    value=(idgroup)
+    cursor.execute(sql,value)
+    userstemp=cursor.fetchall()
+    conn.commit()
+    conn.close()
+    users=[(user[0],user[1],user[2],user[3],user[4]) for user in userstemp]
+
+    if request.method=='POST' and request.form.get('updategroup')=='updategroup':
+        groupuser = request.form['groupuser']
+        
+        if groupuser == '0':
+            flash('input is space')
+            return redirect(url_for('admin.updategropuser',idgroup=idgroup))
+        else:
+            conn=db.connection()
+            cursor=conn.cursor()
+            sql="""select i.Email,r.rolename,g.name from groupuserdetail gd join informationUser i on i.id=gd.iduser join rolegroupuser r on gd.idrolegroupuser=r.id
+                    join groubuser g on gd.idgroupuser=g.id where g.id=?"""
+            value=(idgroup)
+            cursor.execute(sql,value)
+            notifyemail=cursor.fetchall()
+            conn.commit()
+            conn.close()
+
+            conn=db.connection()
+            cursor=conn.cursor()
+            sql="update groubuser set name=? where id=?"
+            value=(groupuser,idgroup)
+            cursor.execute(sql,value)
+            conn.commit()
+            conn.close()
+            flash('update group user  is successful')
+
+            for notify in notifyemail:
+                #send email notify
+            
+                html = "update group: "+ str(users[0][3]) +" to group:  " +str(groupuser)
+                subject = "update group: "+ str(users[0][3]) +" to group:  " +str(groupuser)
+                send_email(notify[0], subject, html)
+            return redirect(url_for('admin.updategropuser',idgroup=idgroup))
+    if request.method=='POST' and request.form.get('adduser')=='adduser':
+        usersSelect=request.form["usersSelect"]
+        grouprole=request.form["grouprole"]
+        if usersSelect == '0' or grouprole == '0':
+            flash('please enter full information')
+            return redirect(url_for('admin.updategropuser',idgroup=idgroup))
+        else:
+            conn=db.connection()
+            cursor=conn.cursor()
+            sql="""
+            SET NOCOUNT ON;
+            DECLARE @id int;
+            insert into groupuserdetail(iduser,idrolegroupuser,idgroupuser,createddate) values(?,?,?,GETDATE())
+            SET @id = SCOPE_IDENTITY();            
+            SELECT @id AS the_output;
+            """
+            value=(usersSelect,grouprole,idgroup)
+            cursor.execute(sql,value)
+            idgroupuserdetail=cursor.fetchone()
+            conn.commit()
+            conn.close()
+            flash('add  user  is successful')
+
+            conn=db.connection()
+            cursor=conn.cursor()
+            sql="""select i.Email,r.rolename,g.name from groupuserdetail gd join informationUser i on i.id=gd.iduser join rolegroupuser r on gd.idrolegroupuser=r.id
+                    join groubuser g on gd.idgroupuser=g.id where gd.id=?"""
+            value=(idgroupuserdetail[0])
+            cursor.execute(sql,value)
+            notifyemail=cursor.fetchone()
+            conn.commit()
+            conn.close()
+            #send email notify
+            
+            html = "You have been added to the group: "+ str(notifyemail[2]) +" with role: " +str(notifyemail[1])
+            subject = "wellcome to "+ str(notifyemail[2])+" group"
+            send_email(notifyemail[0], subject, html)
+
+            return redirect(url_for('admin.updategropuser',idgroup=idgroup))
+    if request.method=='POST' and request.form.get('deletegroup')=='deletegroup':
+        return redirect(url_for('admin.deletegroupuser',idgroup=idgroup))
+    return render_template('admin/updategroupuser.html',idgroup=idgroup,image_path=file_path_default,roleuser="admin",
+                           group=group[1],usersSelect=usersSelect,grouprole=grouprole,users=users)
+
+@admin.route('/adminpage/groupuserpage/updategroupuser/deletegroupuser/<idgroup>',methods=['GET','POST'])
+def deletegroupuser(idgroup):
+
+    conn=db.connection()
+    cursor=conn.cursor()
+    sql="""select i.Email,r.rolename,g.name from groupuserdetail gd join informationUser i on i.id=gd.iduser join rolegroupuser r on gd.idrolegroupuser=r.id
+            join groubuser g on gd.idgroupuser=g.id where g.id=?"""
+    value=(idgroup)
+    cursor.execute(sql,value)
+    notifyemail=cursor.fetchall()
+    conn.commit()
+    conn.close()
+
+    conn=db.connection()
+    cursor=conn.cursor()
+    sql="""
+            delete groupuserdetail where idgroupuser=?
+            delete groubuser where id=?"""
+    value=(idgroup,idgroup)
+    cursor.execute(sql,value)
+    conn.commit()
+    conn.close()
+    flash('removed  group user  is successful')
+
+    #send email notify
+    for notify in notifyemail:
+        html = "You have been removed from the group: "+ str(notify[2]) +" with role: " +str(notify[1])
+        subject = "notice of member deletion from "+ str(notify[2])+" group"
+        send_email(notify[0], subject, html)
+
+    return redirect(url_for('admin.groupuserpage'))
+
+@admin.route('/adminpage/groupuserpage/updategroupuser/deleteuser/<idgroupuserdetail>/<idgroup>',methods=['GET','POST'])
+def deleteuser(idgroupuserdetail,idgroup):
+    conn=db.connection()
+    cursor=conn.cursor()
+    sql="""select i.Email,r.rolename,g.name from groupuserdetail gd join informationUser i on i.id=gd.iduser join rolegroupuser r on gd.idrolegroupuser=r.id
+            join groubuser g on gd.idgroupuser=g.id where gd.id=?"""
+    value=(idgroupuserdetail)
+    cursor.execute(sql,value)
+    notifyemail=cursor.fetchone()
+    conn.commit()
+    conn.close()
+
+    conn=db.connection()
+    cursor=conn.cursor()
+    sql="delete groupuserdetail where id=?"
+    value=(idgroupuserdetail)
+    cursor.execute(sql,value)
+    conn.commit()
+    conn.close()
+    flash('delete  user  is successful')
+    #send email notify
+    
+    html = "You have been removed from the group: "+ str(notifyemail[2]) +" with role: " +str(notifyemail[1])
+    subject = "notice of member deletion from "+ str(notifyemail[2])+" group"
+    send_email(notifyemail[0], subject, html)
+    return redirect(url_for('admin.updategropuser',idgroup=idgroup))
+
+def send_email(to, subject, template):
+    msg = Message(
+        subject,
+        recipients=[to],
+        html=template,
+        sender=app.config["MAIL_DEFAULT_SENDER"],
+    )
+    mail.send(msg)
