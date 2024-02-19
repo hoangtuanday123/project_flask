@@ -83,7 +83,7 @@ def confirm_email(token):
         conn=db.connection()
         cursor=conn.cursor()
         sql="select i.id from user_account u join informationUser i on i.id_useraccount=u.id where u.id=?"
-        value=(id)
+        value=(current_user.id)
         cursor.execute(sql,value)
         userinfor=cursor.fetchone()
         conn.commit()
@@ -113,7 +113,7 @@ def confirm_email(token):
         conn=db.connection()
         cursor=conn.cursor()
         sql="select i.id from user_account u join informationUser i on i.id_useraccount=u.id where u.id=?"
-        value=(id)
+        value=(current_user.id)
         cursor.execute(sql,value)
         userinfor=cursor.fetchone()
         conn.commit()

@@ -150,7 +150,7 @@
                   
                 </li>
 
-                {% if roleuser == "employee"%}
+                {% if roleuser == "employee"  %}
 
                 <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                   <div class="dropdown">
@@ -159,8 +159,8 @@
                       <input type="checkbox" id="dropdownMenuLink" class="dropdown-checkbox">
                       <i class="fa-solid fa-angle-down"></i>
                       <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                          <li><a class="dropdown-item" href="{{url_for('employee.informationuserjob',informationuserid = informationuserid)}}">Employee Information Job</a></li>
-                          <li><a class="dropdown-item mb-0" href="{{url_for('employee.employeerelativelist',informationuserid = informationuserid)}}">Employee Relationship</a></li>
+                          <li><a class="dropdown-item" href="{{url_for('employee.informationuserjob',informationuserid = informationuserid,totp=totp)}}">Employee Information Job</a></li>
+                          <li><a class="dropdown-item mb-0" href="{{url_for('employee.employeerelativelist',informationuserid = informationuserid,totp=totp)}}">Employee Relationship</a></li>
                       </ul>
                   </div>
               </li>

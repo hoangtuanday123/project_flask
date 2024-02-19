@@ -10,18 +10,22 @@
         <form method="post">
             <div class="input-group mb-3">
                 <input type="text" id="groupuser" name="groupuser" value="{{ group }}" class="form-control" placeholder="Role Name" aria-label="Role Name" aria-describedby="basic-addon2" required>
+                {% if rolegroup =="admin" or rolegroup =="manager" %}
                 <div class="input-group-append">
                     <button name="updategroup" value="updategroup" type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> Update</button>
                     <button name="deletegroup" value="deletegroup" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</button>
                 </div>
+                {% endif %}
             </div>
         </form>
+        {% if rolegroup =="admin" or rolegroup =="manager" %}
         <div class="row">
             <div class="col-sm-3">
                 <p class="mb-0" style="color:red">ADD USER</p>    
             </div>
         </div>
         <br>
+    
         <form method="post">
             <div class="row">
               
@@ -51,13 +55,24 @@
                         </select>
                       </div>
                   </div>
+                  
                   <div class="col-md-6">
                     <button type="submit" value="adduser" name="adduser" class="btn btn-primary">ADD</button>
                   </div>
+                  
               </div>
           </div>
         </form>
+        {% endif %}
         <!-- Display existing records -->
+        {% if rolegroup=='leader' or rolegroup=='member'  %}
+            <div class="row">
+              <div class="col-sm-3">
+                  <p class="mb-0" style="color:red">LIST USER</p>    
+              </div>
+            </div>
+            <br>
+        {% endif %}
 
   <table class="table">
     <thead>
@@ -66,7 +81,9 @@
             <th>role group</th>
             <th>group name</th>
             <th>created date</th>
+            {% if rolegroup =="admin" or rolegroup =="manager" %}
             <th>Delete</th>
+            {% endif %}
 
         </tr>
     </thead>
@@ -77,6 +94,7 @@
                 <td>{{user[2]}}</td>
                 <td>{{user[3]}}</td>
                 <td>{{user[4]}}</td>
+                {% if rolegroup =="admin" or rolegroup =="manager" %}
                 <td>
                   <a href="{{url_for('admin.deleteuser',idgroupuserdetail=user[0],idgroup=idgroup)}}"
                 
@@ -84,7 +102,7 @@
                     <i class="fas fa-trash-alt"></i> 
                 </a>
                 </td>
-
+                {% endif %}
             </tr>
         {% endfor %}
     </tbody>

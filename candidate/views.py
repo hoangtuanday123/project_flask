@@ -7,4 +7,10 @@ candidate = Blueprint("candidate", __name__)
 @candidate.route("/candidate/<image_path>/<fullname>")
 @login_required
 def candidatepage(image_path, fullname):
-    return render_template("candidate/candidatepage.html",roleuser="candidate",image_path=image_path,fullname=fullname)
+    conn=db.connection()
+    cursor1=conn.cursor()
+    sql1="select * from informationUser where id_useraccount=?"
+    value1=(current_user.id)
+    cursor1.execute(sql1,value1)
+    user_temp=cursor1.fetchone()
+    return render_template("candidate/candidatepage.html",roleuser="candidate",image_path=image_path,fullname=fullname,idinformationuser=user_temp[0])

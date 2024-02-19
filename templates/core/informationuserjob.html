@@ -1,419 +1,620 @@
+{% extends "core/user_profile.html" %}
 
-{% extends "_base.html" %}
+{% block content_body %}
+              <!-- child template -->
+    
+<div class="col-lg-8">
+    <div class="card mb-4">
+      <div class="card-body">
+        
+          <div id = "" class="row">
+            <div class="col-sm-3">
+              <label for="EmployeeNo" class="mb-0">Employee No</label>
+            </div>
+            <div class="col-sm-9" id="EmployeeNo-container">
+              <p class="text-muted mb-0">
+                {{userjob.EmployeeNo}}
+              </p>
+            </div>
+        <hr>
+            <hr>
 
-{% block content %}
+        <div id = "" class="row">
+          <div class="col-sm-3">
+            <label for="Companysitecode" class="mb-0">Company Site Code</label>
+          </div>
+          <div class="col-sm-9" id="Companysitecode-container">
+            <p class="text-muted mb-0">
+              {{userjob.Companysitecode}}
+            </p>
+          </div>
+          <hr>
 
-<div class="row">
-  <div class="col-md-4"></div>
-  <div class="col-md-4">
-    <main class="form-signin w-100 m-auto">
-      <h1 class="h3 mb-3 fw-normal text-center">INFORMATION EMPLOYEE</h1>
-      <div >
-        <label> employee no: </label>
-        <input type="text" placeholder="{{userjob.EmployeeNo}}">
-      </div>
-      <div >
-        <label> Company site code: </label>
-        <input type="text" placeholder="{{userjob.Companysitecode}}">
-      </div>
-      <!-- <div>
-        <label for="companysite">choose company site code:</label>
-          <select id="companysite" name="companysite">
-              {% for code in companysite %}
-                  <option value="{{ code }}">{{ code }}</option>
-              {% endfor %}
-          </select>
-      </div> -->
-      <div >
-        <label> Department: </label>
-        <input type="text" placeholder="{{userjob.Department}}">
-      </div>
-      <div>
-        <label> Direct manager: </label>
-        <input type="text" placeholder="{{userjob.Directmanager}}">
-      </div>
-      <div >
-        <label> Workforce type: </label>
-        <input type="text" placeholder="{{userjob.Workforcetype}}">
-      </div>
-      <div >
-        <label> Working phone: </label>
-        <input type="text" placeholder="{{userjob.Workingphone}}">
-      </div>
-      <div >
-        <label> Working email: </label>
-        <input type="text" placeholder="{{userjob.Workingemail}}">
-      </div>
-      <form method="post">
-        <div class="form-floating">
-          {{ form.Bankaccount(placeholder="Bankaccount", class="form-control mb-2") }}
-          {{ form.Bankaccount.label }}
-            {% if form.Bankaccount.errors %}
-              {% for error in form.Bankaccount.errors %}
-              <div class="alert alert-danger" role="alert">
-                {{ error }}
-              </div>
-              {% endfor %}
-            {% endif %}
-        </div>
-        <div class="form-floating">
-          {{ form.bankname(placeholder="Bankaccount", class="form-control mb-2") }}
-          {{ form.bankname.label }}
-            {% if form.bankname.errors %}
-              {% for error in form.bankname.errors %}
-              <div class="alert alert-danger" role="alert">
-                {{ error }}
-              </div>
-              {% endfor %}
-            {% endif %}
-        </div>
-        <div class="form-floating">
-          {{ form.Taxcode(placeholder="Taxcode", class="form-control mb-2") }}
-          {{ form.Taxcode.label }}
-            {% if form.Taxcode.errors %}
-              {% for error in form.Taxcode.errors %}
-              <div class="alert alert-danger" role="alert">
-                {{ error }}
-              </div>
-              {% endfor %}
-            {% endif %}
-        </div>
-        <div class="form-floating">
-          {{ form.Socialinsurancecode(placeholder="Socialinsurancecode", class="form-control mb-2") }}
-          {{ form.Socialinsurancecode.label }}
-            {% if form.Socialinsurancecode.errors %}
-              {% for error in form.Socialinsurancecode.errors %}
-              <div class="alert alert-danger" role="alert">
-                {{ error }}
-              </div>
-              {% endfor %}
-            {% endif %}
-        </div>
-        <div class="form-floating">
-          {{ form.Healthinsurancecardcode(placeholder="Healthinsurancecardcode", class="form-control mb-2") }}
-          {{ form.Healthinsurancecardcode.label }}
-            {% if form.Healthinsurancecardcode.errors %}
-              {% for error in form.Healthinsurancecardcode.errors %}
-              <div class="alert alert-danger" role="alert">
-                {{ error }}
-              </div>
-              {% endfor %}
-            {% endif %}
-        </div>
-        <div class="form-floating">
-          {{ form.Registeredhospitalname(placeholder="Healthinsurancecardcode", class="form-control mb-2") }}
-          {{ form.Registeredhospitalname.label }}
-            {% if form.Registeredhospitalname.errors %}
-              {% for error in form.Registeredhospitalname.errors %}
-              <div class="alert alert-danger" role="alert">
-                {{ error }}
-              </div>
-              {% endfor %}
-            {% endif %}
-        </div>
-        <div class="form-floating">
-          {{ form.Registeredhospitalcode(placeholder="Healthinsurancecardcode", class="form-control mb-2") }}
-          {{ form.Registeredhospitalcode.label }}
-            {% if form.Registeredhospitalcode.errors %}
-              {% for error in form.Registeredhospitalcode.errors %}
-              <div class="alert alert-danger" role="alert">
-                {{ error }}
-              </div>
-              {% endfor %}
-            {% endif %}
-        </div>
-        <button class="w-100 btn btn-lg btn-primary" type="submit">SAVE</button>
-        <div>
-          <h1 class="h3 mb-3 fw-normal text-center">Private insurance: </h1>
-          <div>
-            <form method="post">
-              <label for="Employeerelative">choose employee relative:</label>
-              <select id="Employeerelative1" name="Employeerelative1">
-                  {% for person in Employeerelative %}
-                      <option value="{{ person[0] }}">{{ person[1] }}</option>
-                  {% endfor %}
-              </select>
-              <br>
-              <button type="submit" name="Privateinsurance" value="Privateinsurance"> submit</button>
-            </form>
-            <div class="form-signin w-100 m-auto" style="overflow-x: auto;  width: 600px; border: 1px solid #ccc;  padding: 10px;">
-              <table border="1">
-                <thead>
-                  <tr>
-                    <th hidden>id</th>
-                    <th>fullname</th>
-                    <th style="padding: 20px;">employee relative</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for user in temp1 %}
-                  <tr>
-                    <td hidden><div hidden>{{user[0]}}</div></td>
-                  <td  >
-                    <div >
-                    {{user[1]}}
-            
-                  
-                    </div>
-                  </td>
-                  <td style="padding: 20px;">
-            
-                    <div >
-                      {{user[2]}}
+
+        <div id = "" class="row">
+          <div class="col-sm-3">
+            <label for="Department" class="mb-0">Department</label>
+          </div>
+          <div class="col-sm-9" id="Department-container">
+            <p class="text-muted mb-0">
+              {{userjob.Department}}
+            </p>
+          </div>
+    
+          <hr>
+
+          <div id = "" class="row">
+            <div class="col-sm-3">
+              <label for="Directmanager" class="mb-0">Direct Manager</label>
+            </div>
+            <div class="col-sm-9" id="Directmanager-container">
+              <p class="text-muted mb-0">
+                {{userjob.Directmanager}}
+              </p>
+            </div>
+
+            <hr>
+
+          <div id = "" class="row">
+            <div class="col-sm-3">
+              <label for="Workforcetype" class="mb-0">Work Force Type</label>
+            </div>
+            <div class="col-sm-9" id="Workforcetype-container">
+              <p class="text-muted mb-0">
+                {{userjob.Workforcetype}}
+              </p>
+            </div>
+            <hr>
+        <form action="{{ url_for('employee.edit_employeeinformation', col='Workingphone',informationuserid=informationuserid) }}" role="form" method="POST">
+          <div id = "" class="row">
+            <div class="col-sm-3">
+              <label for="Workingphone" class="mb-0">Working Phone</label>
+            </div>
+            <div class="col-sm-9" id="Workingphone-container">
+              <input type="hidden" id="edit_mode_Workingphone" name="edit_mode" value="{{ edit_mode }}">
               
-                    
-                      </div>
-                  
-                    
-                  </td>
-      
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
+              {% if edit_mode %}
+                <div class="input-group">
+                  <input type="text" id="Workingphone" name="Workingphone" class="form-control" placeholder="{{userjob.Workingphone}}" style="margin-right: 5px;">
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                  </div>
+                </div>
+              {% else %}
+                <p class="text-muted mb-0">
+                  {{userjob.Workingphone}}
+                  <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Workingphone','{{userjob.Workingphone}}')"></i>
+                </p>
+              {% endif %}
             </div>
           </div>
-        </div>
+        </form>
 
-        <div>
-          <h1 class="h3 mb-3 fw-normal text-center">Additional Private insurance: </h1>
-          <div>
-            <form method="post">
-              <label for="Employeerelative">choose employee relative:</label>
-              <select id="Employeerelative2" name="Employeerelative2">
-                  {% for person in Employeerelative %}
-                      <option value="{{ person[0] }}">{{ person[1] }}</option>
-                  {% endfor %}
-              </select>
-              <br>
-              <button type="submit" name="Additionalprivateinsurance" value="Additionalprivateinsurance"> submit</button>
-            </form>
-            <div class="form-signin w-100 m-auto" style="overflow-x: auto;  width: 600px; border: 1px solid #ccc;  padding: 10px;">
-              <table border="1">
-                <thead>
-                  <tr>
-                    <th hidden>id</th>
-                    <th>fullname</th>
-                    <th style="padding: 20px;">employee relative</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for user in temp2 %}
-                  <tr>
-                    <td hidden><div hidden>{{user[0]}}</div></td>
-                  <td  >
-                    <div >
-                    {{user[1]}}
-            
-                  
-                    </div>
-                  </td>
-                  <td style="padding: 20px;">
-            
-                    <div >
-                      {{user[2]}}
+        <hr>
+
+        
+        <form action="{{ url_for('employee.edit_employeeinformation', col='Bankaccount',informationuserid=informationuserid) }}" role="form" method="POST">
+          <div id = "" class="row">
+            <div class="col-sm-3">
+              <label for="Bankaccount" class="mb-0">Bank Account</label>
+            </div>
+            <div class="col-sm-9" id="Bankaccount-container">
+              <input type="hidden" id="edit_mode_Bankaccount" name="edit_mode" value="{{ edit_mode }}">
               
-                    
-                      </div>
-                  
-                    
-                  </td>
-      
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
+              {% if edit_mode %}
+                <div class="input-group">
+                  <input type="text" id="Bankaccount" name="Bankaccount" class="form-control" placeholder="{{userjob.Bankaccount}}" style="margin-right: 5px;">
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                  </div>
+                </div>
+              {% else %}
+                <p class="text-muted mb-0">
+                  {{userjob.Bankaccount}}
+                  <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Bankaccount','{{userjob.Bankaccount}}')"></i>
+                </p>
+              {% endif %}
             </div>
           </div>
-        </div>
+        </form>
 
-        <div>
-          <h1 class="h3 mb-3 fw-normal text-center">Dependant: </h1>
-          <div>
-            <form method="post">
-              <label for="Employeerelative">choose employee relative:</label>
-              <select id="Employeerelative3" name="Employeerelative3">
-                  {% for person in Employeerelative %}
-                      <option value="{{ person[0] }}">{{ person[1] }}</option>
-                  {% endfor %}
-              </select>
-              <br>
-              <button type="submit" name="Dependant" value="Dependant"> submit</button>
-            </form>
-            <div class="form-signin w-100 m-auto" style="overflow-x: auto;  width: 600px; border: 1px solid #ccc;  padding: 10px;">
-              <table border="1">
-                <thead>
-                  <tr>
-                    <th hidden>id</th>
-                    <th>fullname</th>
-                    <th style="padding: 20px;">employee relative</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for user in temp3 %}
-                  <tr>
-                    <td hidden><div hidden>{{user[0]}}</div></td>
-                  <td  >
-                    <div >
-                    {{user[1]}}
-            
-                  
-                    </div>
-                  </td>
-                  <td style="padding: 20px;">
-            
-                    <div >
-                      {{user[2]}}
+        <hr>
+
+        <form action="{{ url_for('employee.edit_employeeinformation', col='Bankname',informationuserid=informationuserid) }}" role="form" method="POST">
+          <div id = "" class="row">
+            <div class="col-sm-3">
+              <label for="Bankname" class="mb-0">Bank Name</label>
+            </div>
+            <div class="col-sm-9" id="Bankname-container">
+              <input type="hidden" id="edit_mode_Bankname" name="edit_mode" value="{{ edit_mode }}">
               
-                    
-                      </div>
-                  
-                    
-                  </td>
-      
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
+              {% if edit_mode %}
+                <div class="input-group">
+                  <input type="text" id="Bankname" name="Bankname" class="form-control" placeholder="{{userjob.Bankname}}" style="margin-right: 5px;">
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                  </div>
+                </div>
+              {% else %}
+                <p class="text-muted mb-0">
+                  {{userjob.Bankname}}
+                  <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Bankname','{{userjob.Bankname}}')"></i>
+                </p>
+              {% endif %}
             </div>
           </div>
-        </div>
+        </form>
 
-        <div>
-          <h1 class="h3 mb-3 fw-normal text-center">Emergency contact: </h1>
-          <div>
-            <form method="post">
-              <label for="Employeerelative">choose employee relative:</label>
-              <select id="Employeerelative4" name="Employeerelative4">
-                  {% for person in Employeerelative %}
-                      <option value="{{ person[0] }}">{{ person[1] }}</option>
-                  {% endfor %}
-              </select>
-              <br>
-              <button type="submit" name="Emergencycontact" value="Emergencycontact"> submit</button>
-            </form>
-            <div class="form-signin w-100 m-auto" style="overflow-x: auto;  width: 600px; border: 1px solid #ccc;  padding: 10px;">
-              <table border="1">
-                <thead>
-                  <tr>
-                    <th hidden>id</th>
-                    <th>fullname</th>
-                    <th style="padding: 20px;">employee relative</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for user in temp4 %}
-                  <tr>
-                    <td hidden><div hidden>{{user[0]}}</div></td>
-                  <td  >
-                    <div >
-                    {{user[1]}}
-            
-                  
-                    </div>
-                  </td>
-                  <td style="padding: 20px;">
-            
-                    <div >
-                      {{user[2]}}
+        <hr>
+
+        <form action="{{ url_for('employee.edit_employeeinformation', col='Taxcode',informationuserid=informationuserid) }}" role="form" method="POST">
+          <div id = "" class="row">
+            <div class="col-sm-3">
+              <label for="Taxcode" class="mb-0">Tax Code</label>
+            </div>
+            <div class="col-sm-9" id="Taxcode-container">
+              <input type="hidden" id="edit_mode_Taxcode" name="edit_mode" value="{{ edit_mode }}">
               
-                    
-                      </div>
-                  
-                    
-                  </td>
-      
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
+              {% if edit_mode %}
+                <div class="input-group">
+                  <input type="text" id="Taxcode" name="Taxcode" class="form-control" placeholder="{{userjob.Taxcode}}" style="margin-right: 5px;">
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                  </div>
+                </div>
+              {% else %}
+                <p class="text-muted mb-0">
+                  {{userjob.Taxcode}}
+                  <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Taxcode','{{userjob.Taxcode}}')"></i>
+                </p>
+              {% endif %}
             </div>
           </div>
-        </div>
+        </form>
+        
+        <hr>
 
-        <div>
-          <h1 class="h3 mb-3 fw-normal text-center">Beneficiary contact: </h1>
-          <div>
-            <form method="post">
-              <label for="Employeerelative">choose employee relative:</label>
-              <select id="Employeerelative5" name="Employeerelative5">
-                  {% for person in Employeerelative %}
-                      <option value="{{ person[0] }}">{{ person[1] }}</option>
-                  {% endfor %}
-              </select>
-              <br>
-              <button type="submit" name="Beneficiarycontact" value="Beneficiarycontact"> submit</button>
-            </form>
-            <div class="form-signin w-100 m-auto" style="overflow-x: auto;  width: 600px; border: 1px solid #ccc;  padding: 10px;">
-              <table border="1">
-                <thead>
-                  <tr>
-                    <th hidden>id</th>
-                    <th>fullname</th>
-                    <th style="padding: 20px;">employee relative</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for user in temp5 %}
-                  <tr>
-                    <td hidden><div hidden>{{user[0]}}</div></td>
-                  <td  >
-                    <div >
-                    {{user[1]}}
-            
-                  
-                    </div>
-                  </td>
-                  <td style="padding: 20px;">
-            
-                    <div >
-                      {{user[2]}}
+        <form action="{{ url_for('employee.edit_employeeinformation', col='Socialinsurancecode',informationuserid=informationuserid) }}" role="form" method="POST">
+          <div id = "" class="row">
+            <div class="col-sm-3">
+              <label for="Socialinsurancecode" class="mb-0">Social Insurance Code</label>
+            </div>
+            <div class="col-sm-9" id="Socialinsurancecode-container">
+              <input type="hidden" id="edit_mode_Socialinsurancecode" name="edit_mode" value="{{ edit_mode }}">
               
-                    
-                      </div>
-                  
-                    
-                  </td>
-      
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
+              {% if edit_mode %}
+                <div class="input-group">
+                  <input type="text" id="Socialinsurancecode" name="Socialinsurancecode" class="form-control" placeholder="{{userjob.Socialinsurancecode}}" style="margin-right: 5px;">
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                  </div>
+                </div>
+              {% else %}
+                <p class="text-muted mb-0">
+                  {{userjob.Socialinsurancecode}}
+                  <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Socialinsurancecode','{{userjob.Socialinsurancecode}}')"></i>
+                </p>
+              {% endif %}
             </div>
           </div>
+        </form>
+
+        
+        <hr>
+
+        <form action="{{ url_for('employee.edit_employeeinformation', col='Healthinsurancecardcode',informationuserid=informationuserid) }}" role="form" method="POST">
+          <div id = "" class="row">
+            <div class="col-sm-3">
+              <label for="Healthinsurancecardcode" class="mb-0">Health Insurance Card Code</label>
+            </div>
+            <div class="col-sm-9" id="Healthinsurancecardcode-container">
+              <input type="hidden" id="edit_mode_Healthinsurancecardcode" name="edit_mode" value="{{ edit_mode }}">
+              
+              {% if edit_mode %}
+                <div class="input-group">
+                  <input type="text" id="Healthinsurancecardcode" name="Healthinsurancecardcode" class="form-control" placeholder="{{userjob.Healthinsurancecardcode}}" style="margin-right: 5px;">
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                  </div>
+                </div>
+              {% else %}
+                <p class="text-muted mb-0">
+                  {{userjob.Healthinsurancecardcode}}
+                  <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Healthinsurancecardcode','{{userjob.Healthinsurancecardcode}}')"></i>
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        </form>
+
+        <hr>
+
+        <form action="{{ url_for('employee.edit_employeeinformation', col='Registeredhospitalname',informationuserid=informationuserid) }}" role="form" method="POST">
+          <div id = "" class="row">
+            <div class="col-sm-3">
+              <label for="Registeredhospitalname" class="mb-0">Registered Hospital Name</label>
+            </div>
+            <div class="col-sm-9" id="Registeredhospitalname-container">
+              <input type="hidden" id="edit_mode_Registeredhospitalname" name="edit_mode" value="{{ edit_mode }}">
+              
+              {% if edit_mode %}
+                <div class="input-group">
+                  <input type="text" id="Registeredhospitalname" name="Registeredhospitalname" class="form-control" placeholder="{{userjob.Registeredhospitalname}}" style="margin-right: 5px;">
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                  </div>
+                </div>
+              {% else %}
+                <p class="text-muted mb-0">
+                  {{userjob.Registeredhospitalname}}
+                  <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Registeredhospitalname','{{userjob.Registeredhospitalname}}')"></i>
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        </form>
+
+        
+        <hr>
+
+        <form action="{{ url_for('employee.edit_employeeinformation', col='Registeredhospitalcode',informationuserid=informationuserid) }}" role="form" method="POST">
+          <div id = "" class="row">
+            <div class="col-sm-3">
+              <label for="Registeredhospitalcode" class="mb-0">Registered Hospital Code</label>
+            </div>
+            <div class="col-sm-9" id="Registeredhospitalcode-container">
+              <input type="hidden" id="edit_mode_Registeredhospitalcode" name="edit_mode" value="{{ edit_mode }}">
+              
+              {% if edit_mode %}
+                <div class="input-group">
+                  <input type="text" id="Registeredhospitalcode" name="Registeredhospitalcode" class="form-control" placeholder="{{userjob.Registeredhospitalcode}}" style="margin-right: 5px;">
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                  </div>
+                </div>
+              {% else %}
+                <p class="text-muted mb-0">
+                  {{userjob.Registeredhospitalcode}}
+                  <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Registeredhospitalcode','{{userjob.Registeredhospitalcode}}')"></i>
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        </form>
+
         </div>
-        <button class="w-100 btn btn-lg btn-primary" type="submit" name="save" value="save">SAVE</button>
-      </form>
-      <!-- <div >
-        <label> Bank account: </label>
-        <input type="text" placeholder="{{userjob.Bankaccount}}">
       </div>
-      <div >
-        <label> Bank name: </label>
-        <input type="text" placeholder="{{userjob.Bankname}}">
+
+      <hr>
+    <div class="row">
+      <div class="col-sm-3">
+          <p class="mb-0" style="color:red">Private Insurance</p>
+            
       </div>
-      <div >
-        <label> Taxcode: </label>
-        <input type="text" placeholder="{{userjob.Taxcode}}">
-      </div>
-      <div >
-        <label> Social insurance code: </label>
-        <input type="text" placeholder="{{userjob.Socialinsurancecode}}">
-      </div>
-      <div >
-        <label> Health insurance card code: </label>
-        <input type="text" placeholder="{{userjob.Healthinsurancecardcode}}">
-      </div>
-      <div >
-        <label> Registered hospital name: </label>
-        <input type="text" placeholder="{{userjob.Registeredhospitalname}}">
-      </div>
-      <div >
-        <label> Registered hospital code: </label>
-        <input type="text" placeholder="{{userjob.Registeredhospitalcode}}">
-      </div> -->
-      
-    </main>
-  </div>
+    </div>
+    <br>
+    <form method="post">
+      <div class="row">
+        <div class="col-sm-3">
+            <label for="Employeerelative" class="mb-0">Employee Relatives</label>
+        </div>
+        <div class="col-sm-9">
+            <div class="row">
+                <div class="col-md-6">
+                    <select class="form-select" id="Employeerelative1" name="Employeerelative1" style="width: 200px;">
+                      {% for person in Employeerelative %}
+                      <option value="{{ person[0] }}">{{ person[1] }}</option>
+                      {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <button type="submit" name="Privateinsurance" value="Privateinsurance" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+    
+  
+  <!-- Display existing records -->
+
+  <table class="table">
+      <thead>
+          <tr>
+              <th>Full Name</th>
+              <th>Employee Relative</th>
+              <th>Delete</th>
+
+          </tr>
+      </thead>
+      <tbody>
+        {% for user in temp1 %}
+              <tr>
+                  <td>{{user[1]}}</td>
+                  <td>{{user[2]}}</td>
+                  <td>
+                    <a href="{{url_for('employee.deleterelative',informationuserid=informationuserid,employeerelativeid=user[4],type='Privateinsurance')}}"
+                     class="btn btn-danger btn-sm">
+                      <i class="fas fa-trash-alt"></i> 
+                  </a>
+                  </td>
+
+              </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+
+  
+  <hr>
+      <div class="row">
+        <div class="col-sm-3">
+            <p class="mb-0" style="color:red">Additional Private Insurance</p>
+             
+        </div>
+    </div>
+    <br>
+    <form method="post">
+      <div class="row">
+        <div class="col-sm-3">
+            <label for="Employeerelative" class="mb-0">Employee Relatives</label>
+        </div>
+        <div class="col-sm-9">
+            <div class="row">
+                <div class="col-md-6">
+                    <select class="form-select" id="Employeerelative2" name="Employeerelative2" style="width: 200px;">{% for person in Employeerelative %}<option value="{{ person[0] }}">{{ person[1] }}</option>{% endfor %}</select>
+                </div>
+                <div class="col-md-6" style="margin-left: 125px;">
+                    <button type="submit" name="Additionalprivateinsurance" value="Additionalprivateinsurance" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+  
+  <!-- Display existing records -->
+
+  <table class="table">
+      <thead>
+          <tr>
+              <th>Full Name</th>
+              <th>Employee Relative</th>
+              <th>Delete</th>
+
+          </tr>
+      </thead>
+      <tbody>
+        {% for user in temp2 %}
+              <tr>
+                  <td>{{user[1]}}</td>
+                  <td>{{user[2]}}</td>
+                  <td>
+                    <a href="{{url_for('employee.deleterelative',informationuserid=informationuserid,employeerelativeid=user[4],type='Additionalprivateinsurance')}}"
+                     class="btn btn-danger btn-sm">
+                      <i class="fas fa-trash-alt"></i> 
+                  </a>
+                  </td>
+
+              </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+
+
+  <hr>
+  <div class="row">
+    <div class="col-sm-3">
+        <p class="mb-0" style="color:red">Dependant</p>
+         
+    </div>
 </div>
+<br>
+<form method="post">
+  <div class="row">
+    <div class="col-sm-3">
+        <label for="Employeerelative" class="mb-0">Employee Relatives</label>
+    </div>
+    <div class="col-sm-9">
+        <div class="row">
+            <div class="col-md-6">
+                <select class="form-select" id="Employeerelative3" name="Employeerelative3"
+                  style="width: 200px;">
+                  {% for person in Employeerelative %}
+                  <option value="{{ person[0] }}">{{ person[1] }}</option>
+                  {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6" style="margin-left: 125px;">
+                <button type="submit" name="Dependant" value="Dependant" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+<!-- Display existing records -->
+
+<table class="table">
+  <thead>
+      <tr>
+          <th>Full Name</th>
+          <th>Employee Relative</th>
+          <th>Delete</th>
+
+      </tr>
+  </thead>
+  <tbody>
+    {% for user in temp3 %}
+          <tr>
+              <td>{{user[1]}}</td>
+              <td>{{user[2]}}</td>
+              <td>
+                <a href="{{url_for('employee.deleterelative',informationuserid=informationuserid,employeerelativeid=user[4],type='Dependant')}}"
+                 class="btn btn-danger btn-sm">
+                  <i class="fas fa-trash-alt"></i> 
+              </a>
+              </td>
+
+          </tr>
+      {% endfor %}
+  </tbody>
+</table>
+
+<hr>
+  <div class="row">
+    <div class="col-sm-3">
+        <p class="mb-0" style="color:red">Emergency Contact</p>
+         
+    </div>
+</div>
+<br>
+<form method="post">
+  <div class="row">
+    <div class="col-sm-3">
+        <label for="Employeerelative" class="mb-0">Employee Relatives</label>
+    </div>
+    <div class="col-sm-9">
+        <div class="row">
+            <div class="col-md-6">
+                <select class="form-select" id="Employeerelative4" name="Employeerelative4"
+                  style="width: 200px;">
+                  {% for person in Employeerelative %}
+                  <option value="{{ person[0] }}">{{ person[1] }}</option>
+                  {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6" style="margin-left: 125px;">
+                <button type="submit" name="Emergencycontact" value="Emergencycontact" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+<!-- Display existing records -->
+
+<table class="table">
+  <thead>
+      <tr>
+          <th>Full Name</th>
+          <th>Employee Relative</th>
+          <th>Delete</th>
+
+      </tr>
+  </thead>
+  <tbody>
+    {% for user in temp4 %}
+          <tr>
+              <td>{{user[1]}}</td>
+              <td>{{user[2]}}</td>
+              <td>
+                <a href="{{url_for('employee.deleterelative',informationuserid=informationuserid,employeerelativeid=user[4],type='Emergencycontact')}}"
+                 class="btn btn-danger btn-sm">
+                  <i class="fas fa-trash-alt"></i> 
+              </a>
+              </td>
+
+          </tr>
+      {% endfor %}
+  </tbody>
+</table>
+
+<hr>
+  <div class="row">
+    <div class="col-sm-3">
+        <p class="mb-0" style="color:red">Beneficiary Contact</p>
+         
+    </div>
+</div>
+<br>
+<form method="post">
+  <div class="row">
+    <div class="col-sm-3">
+        <label for="Employeerelative" class="mb-0">Employee Relatives</label>
+    </div>
+    <div class="col-sm-9">
+        <div class="row">
+            <div class="col-md-6">
+                <select class="form-select" id="Employeerelative5" name="Employeerelative5"
+                  style="width: 200px;">
+                  {% for person in Employeerelative %}
+                  <option value="{{ person[0] }}">{{ person[1] }}</option>
+                  {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6" style="margin-left: 125px;">
+                <button type="submit" name="Beneficiarycontact" value="Beneficiarycontact" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+<!-- Display existing records -->
+
+<table class="table">
+  <thead>
+      <tr>
+          <th>Full Name</th>
+          <th>Employee Relative</th>
+          <th>Delete</th>
+
+      </tr>
+  </thead>
+  <tbody>
+    {% for user in temp5 %}
+          <tr>
+              <td>{{user[1]}}</td>
+              <td>{{user[2]}}</td>
+              <td>
+                <a href="{{url_for('employee.deleterelative',informationuserid=informationuserid,employeerelativeid=user[4],type='Beneficiarycontact')}}"
+                 class="btn btn-danger btn-sm">
+                  <i class="fas fa-trash-alt"></i> 
+              </a>
+              </td>
+
+          </tr>
+      {% endfor %}
+  </tbody>
+</table>
+
+        </div>
+      </div>
+
+      <button onclick="location.href='/employeepage/informationuserjob/laborcontract/{{userjob.EmployeeNo}}/{{informationuserid}}'"> Contract</button>
+<button onclick="location.href='/employeepage/informationuserjob/forexsalary/{{userjob.EmployeeNo}}/{{informationuserid}}'"> Forex Salary</button>
+
+    </div>
+    <script>
+      // get img tag from avatr image to send pass for navigation.html
+      localStorage.setItem('avatarSrc', "{{ url_for('static', filename='source/' + image_path) }}");
+
+
+      function enableEdit(col,placeholderValue) {
+    // Set edit_mode to true to switch to input mode
+    document.getElementById('edit_mode_' + col).value = 'true';
+    
+    // Create an input element
+    var inputElement = document.createElement('input');
+    inputElement.type = 'text';
+    inputElement.id = col;
+    inputElement.name = col;
+    inputElement.className = 'form-control';
+    inputElement.value = placeholderValue;  // Set the placeholder dynamically
+
+    // Create a "Save" button
+    var saveButton = document.createElement('button');
+    saveButton.type = 'submit';
+    saveButton.className = 'btn btn-primary edit_icon';
+    saveButton.textContent = 'Save';
+
+    // Create a container div
+    var containerDiv = document.getElementById(col + '-container');
+    containerDiv.innerHTML = '';  // Clear the container first
+
+    // Append the input and button to the container
+    containerDiv.appendChild(inputElement);
+    containerDiv.appendChild(saveButton);
+}
+    </script>
+
 {% endblock %}

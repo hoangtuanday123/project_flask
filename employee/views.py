@@ -39,9 +39,9 @@ def employeepage(image_path,fullname):
     return render_template("employee/employeepage.html",roleuser=_roleuser,informationuserid=user[0],image_path = _image_path,fullname=_fullname)
 
 
-@employee.route("/employeepage/informationuserjob/<informationuserid>",methods=['GET','POST'])
+@employee.route("/employeepage/informationuserjob/<informationuserid>/<totp>",methods=['GET','POST'])
 @login_required
-def informationuserjob(informationuserid):
+def informationuserjob(informationuserid,totp):
     global _informationuserjobid
     if informationuserid==str(current_user.idinformationuser):
         form=Employeeinformation(request.form)
@@ -90,7 +90,10 @@ def informationuserjob(informationuserid):
 
         conn=db.connection()
         cursor=conn.cursor()
-        sql="select i.*,iu.Email,iu.phone from informationUserJob i join informationUser iu on i.idinformationuser=iu.id where i.idinformationuser=? and i.is_active=1  "
+        sql="""
+            select i.*,iu.Email,iu.phone,u.id from informationUserJob i join informationUser 
+            iu on i.idinformationuser=iu.id join user_account u on
+            u.id=iu.id_useraccount where i.idinformationuser=? and i.is_active=1"""
         value=(informationuserid)
         cursor.execute(sql,value)
         user=cursor.fetchone()
@@ -113,7 +116,83 @@ def informationuserjob(informationuserid):
                 Bankaccount=None,Bankname=None,Taxcode=None,Socialinsurancecode=None,Healthinsurancecardcode=None,Registeredhospitalname=None,Registeredhospitalcode=None)
         print("id information user before redirect:" + str(informationuserid))     
         return render_template("core/informationuserjob.html",userjob=userjob,informationuserid=informationuserid,image_path=_image_path,fullname=_fullname,
-                               form=form,Employeerelative=Employeerelative,temp1=temp1,temp2=temp2,temp3=temp3,temp4=temp4,temp5=temp5,roleuser=_roleuser)
+                               form=form,Employeerelative=Employeerelative,temp1=temp1,temp2=temp2,temp3=temp3,temp4=temp4,temp5=temp5,roleuser=_roleuser,totp='None',idaccount=user[16])
+    
+    elif str(totp)==session.get('is_admin'):
+        form=Employeeinformation(request.form)
+        conn=db.connection()
+        cursor=conn.cursor()
+        sql="select e.id,e.fullname from employeeRelative e join informationUser i on e.idinformationuser=i.id where i.id=?  "
+        value=(informationuserid)
+        cursor.execute(sql,value)
+        employeerelative_temp=cursor.fetchall()
+        conn.commit()
+        conn.close()
+        Employeerelative=[(person[0],person[1]) for person in employeerelative_temp]
+
+        if request.method=='POST' and request.form.get('Privateinsurance')=='Privateinsurance':
+            
+            result=addlist(informationuserid,request.form['Employeerelative1'],'Privateinsurance')
+        
+        if request.method=='POST' and request.form.get('Additionalprivateinsurance')=='Additionalprivateinsurance':
+            
+            result=addlist(informationuserid,request.form['Employeerelative2'],'Additionalprivateinsurance')
+
+        if request.method=='POST' and request.form.get('Dependant')=='Dependant':
+            result=addlist(informationuserid,request.form['Employeerelative3'],'Dependant')
+
+        if request.method=='POST' and request.form.get('Emergencycontact')=='Emergencycontact':
+            result=addlist(informationuserid,request.form['Employeerelative4'],'Emergencycontact')
+        
+        if request.method=='POST' and request.form.get('Beneficiarycontact')=='Beneficiarycontact':
+            result=addlist(informationuserid,request.form['Employeerelative5'],'Beneficiarycontact')
+
+        conn=db.connection()
+        cursor=conn.cursor()
+        sql="""
+            select ei.id,e.fullname,e.Relationship,ei.col_Privateinsurance,ei.col_Additionalprivateinsurance,ei.col_Dependant,ei.col_Emergencycontact ,ei.col_Beneficiarycontact,e.id
+            from employeerelative_informationuser ei join employeeRelative e on ei.idemployeerelative=e.id join informationUser i on i.id=ei.idinformationuser where i.id=?"""
+        value=informationuserid
+        cursor.execute(sql,value)
+        temp=cursor.fetchall()
+        conn.commit()
+        conn.close() 
+        temp1=[(user[0],user[1],user[2],user[3],user[8]) for user in temp if user[3]==True]
+        temp2=[(user[0],user[1],user[2],user[4],user[8]) for user in temp if user[4]==True]
+        temp3=[(user[0],user[1],user[2],user[5],user[8]) for user in temp if user[5]==True]
+        temp4=[(user[0],user[1],user[2],user[6],user[8]) for user in temp if user[6]==True]
+        temp5=[(user[0],user[1],user[2],user[7],user[8]) for user in temp if user[7]==True]
+
+        conn=db.connection()
+        cursor=conn.cursor()
+        sql="""
+            select i.*,iu.Email,iu.phone,u.id from informationUserJob i join informationUser 
+            iu on i.idinformationuser=iu.id join user_account u on
+            u.id=iu.id_useraccount where i.idinformationuser=? and i.is_active=1"""
+        value=(informationuserid)
+        cursor.execute(sql,value)
+        user=cursor.fetchone()
+        conn.commit()
+        conn.close()
+
+        if user is not None:
+            form.Bankaccount.data=str(user[5])
+            form.bankname.data=str(user[6])
+            form.Taxcode.data=str(user[8])
+            form.Socialinsurancecode.data=str(user[9])
+            form.Healthinsurancecardcode.data=str(user[10])
+            form.Registeredhospitalcode.data=str(user[12])
+            form.Registeredhospitalname.data=str(user[11])
+            userjob=informationUserJob(EmployeeNo=user[0],Companysitecode=user[1],Department=user[2],Directmanager=user[3],Workforcetype=user[4],Workingphone=user[15],Workingemail=user[14],
+                Bankaccount=user[5],Bankname=user[6],Taxcode=user[8],Socialinsurancecode=user[9],Healthinsurancecardcode=user[10],Registeredhospitalname=user[11],Registeredhospitalcode=user[12])
+            _informationuserjobid = user[0]
+        else:
+            userjob=informationUserJob(EmployeeNo=None,Companysitecode=None,Department=None,Directmanager=None,Workforcetype=None,Workingphone=None,Workingemail=None,
+                Bankaccount=None,Bankname=None,Taxcode=None,Socialinsurancecode=None,Healthinsurancecardcode=None,Registeredhospitalname=None,Registeredhospitalcode=None)
+        print("id information user before redirect:" + str(informationuserid))     
+        return render_template("core/informationuserjob.html",userjob=userjob,informationuserid=informationuserid,image_path=_image_path,fullname=_fullname,
+                               form=form,Employeerelative=Employeerelative,temp1=temp1,temp2=temp2,temp3=temp3,temp4=temp4,temp5=temp5,roleuser=_roleuser,totp=totp,idaccount=user[16])
+    
     else:
         flash("You are logging in illegally")
         return redirect(url_for("authentication.logout"))
@@ -228,10 +307,10 @@ def forexsalaryfunction(informationuserjobid,informationuserid):
         flash("You are logging in illegally")
         return redirect(url_for("authentication.logout"))
 
-@employee.route("/employeepage/informationuserjob/employeerelativelist/<informationuserid>")
+@employee.route("/employeepage/informationuserjob/employeerelativelist/<informationuserid>/<totp>")
 @login_required
-def employeerelativelist(informationuserid):
-    print("id in ers is " + str(informationuserid))
+def employeerelativelist(informationuserid,totp):
+    #print("id in ers is " + str(informationuserid))
     if informationuserid==str(current_user.idinformationuser):
         conn=db.connection()
         cursor=conn.cursor()
@@ -242,19 +321,49 @@ def employeerelativelist(informationuserid):
         conn.commit()
         conn.close()
         employeerelativelist=[(relative[0],relative[8],relative[1]) for relative in employeerelativetemp ]
+        if employeerelativelist is None:
+            employeerelativelist =[]
+        return render_template("core/employeeRelativeList.html",employeerelativelist=employeerelativelist,informationuserid=informationuserid,
+                            image_path = _image_path,fullname =_fullname,roleuser=_roleuser,totp='None',idaccount=current_user.id)
+    elif str(totp)==session.get('is_admin'):
+        conn=db.connection()
+        cursor=conn.cursor()
+        sql="select * from employeeRelative where idinformationuser=?"
+        value=(informationuserid)
+        cursor.execute(sql,value)
+        employeerelativetemp=cursor.fetchall()
+        conn.commit()
+        conn.close()
+        employeerelativelist=[(relative[0],relative[8],relative[1]) for relative in employeerelativetemp ]
+        if employeerelativelist is None:
+            employeerelativelist =[]
         
-    else:
-        employeerelativelist =[]
-    return render_template("core/employeeRelativeList.html",employeerelativelist=employeerelativelist,informationuserid=informationuserid,
-                           image_path = _image_path,fullname =_fullname,roleuser=_roleuser)
+        conn=db.connection()
+        cursor=conn.cursor()
+        sql="select u.id from user_account u join informationUser i on u.id=i.id_useraccount where i .id=?"
+        value=(informationuserid)
+        cursor.execute(sql,value)
+        idaccounttemp=cursor.fetchone()
+        conn.commit()
+        conn.close()
+        return render_template("core/employeeRelativeList.html",employeerelativelist=employeerelativelist,informationuserid=informationuserid,
+                            image_path = _image_path,fullname =_fullname,roleuser=_roleuser,totp=totp,idaccount=idaccounttemp[0])
 
-@employee.route("/employeepage/informationuserjob/employeerelativelist/addemployeerelationship/<informationuserid>", methods=['GET', 'POST'])
+@employee.route("/employeepage/informationuserjob/employeerelativelist/addemployeerelationship/<informationuserid>/<totp>", methods=['GET', 'POST'])
 @login_required
-def addemployeerelative(informationuserid):
+def addemployeerelative(informationuserid,totp):
     global _image_path, _fullname, _roleuser
     if informationuserid == str(current_user.idinformationuser):
         form = EmployeeRelativeForm(request.form)
         print("Form data:", form.data)
+        conn=db.connection()
+        cursor=conn.cursor()
+        sql="select u.id from user_account u join informationUser i on u.id=i.id_useraccount where i .id=?"
+        value=(informationuserid)
+        cursor.execute(sql,value)
+        idaccounttemp=cursor.fetchone()
+        conn.commit()
+        conn.close()
         if form.validate_on_submit():
             print("Form data1:", form.data)
             if form.errors:
@@ -273,9 +382,10 @@ def addemployeerelative(informationuserid):
             conn.commit()
             conn.close()
             flash("Insert employee relationship is successful")
-            return redirect(url_for("employee.employeerelativelist", informationuserid=informationuserid, image_path=_image_path, fullname=_fullname, roleuser=_roleuser))
+            return redirect(url_for("employee.employeerelativelist", informationuserid=informationuserid, image_path=_image_path, fullname=_fullname, roleuser=_roleuser,totp='None'))
+        
         return render_template("core/addEmployeeRelationship.html", form=form, informationuserid=informationuserid, image_path=_image_path,
-                                fullname=_fullname, roleuser=_roleuser)
+                                fullname=_fullname, roleuser=_roleuser,totp='None',idaccount=idaccounttemp[0])
 
     else:
         flash("You are logging in illegally")

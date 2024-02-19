@@ -9,7 +9,7 @@
   <div class="card mb-4">
     <div class="card-body">
       {{form.csrf_token}}
-      <form role="form" action="{{ url_for('employee.addemployeerelative', informationuserid=informationuserid) }}" method="post">
+      <form role="form" action="{{ url_for('employee.addemployeerelative', informationuserid=informationuserid,totp=totp) }}" method="post">
         <div class="form-group">
           <label >Relationship</label>
           <!-- Flask-WTF form field rendering -->

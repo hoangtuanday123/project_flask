@@ -34,7 +34,7 @@
 
                         
                       <td>
-                        <a href=""
+                        <a href="delete/{{user[0]}}/{{informationuserid}}"
                          class="btn btn-danger btn-sm">
                           <i class="fas fa-trash-alt"></i> 
                       </a>
@@ -44,7 +44,7 @@
               {% endfor %}
           </tbody>
       </table>
-      <form action="{{ url_for('employee.addemployeerelative', informationuserid=informationuserid) }}">
+      <form action="{{ url_for('employee.addemployeerelative', informationuserid=informationuserid,totp=totp) }}">
         <button type="submit" class="btn btn-link">
             <i class="fas fa-plus-circle"></i> <!-- Icon của Font Awesome -->
         </button>

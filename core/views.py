@@ -21,6 +21,7 @@ import db
 from __init__ import app,file_path_default
 import pytesseract
 from PIL import Image
+from admin.forms import groupuserForm
 
 
 
@@ -47,6 +48,7 @@ def authorizationUser():
     value=(current_user.role_user)
     cursor.execute(sql,value)
     user_role=cursor.fetchone()
+    session['roleuser']=user_role[0]
 
     cursor1=conn.cursor()
     sql1="select * from informationUser where id_useraccount=?"
@@ -54,7 +56,7 @@ def authorizationUser():
     cursor1.execute(sql1,value1)
     user_temp=cursor1.fetchone()
     _roleuser=user_role[0]
-
+    
     # set image path
     found_avatar = user_avatar.find_picture_name_by_id(user_temp[0])
     if found_avatar and found_avatar[2] != "":
@@ -62,15 +64,29 @@ def authorizationUser():
     else:
         _image_path = file_path_default
 
-    cursor2=conn.cursor()
-    sql2="select * from informationUser where id_useraccount=?"
-    value2=(current_user.id)
-    cursor2.execute(sql2,value2)
-    user_temp=cursor2.fetchone()
-    conn.commit()
-    conn.close()
-
     _fullname = user_temp[1]
+
+    # conn=db.connection()
+    # cursor=conn.cursor()
+    # sql="""
+    #     select g.id, r.rolename from rolegroupuser r join groupuserdetail gd on r.id=gd.idrolegroupuser join
+    #     groubuser g on g.id=gd.idgroupuser where gd.iduser=?"""
+    # value=(user_temp[0])
+    # cursor.execute(sql,value)
+    # rolegrouptemp=cursor.fetchall()
+    # conn.commit()
+    # conn.close()
+    # rolegroup=[]
+    # if rolegrouptemp is not None:
+    #     rolegroup=[(role[0],role[1]) for role in rolegroup]
+    # session['rolegroup']=rolegroup
+    # if session.get('roleuser')=='admin':
+    #     session['rolegroup']='admin'
+    session['rolegroup']=""
+    
+    
+
+
     if user_role[0]=="candidate":
         return redirect(url_for("candidate.candidatepage",image_path = _image_path,fullname = _fullname))
     elif user_role[0]=="employee":
@@ -152,7 +168,15 @@ def userinformation(idaccount,totp):
         return render_template("core/user_information.html", form=form, image_path = _image_path,informationuserid =  user_temp[0],
                             fullname = user_temp[1], roleuser= _roleuser ,idaccount=current_user.id,totp='None')
     elif str(totp)==session.get('is_admin') and str(totp)!='None':
+        # conn=db.connection()
+        # cursor=conn.cursor()
+        # sql="select r.role_name from role_user r join user_account u on u.role_id=r.id where u.id=?"
+        # value=(idaccount)
+        # cursor.execute(sql,value)
+        # user_role=cursor.fetchone()
+        # _roleuser=user_role[0]
         _roleuser=""
+
         session['idaccountadminmanager']=idaccount
         form = informationUserForm()
         conn=db.connection()
@@ -552,9 +576,9 @@ def display_image(filename):
     return redirect(url_for('static', filename='source/' + filename), code=301)
 
 # edit information user profile
-@core_bp.route('/edit_userInformation/<col>/<informationuserid>', methods = ['post','get'])
+@core_bp.route('/edit_userInformation/<col>/<informationuserid>/<totp>', methods = ['post','get'])
 @login_required
-def edit_userInformation(col,informationuserid):
+def edit_userInformation(col,informationuserid,totp):
     conn=db.connection()
     cursor=conn.cursor()
     sql="select id from informationUser where id_useraccount=?"
@@ -572,7 +596,7 @@ def edit_userInformation(col,informationuserid):
         cursor.close()
 
         idaccount= (current_user.id)
-        return redirect(url_for('core.userinformation',idaccount = idaccount))
+        return redirect(url_for('core.userinformation',idaccount = idaccount,totp=totp))
     else:
         flash("You are logging in illegally")
         return redirect(url_for("authentication.logout"))
@@ -1044,3 +1068,33 @@ def qualification(informationuserid,totp):
     else:
         flash("You are logging in illegally")
         return redirect(url_for("authentication.logout"))    
+    
+@core_bp.route('/groupuserpage/<idinformationuser>', methods = ['post','get'])
+def groupuserpage(idinformationuser):
+    #return idinformationuser
+    conn=db.connection()
+    cursor=conn.cursor()
+    sql="""select g.*,r.rolename from groubuser g join groupuserdetail gd on g.id=gd.idgroupuser join informationUser i
+    on i.id=gd.iduser join rolegroupuser r on r.id=gd.idrolegroupuser where i.id=?"""
+    value=(str(idinformationuser))
+    cursor.execute(sql,value)
+    grouptemp=cursor.fetchall()
+    conn.commit()
+    conn.close()
+    groups=[(group[0],group[1],group[2],group[3]) for group in grouptemp]
+    form =groupuserForm(request.form)
+    if form.validate_on_submit():
+        conn=db.connection()
+        cursor=conn.cursor()
+        sql="""SET NOCOUNT ON;
+                DECLARE @id int;
+                insert into groubuser(name,createddate) values(?,GETDATE())
+                SET @id = SCOPE_IDENTITY();            
+                SELECT @id AS the_output;"""
+        value=(form.group.data)
+        cursor.execute(sql,value)
+        idgrouptemp=cursor.fetchone()
+        conn.commit()
+        conn.close()
+        return redirect(url_for("admin.updategropuser",idgroup=idgrouptemp[0]))
+    return render_template('admin/groupuserpage.html',groups=groups,image_path=file_path_default,roleuser=_roleuser,form=form)

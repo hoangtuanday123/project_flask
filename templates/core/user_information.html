@@ -8,7 +8,7 @@
 <div class="col-lg-8">
     <div class="card mb-4">
       <div class="card-body">
-        <form action="{{ url_for('core.edit_userInformation', col='Fullname',informationuserid=informationuserid) }}" role="form" method="POST">
+        <form action="{{ url_for('core.edit_userInformation', col='Fullname',informationuserid=informationuserid,totp=totp) }}" role="form" method="POST">
           <div id = "" class="row">
             <div class="col-sm-3">
               <label for="fullname" class="mb-0">Full Name</label>
@@ -34,7 +34,7 @@
         </form>
         
         <hr>
-        <form action="{{ url_for('core.edit_userInformation', col='Nickname',informationuserid=informationuserid) }}" role="form" method="POST">
+        <form action="{{ url_for('core.edit_userInformation', col='Nickname',informationuserid=informationuserid,totp=totp) }}" role="form" method="POST">
           <div class="row">
             <div class="col-sm-3">
               <label for="Nickname" class="mb-0">Nickname</label>
@@ -61,7 +61,7 @@
 
         <hr>
 
-        <form action="{{ url_for('core.edit_userInformation', col='Email',informationuserid=informationuserid) }}" role="form" method="POST">
+        <form action="{{ url_for('core.edit_userInformation', col='Email',informationuserid=informationuserid,totp=totp) }}" role="form" method="POST">
           <div class="row">
             <div class="col-sm-3">
               <label for="email" class="mb-0">Email</label>
@@ -88,7 +88,7 @@
         </form>
 
         <hr>
-        <form action="{{ url_for('core.edit_userInformation', col='Contactaddress',informationuserid=informationuserid) }}" role="form" method="POST">
+        <form action="{{ url_for('core.edit_userInformation', col='Contactaddress',informationuserid=informationuserid,totp=totp) }}" role="form" method="POST">
           <div class="row">
             <div class="col-sm-3">
               <label for="Contactaddress" class="mb-0">Contact Address</label>
@@ -115,7 +115,7 @@
 
         <hr>
 
-        <form action="{{ url_for('core.edit_userInformation', col='Phone',informationuserid=informationuserid) }}" role="form" method="POST">
+        <form action="{{ url_for('core.edit_userInformation', col='Phone',informationuserid=informationuserid,totp=totp) }}" role="form" method="POST">
           <div class="row">
             <div class="col-sm-3">
               <label for="Phone" class="mb-0">Phone Number</label>
@@ -142,7 +142,7 @@
 
         <hr>
 
-        <form action="{{ url_for('core.edit_userInformation', col='LinkedIn',informationuserid=informationuserid) }}" role="form" method="POST">
+        <form action="{{ url_for('core.edit_userInformation', col='LinkedIn',informationuserid=informationuserid,totp=totp) }}" role="form" method="POST">
           <div class="row">
             <div class="col-sm-3">
               <label for="LinkedIn" class="mb-0">Linked In</label>
@@ -169,7 +169,7 @@
 
         <hr>
 
-        <form action="{{ url_for('core.edit_userInformation', col='Years',informationuserid=informationuserid) }}" role="form" method="POST">
+        <form action="{{ url_for('core.edit_userInformation', col='Years',informationuserid=informationuserid,totp=totp) }}" role="form" method="POST">
           <div class="row">
             <div class="col-sm-3">
               <label for="Years" class="mb-0">Year of Experience</label>
@@ -196,7 +196,7 @@
 
         <hr>
 
-        <form action="{{ url_for('core.edit_userInformation', col='Location',informationuserid=informationuserid) }}" role="form" method="POST">
+        <form action="{{ url_for('core.edit_userInformation', col='Location',informationuserid=informationuserid,totp=totp) }}" role="form" method="POST">
           <div class="row">
             <div class="col-sm-3">
               <label for="Location" class="mb-0">Location</label>
@@ -223,7 +223,7 @@
 
         <hr>
 
-        <form action="{{ url_for('core.edit_userInformation', col='Maritalstatus',informationuserid=informationuserid) }}" role="form" method="POST">
+        <form action="{{ url_for('core.edit_userInformation', col='Maritalstatus',informationuserid=informationuserid,totp=totp) }}" role="form" method="POST">
           <div class="row">
             <div class="col-sm-3">
               <label for="Maritalstatus" class="mb-0">Marital Status</label>
@@ -250,7 +250,7 @@
         
         <hr>
 
-        <form action="{{ url_for('core.edit_userInformation', col='Ethnicgroup',informationuserid=informationuserid) }}" role="form" method="POST">
+        <form action="{{ url_for('core.edit_userInformation', col='Ethnicgroup',informationuserid=informationuserid,totp=totp) }}" role="form" method="POST">
           <div class="row">
             <div class="col-sm-3">
               <label for="Ethnicgroup" class="mb-0">Ethnic Group</label>
@@ -278,7 +278,7 @@
         
         <hr>
 
-        <form action="{{ url_for('core.edit_userInformation', col='Religion',informationuserid=informationuserid) }}" role="form" method="POST">
+        <form action="{{ url_for('core.edit_userInformation', col='Religion',informationuserid=informationuserid,totp=totp) }}" role="form" method="POST">
           <div class="row">
             <div class="col-sm-3">
               <label for="Religion" class="mb-0">Religion</label>
