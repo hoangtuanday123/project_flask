@@ -580,9 +580,9 @@
         </div>
       </div>
       {% endif %}
-      {% if readrights==3 or readrights==4 or readrights==None %}
-      <button onclick="location.href='/employeepage/informationuserjob/laborcontract/{{userjob.EmployeeNo}}/{{informationuserid}}'"> Contract</button>
-      <button onclick="location.href='/employeepage/informationuserjob/forexsalary/{{userjob.EmployeeNo}}/{{informationuserid}}'"> Forex Salary</button>
+      {% if readrights==3 or readrights==4 or readrights is none %}
+      <button onclick="location.href='/employeepage/informationuserjob/laborcontract/{{userjob.EmployeeNo}}/{{informationuserid}}/{{totp}}'"> Contract</button>
+      <button onclick="location.href='/employeepage/informationuserjob/forexsalary/{{userjob.EmployeeNo}}/{{informationuserid}}/{{totp}}'"> Forex Salary</button>
       {% endif %}
     </div>
     <script>

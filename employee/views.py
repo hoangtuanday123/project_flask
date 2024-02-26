@@ -259,9 +259,9 @@ def edit_employeeinformation(col,informationuserid):
     cursor.close()
     return redirect(url_for('employee.informationuserjob', informationuserid = informationuserid,fullname=_fullname,roleuser= _roleuser))
     
-@employee.route("/employeepage/informationuserjob/laborcontract/<informationuserjobid>/<informationuserid>")
+@employee.route("/employeepage/informationuserjob/laborcontract/<informationuserjobid>/<informationuserid>/<totp>")
 @login_required
-def laborcontract(informationuserjobid,informationuserid):
+def laborcontract(informationuserjobid,informationuserid,totp):
     global _image_path,_fullname,_roleuser,_informationuserjobid
     conn=db.connection()
     cursor=conn.cursor()
@@ -272,7 +272,26 @@ def laborcontract(informationuserjobid,informationuserid):
     verify_user=cursor.fetchone()
     conn.commit()
     conn.close()
-    if informationuserjobid==str(verify_user[0]):
+    if str(totp)==session.get('is_admin'):
+        conn=db.connection()
+        cursor=conn.cursor()
+        sql="select l.*,i.id_useraccount from laborContract l join informationUserJob ij on ij.id=l.idinformationUserJob join informationUser i on i.id=ij.idinformationuser  where l.idinformationUserJob=? and l.is_active=1 and ij.is_active=1"
+        value=(informationuserjobid)
+        cursor.execute(sql,value)
+        contract=cursor.fetchone()
+        conn.commit()
+        conn.close()
+        if contract is not None:
+            contracttemp=laborContract(idcontract=contract[0],LaborcontractNo=contract[1],Laborcontracttype=contract[2],Laborcontractterm=contract[3],
+                                Commencementdate=contract[4],Position=contract[5],Employeelevel=contract[6])
+        else:
+            contracttemp=laborContract(idcontract=None,LaborcontractNo=None,Laborcontracttype=None,Laborcontractterm=None,
+                                Commencementdate=None,Position=None,Employeelevel=None)
+        
+        return render_template("core/contract.html",contract=contracttemp,informationuserid=informationuserid
+                               ,image_path = _image_path,fullname =_fullname,
+                               roleuser=_roleuser,informationuserjobid = _informationuserjobid,idaccount=contract[9],totp=totp)
+    elif informationuserjobid==str(verify_user[0]) :
         conn=db.connection()
         cursor=conn.cursor()
         sql="select * from laborContract where idinformationUserJob=? and is_active=1"
@@ -287,14 +306,18 @@ def laborcontract(informationuserjobid,informationuserid):
         else:
             contracttemp=laborContract(idcontract=None,LaborcontractNo=None,Laborcontracttype=None,Laborcontractterm=None,
                                 Commencementdate=None,Position=None,Employeelevel=None)
-        return render_template("core/contract.html",contract=contracttemp,informationuserid=informationuserid,image_path = _image_path,fullname =_fullname,roleuser=_roleuser,informationuserjobid = _informationuserjobid)
+        
+        return render_template("core/contract.html",contract=contracttemp,informationuserid=informationuserid
+                               ,image_path = _image_path,fullname =_fullname,
+                               roleuser=_roleuser,informationuserjobid = _informationuserjobid,idaccount=current_user.id,totp='None')
+    
     else:
         flash("You are logging in illegally")
         return redirect(url_for("authentication.logout"))
 
-@employee.route("/employeepage/informationuserjob/forexsalary/<informationuserjobid>/<informationuserid>")
+@employee.route("/employeepage/informationuserjob/forexsalary/<informationuserjobid>/<informationuserid>/<totp>")
 @login_required
-def forexsalaryfunction(informationuserjobid,informationuserid):
+def forexsalaryfunction(informationuserjobid,informationuserid,totp):
     global _image_path,_fullname,_roleuser,_informationuserjobid
     conn=db.connection()
     cursor=conn.cursor()
@@ -304,7 +327,27 @@ def forexsalaryfunction(informationuserjobid,informationuserid):
     verify_user=cursor.fetchone()
     conn.commit()
     conn.close()
-    if informationuserjobid==str(verify_user[0]):
+    if str(totp)==session.get('is_admin'):
+        conn=db.connection()
+        cursor=conn.cursor()
+        sql="select f.*,ft.type,i.id_useraccount from forexsalary f join forextype ft on f.forextypeid=ft.id join informationUserJob ij on ij.id=f.idinformationUserJob join informationUser i on i.id=ij.idinformationuser where f.idinformationUserJob=? and f.is_active=1 and ij.is_active=1"
+        value=(informationuserjobid)
+        cursor.execute(sql,value)
+        forexsalarytemp=cursor.fetchone()
+        conn.commit()
+        conn.close()
+        if forexsalarytemp is not None:
+            forexSalary=forexsalary(Forex=forexsalarytemp[9],Annualsalary=forexsalarytemp[2],Monthlysalary=forexsalarytemp[3],Monthlysalaryincontract=forexsalarytemp[4],
+                                    Quaterlybonustarget=forexsalarytemp[5],Annualbonustarget=forexsalarytemp[6])
+        else:
+            forexSalary=forexsalary(Forex=None,Annualsalary=None,Monthlysalary=None,Monthlysalaryincontract=None,
+                                    Quaterlybonustarget=None,Annualbonustarget=None)
+        return render_template("core/forexsalary.html",forexSalary=forexSalary
+                               ,informationuserid=informationuserid,
+                               image_path = _image_path,fullname =_fullname,
+                               roleuser=_roleuser,informationuserjobid = _informationuserjobid,
+                               idaccount=forexsalarytemp[10],totp=totp)
+    elif informationuserjobid==str(verify_user[0]):
         conn=db.connection()
         cursor=conn.cursor()
         sql="select f.*,ft.type from forexsalary f join forextype ft on f.forextypeid=ft.id where idinformationUserJob=? and is_active=1"
@@ -319,7 +362,12 @@ def forexsalaryfunction(informationuserjobid,informationuserid):
         else:
             forexSalary=forexsalary(Forex=None,Annualsalary=None,Monthlysalary=None,Monthlysalaryincontract=None,
                                     Quaterlybonustarget=None,Annualbonustarget=None)
-        return render_template("core/forexsalary.html",forexSalary=forexSalary,informationuserid=informationuserid,image_path = _image_path,fullname =_fullname,roleuser=_roleuser,informationuserjobid = _informationuserjobid)
+        return render_template("core/forexsalary.html",forexSalary=forexSalary
+                               ,informationuserid=informationuserid,
+                               image_path = _image_path,fullname =_fullname,
+                               roleuser=_roleuser,informationuserjobid = _informationuserjobid,
+                               idaccount=current_user.id,totp='None')
+    
     else:
         flash("You are logging in illegally")
         return redirect(url_for("authentication.logout"))
