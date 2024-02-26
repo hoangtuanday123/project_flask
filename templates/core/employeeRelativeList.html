@@ -1,6 +1,7 @@
 {% extends "core/user_profile.html" %}
 
 {% block content_body %}
+{% if readrights==3 or readrights==4 or readrights is none %}
           
               <!-- child template -->
 <div class="col-lg-8">
@@ -16,8 +17,12 @@
                   <th hidden>ID</th>
                   <th>FullName</th>
                   <th>Relationship</th>
+                  {% if readrights==3 or readrights==4 or readrights is none %}
                   <th>Detail</th>
+                  {% endif %}
+                  {% if readrights==4 or readrights is none %}
                   <th>Delete</th>
+                  {% endif %}
 
               </tr>
           </thead>
@@ -27,28 +32,34 @@
                       <td hidden>{{ user[0] }}</td>
                       <td>{{ user[1] }}</td>
                       <td>{{ user[2] }}</td>
+                      {% if readrights==3 or readrights==4 or readrights is none %}
                       <td>
                         
                         <label class="mb-0 tab_hover " for="userinformation1">View </label>
-                        <button id="userinformation1" hidden onclick="location.href='/employeepage/informationuserjob/employeerelative/{{employeerelativelist[0][0]}}/{{informationuserid}}'" ></button>
+                        <button id="userinformation1" hidden onclick="location.href='/employeepage/informationuserjob/employeerelative/{{employeerelativelist[0][0]}}/{{informationuserid}}/{{totp}}/{{idaccount}}'" ></button>
 
-                        
+                      </td>
+                      {% endif %}
+                      {% if readrights==4 or readrights is none %} 
                       <td>
                         <a href="/employeepage/informationuserjob/employeerelativelist/delete/{{user[0]}}/{{informationuserid}}/{{totp}}"
                          class="btn btn-danger btn-sm">
                           <i class="fas fa-trash-alt"></i> 
                       </a>
                       </td>
+                      {% endif %}
 
                   </tr>
               {% endfor %}
           </tbody>
       </table>
+      {% if readrights==4 or readrights is none %} 
       <form action="{{ url_for('employee.addemployeerelative', informationuserid=informationuserid,totp=totp) }}">
         <button type="submit" class="btn btn-link">
             <i class="fas fa-plus-circle"></i> <!-- Icon của Font Awesome -->
         </button>
-    </form>
+      </form>
+      {% endif %} 
     
       
 
@@ -56,5 +67,5 @@
   </div>
 </div>
   </section>
-
+{% endif %}
 {%endblock %}

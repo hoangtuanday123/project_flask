@@ -1,7 +1,7 @@
 {% extends "core/user_profile.html" %}
 
 {% block content_body %}
-          
+{% if readrights==3 or readrights==4 or readrights is none %}
 <!-- child template -->
 <div class="col-lg-8">
   <div class="card mb-4">
@@ -123,7 +123,7 @@
       </form>
       
       <hr>
-
+      {% if  readrights==4 or readrights is none %}
       <form action="" role="form" method="POST">
         <div id = "" class="row">
           <div class="col-sm-3">
@@ -371,6 +371,6 @@
 {% else %}
 <p>No documents available.</p>
 {% endif %}
-
-
+{% endif %}
+{% endif %}
 {% endblock %}

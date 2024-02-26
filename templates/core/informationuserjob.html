@@ -2,7 +2,7 @@
 
 {% block content_body %}
               <!-- child template -->
-    
+{% if readrights==2 or readrights==3 or readrights==4 or readrights is none %}
 <div class="col-lg-8">
     <div class="card mb-4">
       <div class="card-body">
@@ -173,7 +173,7 @@
         </form>
         
         <hr>
-
+        {% if readrights==4 or readrights==None %}
         <form action="{{ url_for('employee.edit_employeeinformation', col='Socialinsurancecode',informationuserid=informationuserid) }}" role="form" method="POST">
           <div id = "" class="row">
             <div class="col-sm-3">
@@ -284,7 +284,7 @@
 
         </div>
       </div>
-
+      
       <hr>
     <div class="row">
       <div class="col-sm-3">
@@ -579,10 +579,11 @@
 
         </div>
       </div>
-
+      {% endif %}
+      {% if readrights==3 or readrights==4 or readrights==None %}
       <button onclick="location.href='/employeepage/informationuserjob/laborcontract/{{userjob.EmployeeNo}}/{{informationuserid}}'"> Contract</button>
-<button onclick="location.href='/employeepage/informationuserjob/forexsalary/{{userjob.EmployeeNo}}/{{informationuserid}}'"> Forex Salary</button>
-
+      <button onclick="location.href='/employeepage/informationuserjob/forexsalary/{{userjob.EmployeeNo}}/{{informationuserid}}'"> Forex Salary</button>
+      {% endif %}
     </div>
     <script>
       // get img tag from avatr image to send pass for navigation.html
@@ -616,5 +617,5 @@
     containerDiv.appendChild(saveButton);
 }
     </script>
-
+{% endif %}
 {% endblock %}
