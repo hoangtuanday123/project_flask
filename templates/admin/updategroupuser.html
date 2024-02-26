@@ -7,9 +7,63 @@
   <div class="col-md-4">
     <main class="form-signin w-100 m-auto">
         <h1 class="h3 mb-3 fw-normal text-center">group user</h1>
-        <form method="post">
-            <div class="input-group mb-3">
-                <input type="text" id="groupuser" name="groupuser" value="{{ group }}" class="form-control" placeholder="Role Name" aria-label="Role Name" aria-describedby="basic-addon2" required>
+        <form role="form" method="post">
+            <div >
+                <div class="form-floating">
+                  {{ form.group(placeholder="group", class="form-control mb-2") }}
+                  {{ form.group.label }}
+                    {% if form.group.errors %}
+                      {% for error in form.group.errors %}
+                      <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                      </div>
+                      {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="form-floating">
+                  {{ form.alias(placeholder="alias", class="form-control mb-2") }}
+                  {{ form.alias.label }}
+                    {% if form.alias.errors %}
+                      {% for error in form.alias.errors %}
+                      <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                      </div>
+                      {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="form-floating">
+                  {{ form.email(placeholder="email", class="form-control mb-2") }}
+                  {{ form.email.label }}
+                    {% if form.email.errors %}
+                      {% for error in form.email.errors %}
+                      <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                      </div>
+                      {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="form-floating">
+                  {{ form.url(placeholder="url", class="form-control mb-2") }}
+                  {{ form.url.label }}
+                    {% if form.url.errors %}
+                      {% for error in form.url.errors %}
+                      <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                      </div>
+                      {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="form-floating">
+                  {{ form.description(placeholder="description", class="form-control mb-2") }}
+                  {{ form.description.label }}
+                    {% if form.description.errors %}
+                      {% for error in form.description.errors %}
+                      <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                      </div>
+                      {% endfor %}
+                    {% endif %}
+                </div>
                 {% if rolegroup =="admin" or rolegroup =="manager" %}
                 <div class="input-group-append">
                     <button name="updategroup" value="updategroup" type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> Update</button>
@@ -65,7 +119,7 @@
         </form>
         {% endif %}
         <!-- Display existing records -->
-        {% if rolegroup=='leader' or rolegroup=='member'  %}
+        {% if rolegroup=='leader' or rolegroup=='member' or rolegroup=='client'  %}
             <div class="row">
               <div class="col-sm-3">
                   <p class="mb-0" style="color:red">LIST USER</p>    
@@ -81,9 +135,13 @@
             <th>role group</th>
             <th>group name</th>
             <th>created date</th>
+            {% if rolegroup =="admin" or rolegroup =="manager" or rolegroup=="leader" or rolegroup=="client" %}
+            <th>Detail</th>
+            {% endif %}
             {% if rolegroup =="admin" or rolegroup =="manager" %}
             <th>Delete</th>
             {% endif %}
+    
 
         </tr>
     </thead>
@@ -94,15 +152,21 @@
                 <td>{{user[2]}}</td>
                 <td>{{user[3]}}</td>
                 <td>{{user[4]}}</td>
+                {% if rolegroup =="admin" or rolegroup =="manager" or rolegroup=="leader" or rolegroup=="client"%}
+                <td>
+                  <button onclick="location.href='/userinformation/{{user[5]}}/{{totp}}'" >view</button>
+                </td>
+                {% endif %}
                 {% if rolegroup =="admin" or rolegroup =="manager" %}
                 <td>
-                  <a href="{{url_for('admin.deleteuser',idgroupuserdetail=user[0],idgroup=idgroup)}}"
+                  <a href="{{url_for('admin.deleteuser',idgroupuserdetail=user[0],idgroup=idgroup,rolegroup=rolegroup)}}"
                 
                     class="btn btn-danger btn-sm">
                     <i class="fas fa-trash-alt"></i> 
                 </a>
                 </td>
                 {% endif %}
+                
             </tr>
         {% endfor %}
     </tbody>

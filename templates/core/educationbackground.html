@@ -1,11 +1,11 @@
 {% extends "core/user_profile.html" %}
 
 {% block content_body %}
-            
               <!-- child template -->
 <div class="col-lg-8">
     <div class="card mb-4">
         <div class="card-body">
+            {% if readrights==4 or readrights==None %}
               <h1>Upload Education Background</h1>
               <form accept-charset="UTF-8" action="{{url_for('core.upload_education', informationuserid=informationuserid)}}" enctype="multipart/form-data" method="POST" target="_blank">
                 <div class="form-group">
@@ -22,12 +22,13 @@
               </form>
          
               <br>
+              {% endif %}
              <div class="row">
                  <div class="col-sm-3">
                      <p class="mb-0" style="color:red">The Education Degree list</p>
                  </div>
              </div>
-           
+             
              <!-- Display existing records -->
              {% if temp %}
                  <table class="table">
@@ -71,7 +72,6 @@
 </div>
          
   </section>
-
 {%endblock %}
 
 

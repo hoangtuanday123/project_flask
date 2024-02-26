@@ -82,13 +82,13 @@
                 
                 <label class="custom-file-label" for="customFile">Choose File <i class="fas fa-plus"></i></label>
                 <div class="d-flex justify-content-center mb-2">
-                  <form  role="form" method="POST" action="/update_avatar" enctype="multipart/form-data">  
+                  <form  role="form" method="POST" action="{{url_for('core.upload_avatar',informationuserid=informationuserid,totp=totp,idaccount=idaccount)}}" enctype="multipart/form-data">  
                     <input type="file" class="btn"  id="customFile" name="avatar" aria-describedby="inputGroupFileAddon" hidden>          
                     <input  type = "submit" class="btn btn-success-soft btn-block"  value="Update"></input>
                 </form>
 
                 <div style="margin-left: 10px;"></div> 
-                <form role="form" method="POST" action="/remove_avatar" >
+                <form role="form" method="POST" action="{{url_for('core.remove_avatar',informationuserid=informationuserid,totp=totp)}}" >
                     <input type="submit" class="btn btn-danger-soft" value = "Remove"></input>
                 </form>
                 </div>
@@ -98,7 +98,7 @@
               <div class="card-body p-0">
                 
                 <ul class="list-group list-group-flush rounded-3">
-
+                  
                   <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                     <form action="{{url_for('core.userinformation',idaccount=(idaccount),totp=totp)}}">
                       <i class="fas fa-user"></i>
@@ -106,7 +106,7 @@
                       <input  type = "submit" id="userinformation"  hidden></input>
                     </form>
                   </li>
-
+                  
                   <li class="list-group-item d-flex justify-content-between align-items-center p-3">   
                     <form action="{{url_for('core.latestEmployment',informationuserid = informationuserid,fullname=fullname,totp=totp)}}">
                       <i class="fas fa-briefcase"></i>

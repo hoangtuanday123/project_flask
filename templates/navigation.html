@@ -1,6 +1,54 @@
 <div class="w3-top">
     <!-- navigation when user login successfully -->
-    {% if current_user.is_authenticated and roleuser != "admin" %}
+    
+    {%if current_user.is_authenticated and roleadmin == "admin" %}
+    <div class="w3-bar w3-white w3-card" id="myNavbar" style="line-height: 2.8;font-family: Verdana,sans-serif">
+        <a href="/adminpage" class="w3-bar-item w3-button w3-wide">CONNEXUS</a>
+        <div class="w3-right w3-hide-small" style="display: flex; align-items: center;">
+            <!-- Chỗ này chỉ hiển thị khi người dùng chưa đăng nhập -->
+            <a href="{{url_for('admin.displayRoles')}}" onclick="w3_close()" class="w3-bar-item w3-button">ROLE MANAGEMENT</a>
+            <a href="{{url_for('admin.displayusers')}}" class="w3-bar-item w3-button">USER MANAGEMENT</a>
+            <a href="{{url_for('admin.groupuserpage')}}" class="w3-bar-item w3-button">GROUP USER</a>
+            <div class="profile-dropdown" >
+                <div onclick="toggle()" id="profile-dropdown-btn" class="btn">
+                    <img id="avatarImage" src="{{ url_for('static', filename='source/avatar_admin.jpg') }}" alt="avatar" style="border-radius: 10%; width: 40px; height: 40px;">
+                    <span>ADMINISTRATOR<i class="fa-solid fa-angle-down"></i></span>
+                </div> 
+            </div>
+        </div>
+    </div>
+    <div class="w3-right w3-hide-small">
+        <ul class="profile-dropdown-list">
+        </p>
+                <p class="profile-dropdown-list-item" >
+                    <a href="\userinformation\{{current_user.id}}\None">
+                        <i class="fa-regular fa-user"></i>
+                        Profile 
+                    </a>
+            </p>
+            <p class="profile-dropdown-list-item">
+                <a href="">
+                    <i class="fa-regular fa-envelope"></i>
+                    Setting
+                </a>
+            </p>
+            <p class="profile-dropdown-list-item">
+                <a href="\getcodechangepassword">
+                    <i class="fa-solid fa-key"></i>
+                    Change Password
+                </a>
+            </p>
+            <hr />
+            <p class="profile-dropdown-list-item">
+                <a href="{{url_for('authentication.logout')}}">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    Log out
+                </a>
+            </p>
+        </ul>
+    </div>
+</div>
+{% elif current_user.is_authenticated %}
     <div>
         <div class="w3-bar w3-white w3-card" id="myNavbar" style="line-height: 2.8;font-family: Verdana,sans-serif">
             <a href="/home" class="w3-bar-item w3-button w3-wide">CONNEXUS</a>
@@ -53,54 +101,6 @@
             {%endif%}
         </div>
     </div>
-       
-    {% elif current_user.is_authenticated %}
-    <div class="w3-bar w3-white w3-card" id="myNavbar" style="line-height: 2.8;font-family: Verdana,sans-serif">
-        <a href="/adminpage" class="w3-bar-item w3-button w3-wide">CONNEXUS</a>
-        <div class="w3-right w3-hide-small" style="display: flex; align-items: center;">
-            <!-- Chỗ này chỉ hiển thị khi người dùng chưa đăng nhập -->
-            <a href="{{url_for('admin.displayRoles')}}" onclick="w3_close()" class="w3-bar-item w3-button">ROLE MANAGEMENT</a>
-            <a href="{{url_for('admin.displayusers')}}" class="w3-bar-item w3-button">USER MANAGEMENT</a>
-            <a href="{{url_for('admin.groupuserpage')}}" class="w3-bar-item w3-button">GROUP USER</a>
-            <div class="profile-dropdown" >
-                <div onclick="toggle()" id="profile-dropdown-btn" class="btn">
-                    <img id="avatarImage" src="{{ url_for('static', filename='source/avatar_admin.jpg') }}" alt="avatar" style="border-radius: 10%; width: 40px; height: 40px;">
-                    <span>ADMINISTRATOR<i class="fa-solid fa-angle-down"></i></span>
-                </div> 
-            </div>
-        </div>
-    </div>
-    <div class="w3-right w3-hide-small">
-        <ul class="profile-dropdown-list">
-        </p>
-                <p class="profile-dropdown-list-item" >
-                    <a href="\userinformation\{{current_user.id}}\None">
-                        <i class="fa-regular fa-user"></i>
-                        Profile 
-                    </a>
-            </p>
-            <p class="profile-dropdown-list-item">
-                <a href="">
-                    <i class="fa-regular fa-envelope"></i>
-                    Setting
-                </a>
-            </p>
-            <p class="profile-dropdown-list-item">
-                <a href="\getcodechangepassword">
-                    <i class="fa-solid fa-key"></i>
-                    Change Password
-                </a>
-            </p>
-            <hr />
-            <p class="profile-dropdown-list-item">
-                <a href="{{url_for('authentication.logout')}}">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                    Log out
-                </a>
-            </p>
-        </ul>
-    </div>
-</div>
     
     {% else %}
         <!-- navigation when user does not log in -->

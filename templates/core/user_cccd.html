@@ -1,7 +1,7 @@
 {% extends "core/user_profile.html" %}
 
 {% block content_body %}
-          
+{% if readrights==4 or readrights==None %}
               <!-- child template -->
               {{form.csrf_token}}
 
@@ -225,5 +225,5 @@
     </div>
   
   </section>
-
+  {% endif %}
   {%endblock %}

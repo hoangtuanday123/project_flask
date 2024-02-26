@@ -38,6 +38,7 @@ _driver_file_url = ""
 _attachedFileName = ""
 _fullname =""
 _roleuser = ""
+_roleadmin = ""
 
 @login_required
 def authorizationUser():
@@ -84,7 +85,7 @@ def authorizationUser():
     #     session['rolegroup']='admin'
     session['rolegroup']=""
     
-    
+    session['readrights']=None
 
 
     if user_role[0]=="candidate":
@@ -98,7 +99,12 @@ def authorizationUser():
     elif user_role[0]=="account_manager":
         return redirect(url_for("accountmanager.accountmanagerpage",image_path = _image_path,fullname = _fullname))
     elif user_role[0]=="admin":
-        return redirect(url_for("admin.adminpage",image_path = _image_path,fullname = _fullname))
+        
+        # _image_path = "url_for('static',filename='source/avatar_admin.jpg')"
+        _roleadmin = "admin"
+        _roleuser = ""
+        return redirect(url_for("admin.adminpage",image_path = _image_path,fullname = _fullname,roleadmin = _roleadmin))
+        
     else:
         return "You have not been granted access to the resource"
 
@@ -142,7 +148,8 @@ def getcodechangepassword():
 @login_required
 def userinformation(idaccount,totp):
     if idaccount==str(current_user.id) and totp=='None':
-        global _roleuser
+        session['readrights']=None
+        global _roleuser,_roleadmin,_image_path
         form = informationUserForm()
         conn=db.connection()
         cursor=conn.cursor()
@@ -166,7 +173,7 @@ def userinformation(idaccount,totp):
             form.Religion.data=user_temp[12]
 
         return render_template("core/user_information.html", form=form, image_path = _image_path,informationuserid =  user_temp[0],
-                            fullname = user_temp[1], roleuser= _roleuser ,idaccount=current_user.id,totp='None')
+                            fullname = user_temp[1], roleuser=_roleuser,roleadmin = _roleadmin ,idaccount=current_user.id,totp='None')
     elif str(totp)==session.get('is_admin') and str(totp)!='None':
         # conn=db.connection()
         # cursor=conn.cursor()
@@ -175,13 +182,13 @@ def userinformation(idaccount,totp):
         # cursor.execute(sql,value)
         # user_role=cursor.fetchone()
         # _roleuser=user_role[0]
-        _roleuser=""
-
+        # _roleuser=""
+        _roleadmin = "admin"
         session['idaccountadminmanager']=idaccount
         form = informationUserForm()
         conn=db.connection()
         cursor=conn.cursor()
-        sql="select * from informationUser where id_useraccount=?"
+        sql="select i.*,r.role_name from informationUser i join user_account u on u.id=i.id_useraccount join role_user r on r.id=u.role_id  where i.id_useraccount=?"
         value=(idaccount)
         cursor.execute(sql,value)
         user_temp=cursor.fetchone()
@@ -198,9 +205,16 @@ def userinformation(idaccount,totp):
             form.Ethnicgroup.data=user_temp[11]
             form.Religion.data=user_temp[12]
 
+            _roleuser= user_temp[13]
+            found_avatar = user_avatar.find_picture_name_by_id(user_temp[0])
+            if found_avatar and found_avatar[2] != "":
+                _image_path = found_avatar[2]
+            else:
+                _image_path = file_path_default
+
         
         return render_template("core/user_information.html", form=form, image_path = _image_path,informationuserid =  user_temp[0],
-                            fullname = user_temp[1], roleuser= _roleuser,idaccount=idaccount,totp=totp)
+                            fullname = user_temp[1], roleuser=_roleuser,roleadmin = _roleadmin,idaccount=idaccount,totp=totp)
     else:
         flash("You are logging in illegally")
         return redirect(url_for("authentication.logout"))
@@ -241,7 +255,8 @@ def latestEmployment(informationuserid,totp):
             form.StartDate.data = user_temp[8]
             form.EndDate.data=user_temp[9]
             return render_template("core/latestEmployment.html", form=form,
-                image_path = _image_path,fullname=_fullname,informationuserid=informationuserid, roleuser= _roleuser,totp='None',idaccount=current_user.id)
+                image_path = _image_path,fullname=_fullname,informationuserid=informationuserid,
+                 roleuser=_roleuser,roleadmin = _roleadmin,totp='None',idaccount=current_user.id,readrights=session.get('readrights'))
     elif str(totp)==session.get('is_admin'):
         #global _image_path,_fullname,_roleuser
         
@@ -264,7 +279,8 @@ def latestEmployment(informationuserid,totp):
             form.StartDate.data = user_temp[8]
             form.EndDate.data=user_temp[9]
             return render_template("core/latestEmployment.html", form=form,
-                image_path = _image_path,fullname=_fullname,informationuserid=informationuserid, roleuser= _roleuser,totp=totp,idaccount=session.get('idaccountadminmanager'))
+                image_path = _image_path,fullname=_fullname,informationuserid=informationuserid,
+                  roleuser=_roleuser,roleadmin = _roleadmin,totp=totp,idaccount=session.get('idaccountadminmanager'),readrights=4)
     else:
         flash("You are logging in illegally")
         return redirect('core/startPage.html')
@@ -318,7 +334,8 @@ def usercccd(informationuserid,totp):
         print("front image is: "+ _front_cccd)
         print("back image is: "+ _front_cccd)
         return render_template("core/user_cccd.html", form=form, image_path = _image_path,fullname=_fullname,
-                           informationuserid=informationuserid,front_cccd =_front_cccd,back_cccd =_back_cccd, roleuser= _roleuser ,totp='None',idaccount=current_user.id)
+                           informationuserid=informationuserid,front_cccd =_front_cccd,back_cccd =_back_cccd, roleuser=_roleuser,roleadmin = _roleadmin ,totp='None'
+                           ,idaccount=current_user.id,readrights=session.get('readrights'))
     elif str(totp)==session.get('is_admin'):
         form = usercccdForm()
         conn=db.connection()
@@ -354,7 +371,8 @@ def usercccd(informationuserid,totp):
         print("front image is: "+ _front_cccd)
         print("back image is: "+ _front_cccd)
         return render_template("core/user_cccd.html", form=form, image_path = _image_path,fullname=_fullname,
-                           informationuserid=informationuserid,front_cccd =_front_cccd,back_cccd =_back_cccd, roleuser= _roleuser ,totp=totp,idaccount=session.get('idaccountadminmanager'))
+                           informationuserid=informationuserid,front_cccd =_front_cccd,back_cccd =_back_cccd,
+                             roleuser=_roleuser,roleadmin = _roleadmin ,totp=totp,idaccount=session.get('idaccountadminmanager'),readrights=4)
     else:
         flash("You are logging in illegally")
         
@@ -372,7 +390,7 @@ def uploadCCCD(informationuserid):
         # Check if the file is empty
         if file_front.filename == '' and file_back.filename == '':
             flash('No selected file')
-            return redirect(url_for('core.usercccd', informationuserid=informationuserid, fullname=_fullname, roleuser= _roleuser))
+            return redirect(url_for('core.usercccd', informationuserid=informationuserid, fullname=_fullname, roleuser=_roleuser,roleadmin = _roleadmin))
 
         # Check if the file has an allowed extension
         if  allowed_file(file_front.filename) or allowed_file(file_back.filename):
@@ -402,14 +420,14 @@ def uploadCCCD(informationuserid):
 
             if found_cccd:
                 user_cccd.update_pic_name(informationuserid,file_front.filename,file_back.filename)
-                return redirect(url_for('core.usercccd', informationuserid=informationuserid, fullname=_fullname, roleuser= _roleuser))
+                return redirect(url_for('core.usercccd', informationuserid=informationuserid, fullname=_fullname, roleuser=_roleuser,roleadmin = _roleadmin))
             else:
                 new_cccd = user_cccd(informationuserid = informationuserid, front_pic_name= file_front.filename,back_pic_name= file_back.filename)
                 id_pic = new_cccd.save()
             
             _front_cccd = file_front.filename
             _back_cccd = file_back.filename
-            return redirect(url_for('core.extractCCCD', informationuserid=informationuserid, fullname=_fullname, roleuser= _roleuser))
+            return redirect(url_for('core.extractCCCD', informationuserid=informationuserid, fullname=_fullname, roleuser=_roleuser,roleadmin = _roleadmin))
         else:
             flash('Allowed media types are - png, jpg, jpeg, gif')
             return redirect(url_for('core.home'))
@@ -432,7 +450,7 @@ def extractCCCD(informationuserid):
     pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
     text = pytesseract.image_to_string(img, lang='vie')
     print(text)
-    return redirect(url_for('core.usercccd', informationuserid=informationuserid, fullname=_fullname, roleuser= _roleuser))
+    return redirect(url_for('core.usercccd', informationuserid=informationuserid, fullname=_fullname, roleuser=_roleuser,roleadmin = _roleadmin))
 
 # upload Healthy Insurance image
 @core_bp.route('/upload_healthyInsurance/<informationuserid>', methods=['POST', 'get'])
@@ -513,9 +531,9 @@ def extract_healthyInsurance():
 
 
 # update avatar image
-@core_bp.route('/update_avatar', methods=['POST','get'])
+@core_bp.route('/update_avatar/<informationuserid>/<totp>/<idaccount>', methods=['POST','get'])
 @login_required
-def upload_avatar():
+def upload_avatar(informationuserid,totp,idaccount):
     global _image_path
     if request.method == 'POST':
         # Check if the 'avatar' key is in the files of the request
@@ -534,40 +552,39 @@ def upload_avatar():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(Config.UPLOAD_FOLDER, filename))
-            id = (current_user.id)
+            id = informationuserid
             found_avatar = user_avatar.find_picture_name_by_id(id)
             if found_avatar:
-                user_avatar.update_pic_name((current_user.id),file.filename)
+                user_avatar.update_pic_name(informationuserid,file.filename)
                 flash('update avatar successfully')
                 _image_path = filename
-                idaccount= (current_user.id)
-                return redirect(url_for('core.userinformation',idaccount = idaccount))
+                idaccount= (idaccount)
+                return redirect(url_for('core.userinformation',idaccount = idaccount,totp=totp))
             else:
                 new_avatar = user_avatar(informationuserid = id, pic_name= file.filename)
                 id_pic = new_avatar.save()
                 flash(
                     'save image successfully'
                 )
-                idaccount= (current_user.id)
-                return redirect(url_for('core.userinformation',idaccount = idaccount))
+                idaccount= idaccount
+                return redirect(url_for('core.userinformation',idaccount = idaccount,totp=totp))
         else:
             flash('Allowed media types are - png, jpg, jpeg, gif')
             return redirect(url_for('core.startPage'))
     else:
         flash('Invalid request method')
         return redirect(url_for('core.home'))
-    
 # remove avatar
-@core_bp.route('/remove_avatar', methods = ['post','get'])
+@core_bp.route('/remove_avatar/<informationuserid>/<totp>', methods = ['post','get'])
 @login_required
-def remove_avatar():
+def remove_avatar(informationuserid,totp):
     global file_path_default,_image_path
     print(file_path_default)
     _image_path = file_path_default
-    user_avatar.update_pic_name((current_user.id),file_path_default)
+    user_avatar.update_pic_name(informationuserid,file_path_default)
 
     idaccount= (current_user.id)
-    return redirect(url_for('core.userinformation',idaccount = idaccount))
+    return redirect(url_for('core.userinformation',idaccount = idaccount,totp=totp))
 
 # display image 
 @app.route('/display/<filename>')
@@ -651,7 +668,7 @@ def edit_informationcccd(col,informationuserid):
         cursor.commit()
         cursor.close()
 
-        return redirect(url_for('core.usercccd', informationuserid=informationuserid, fullname=_fullname, roleuser= _roleuser))
+        return redirect(url_for('core.usercccd', informationuserid=informationuserid, fullname=_fullname, roleuser=_roleuser,roleadmin = _roleadmin))
     else:
         flash("You are logging in illegally")
         return redirect(url_for("authentication.logout"))
@@ -675,13 +692,13 @@ def upload_HCC(informationuserid):
         if request.method == 'POST':
             if 'filehcc' not in request.files:
                 flash('no file part')
-                return redirect(url_for('core.healthCheckCertificates',informationuserid = informationuserid, fullname = _fullname, roleuser= _roleuser))
+                return redirect(url_for('core.healthCheckCertificates',informationuserid = informationuserid, fullname = _fullname, roleuser=_roleuser,roleadmin = _roleadmin))
             
             file = request.files['filehcc']
             
             if file.filename == '':
                 flash('No selected file')
-                return redirect(url_for('core.healthCheckCertificates',informationuserid = informationuserid, fullname = _fullname, roleuser= _roleuser))
+                return redirect(url_for('core.healthCheckCertificates',informationuserid = informationuserid, fullname = _fullname, roleuser=_roleuser,roleadmin = _roleadmin))
 
             
                 
@@ -748,7 +765,7 @@ def upload_HCC(informationuserid):
                     conn.close()
                     print("HealthCheck 4")
                     flash("Uploaded document successfully")
-                    return redirect(url_for('core.healthCheckCertificates',informationuserid = informationuserid, fullname = _fullname, roleuser= _roleuser))
+                    return redirect(url_for('core.healthCheckCertificates',informationuserid = informationuserid, fullname = _fullname, roleuser=_roleuser,roleadmin = _roleadmin))
                 elif count ==0:
                     notarized_value = "Yes" if request.form.get('notarized') == 'Yes' else "No"
                     sql = 'INSERT INTO healthCheckCertificates VALUES (?, ?, ?, ?, ?)'
@@ -757,15 +774,15 @@ def upload_HCC(informationuserid):
                     conn.close()
                     print("HealthCheck 5")
                     flash("Uploaded document successfully")
-                    return redirect(url_for('core.healthCheckCertificates',informationuserid = informationuserid, fullname = _fullname, roleuser= _roleuser))
+                    return redirect(url_for('core.healthCheckCertificates',informationuserid = informationuserid, fullname = _fullname, roleuser=_roleuser,roleadmin = _roleadmin))
                 else:
                     print("HealthCheck 6")
                     flash("The maximum total number of documents is 3. Please try again.")
-                    return redirect(url_for('core.healthCheckCertificates',informationuserid = informationuserid, fullname = _fullname, roleuser= _roleuser))
+                    return redirect(url_for('core.healthCheckCertificates',informationuserid = informationuserid, fullname = _fullname, roleuser=_roleuser,roleadmin = _roleadmin))
 
             else:
                 flash(' Only Allowed media types are docx,pdf, please try again!!!')
-                return redirect(url_for('upload_HCC',informationuserid = informationuserid, fullname = _fullname, roleuser= _roleuser))
+                return redirect(url_for('upload_HCC',informationuserid = informationuserid, fullname = _fullname, roleuser=_roleuser,roleadmin = _roleadmin))
         else:
             flash('Invalid request method')
             idaccount= (current_user.id)
@@ -798,7 +815,10 @@ def healthCheckCertificates(informationuserid,totp):
             df = pd.concat([df,df2])
         conn.close()    
         return render_template("core/healthCheckCertificates.html",
-                            image_path = _image_path,fullname=_fullname,informationuserid=informationuserid, temp = temp, roleuser= _roleuser,totp=totp,idaccount=current_user.id)
+                            image_path = _image_path,fullname=_fullname,
+                            informationuserid=informationuserid, temp = temp,
+                              roleuser=_roleuser,roleadmin = _roleadmin,totp=totp,idaccount=current_user.id,
+                              readrights=session.get('readrights'))
     elif str(totp)==session.get('is_admin'):
         conn = db.connection()
         cursor = conn.cursor()
@@ -811,7 +831,10 @@ def healthCheckCertificates(informationuserid,totp):
             df = pd.concat([df,df2])
         conn.close()    
         return render_template("core/healthCheckCertificates.html",
-                            image_path = _image_path,fullname=_fullname,informationuserid=informationuserid, temp = temp, roleuser= _roleuser,totp=totp,idaccount=session.get('idaccountadminmanager'))
+                            image_path = _image_path,fullname=_fullname,
+                            informationuserid=informationuserid, temp = temp,
+                              roleuser=_roleuser,roleadmin = _roleadmin,totp=totp,
+                              idaccount=session.get('idaccountadminmanager'),readrights=4)
     else:
         flash("You are logging in illegally")
     
@@ -834,12 +857,12 @@ def upload_education(informationuserid):
         if request.method == 'POST':
             if 'fileeducation' not in request.files:
                 flash('no file part')
-                return redirect(url_for('core.educationbackground',informationuserid = informationuserid, fullname = _fullname, roleuser= _roleuser))
+                return redirect(url_for('core.educationbackground',informationuserid = informationuserid, fullname = _fullname, roleuser=_roleuser,roleadmin = _roleadmin))
             
             file = request.files['fileeducation']
             if file.filename == '':
                 flash('No selected file')
-                return redirect(url_for('core.educationbackground',informationuserid = informationuserid, fullname = _fullname, roleuser= _roleuser))
+                return redirect(url_for('core.educationbackground',informationuserid = informationuserid, fullname = _fullname, roleuser=_roleuser,roleadmin = _roleadmin))
             # Check if the file has an allowed extension
             if file and allowed_attachment_file(file.filename) or file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
@@ -890,14 +913,14 @@ def upload_education(informationuserid):
                     cursor.commit()
                     conn.close()
                     flash("Uploaded document successfully")
-                    return redirect(url_for('core.educationbackground',informationuserid = informationuserid, fullname = _fullname, roleuser= _roleuser))
+                    return redirect(url_for('core.educationbackground',informationuserid = informationuserid, fullname = _fullname, roleuser=_roleuser,roleadmin = _roleadmin))
                 else:
                     flash("The maximum total number of documents is 3. Please try again.")
-                    return redirect(url_for('core.educationbackground',informationuserid = informationuserid, fullname = _fullname, roleuser= _roleuser))
+                    return redirect(url_for('core.educationbackground',informationuserid = informationuserid, fullname = _fullname, roleuser=_roleuser,roleadmin = _roleadmin))
 
             else:
                 flash(' Only Allowed media types are docx,pdf, please try again!!!')
-                return redirect(url_for('core.upload_education',informationuserid = informationuserid, fullname = _fullname, roleuser= _roleuser))
+                return redirect(url_for('core.upload_education',informationuserid = informationuserid, fullname = _fullname, roleuser=_roleuser,roleadmin = _roleadmin))
         else:
             flash('Invalid request method')
             idaccount= (current_user.id)
@@ -930,7 +953,10 @@ def educationbackground(informationuserid,totp):
             df = pd.concat([df,df2])
         conn.close()   
         return render_template("core/educationbackground.html",
-                            image_path = _image_path,fullname=_fullname,informationuserid=informationuserid, temp = temp, roleuser= _roleuser,totp='None',idaccount=current_user.id)
+                            image_path = _image_path,fullname=_fullname
+                            ,informationuserid=informationuserid,
+                              temp = temp, roleuser=_roleuser,roleadmin = _roleadmin,totp='None',
+                              idaccount=current_user.id,readrights=session.get('readrights'))
     elif str(totp)==session.get('is_admin'):
         conn = db.connection()
         cursor = conn.cursor()
@@ -943,7 +969,10 @@ def educationbackground(informationuserid,totp):
             df = pd.concat([df,df2])
         conn.close()    
         return render_template("core/educationbackground.html",
-                            image_path = _image_path,fullname=_fullname,informationuserid=informationuserid, temp = temp, roleuser= _roleuser,totp=totp,idaccount=session.get('idaccountadminmanager'))
+                            image_path = _image_path,fullname=_fullname,
+                            informationuserid=informationuserid, temp = temp, 
+                            roleuser=_roleuser,roleadmin = _roleadmin,totp=totp,
+                            idaccount=session.get('idaccountadminmanager'),readrights=4)
     else:
         flash("You are logging in illegally")
         return totp
@@ -958,12 +987,12 @@ def upload_qualification(informationuserid):
     if request.method == 'POST':
         if 'filequalification' not in request.files:
             flash('no file part')
-            return redirect(url_for('core.qualification',informationuserid = informationuserid, fullname = _fullname, roleuser= _roleuser))
+            return redirect(url_for('core.qualification',informationuserid = informationuserid, fullname = _fullname, roleuser=_roleuser,roleadmin = _roleadmin))
         
         file = request.files['filequalification']
         if file.filename == '':
             flash('No selected file')
-            return redirect(url_for('core.qualification',informationuserid = informationuserid, fullname = _fullname, roleuser= _roleuser))
+            return redirect(url_for('core.qualification',informationuserid = informationuserid, fullname = _fullname, roleuser=_roleuser,roleadmin = _roleadmin))
         # Check if the file has an allowed extension
         if file and allowed_attachment_file(file.filename) or file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
@@ -1014,14 +1043,14 @@ def upload_qualification(informationuserid):
                 cursor.commit()
                 conn.close()
                 flash("Uploaded document successfully")
-                return redirect(url_for('core.qualification',informationuserid = informationuserid, fullname = _fullname, roleuser= _roleuser))
+                return redirect(url_for('core.qualification',informationuserid = informationuserid, fullname = _fullname, roleuser=_roleuser,roleadmin = _roleadmin))
             else:
                 flash("The maximum total number of documents is 3. Please try again.")
-                return redirect(url_for('core.qualification',informationuserid = informationuserid, fullname = _fullname, roleuser= _roleuser))
+                return redirect(url_for('core.qualification',informationuserid = informationuserid, fullname = _fullname, roleuser=_roleuser,roleadmin = _roleadmin))
 
         else:
             flash(' Only Allowed media types are docx,pdf, please try again!!!')
-            return redirect(url_for('core.upload_qualification',informationuserid = informationuserid, fullname = _fullname, roleuser= _roleuser))
+            return redirect(url_for('core.upload_qualification',informationuserid = informationuserid, fullname = _fullname, roleuser=_roleuser,roleadmin = _roleadmin))
     else:
         flash('Invalid request method')
         idaccount= (current_user.id)
@@ -1051,7 +1080,9 @@ def qualification(informationuserid,totp):
             df = pd.concat([df,df2])
         conn.close()    
         return render_template("core/qualification.html",
-                            image_path = _image_path,fullname=_fullname,informationuserid=informationuserid, temp = temp, roleuser= _roleuser,idaccount=current_user.id,totp='None')
+                            image_path = _image_path,fullname=_fullname,
+                            informationuserid=informationuserid, temp = temp,
+                              roleuser=_roleuser,roleadmin = _roleadmin,idaccount=current_user.id,totp='None',readrights=session.get('readrights'))
     elif str(totp)==session.get('is_admin'):
         conn = db.connection()
         cursor = conn.cursor()
@@ -1064,7 +1095,9 @@ def qualification(informationuserid,totp):
             df = pd.concat([df,df2])
         conn.close()    
         return render_template("core/qualification.html",
-                            image_path = _image_path,fullname=_fullname,informationuserid=informationuserid, temp = temp, roleuser= _roleuser,totp=totp,idaccount=session.get('idaccountadminmanager'))
+                            image_path = _image_path,fullname=_fullname,informationuserid=informationuserid,
+                              temp = temp, roleuser=_roleuser,roleadmin = _roleadmin,totp=totp,
+                              idaccount=session.get('idaccountadminmanager'),readrights=4)
     else:
         flash("You are logging in illegally")
         return redirect(url_for("authentication.logout"))    
@@ -1074,21 +1107,21 @@ def groupuserpage(idinformationuser):
     #return idinformationuser
     conn=db.connection()
     cursor=conn.cursor()
-    sql="""select g.*,r.rolename from groubuser g join groupuserdetail gd on g.id=gd.idgroupuser join informationUser i
+    sql="""select g.*,r.rolename from groupuser g join groupuserdetail gd on g.id=gd.idgroupuser join informationUser i
     on i.id=gd.iduser join rolegroupuser r on r.id=gd.idrolegroupuser where i.id=?"""
     value=(str(idinformationuser))
     cursor.execute(sql,value)
     grouptemp=cursor.fetchall()
     conn.commit()
     conn.close()
-    groups=[(group[0],group[1],group[2],group[3]) for group in grouptemp]
+    groups=[(group[0],group[1],group[2],group[8]) for group in grouptemp]
     form =groupuserForm(request.form)
     if form.validate_on_submit():
         conn=db.connection()
         cursor=conn.cursor()
         sql="""SET NOCOUNT ON;
                 DECLARE @id int;
-                insert into groubuser(name,createddate) values(?,GETDATE())
+                insert into groupuser(name,createddate) values(?,GETDATE())
                 SET @id = SCOPE_IDENTITY();            
                 SELECT @id AS the_output;"""
         value=(form.group.data)
