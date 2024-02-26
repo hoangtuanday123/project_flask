@@ -213,21 +213,34 @@ def addlist(informationuserid,employeerelativeid,type):
     conn.close()
     return result[0]
 
-@employee.route("/employeepage/informationuserjob/deleterelative/<informationuserid>/<employeerelativeid>/<type>",methods=['GET','POST'])
+@employee.route("/employeepage/informationuserjob/deleterelative/<informationuserid>/<employeerelativeid>/<type>/<totp>",methods=['GET','POST'])
 @login_required
-def deleterelative(informationuserid,employeerelativeid,type):
+def deleterelative(informationuserid,employeerelativeid,type,totp):
     #return str(employeerelativeid+type)
-    conn=db.connection()
-    cursor=conn.cursor()
-    sql="""
-        SET NOCOUNT ON;
-        exec pr_delete_employeerelative_informationuser @idinformationuser=?,@idemployeerelative=?,@type=?;
-        """
-    value=(informationuserid,employeerelativeid,str(type))
-    cursor.execute(sql,value)
-    conn.commit()
-    conn.close()
-    return redirect(url_for("employee.informationuserjob",informationuserid=informationuserid))
+    if informationuserid==str(current_user.idinformationuser):
+        conn=db.connection()
+        cursor=conn.cursor()
+        sql="""
+            SET NOCOUNT ON;
+            exec pr_delete_employeerelative_informationuser @idinformationuser=?,@idemployeerelative=?,@type=?;
+            """
+        value=(informationuserid,employeerelativeid,str(type))
+        cursor.execute(sql,value)
+        conn.commit()
+        conn.close()
+        return redirect(url_for("employee.informationuserjob",informationuserid=informationuserid,totp='None'))
+    elif str(totp)==session.get('is_admin'):
+        conn=db.connection()
+        cursor=conn.cursor()
+        sql="""
+            SET NOCOUNT ON;
+            exec pr_delete_employeerelative_informationuser @idinformationuser=?,@idemployeerelative=?,@type=?;
+            """
+        value=(informationuserid,employeerelativeid,str(type))
+        cursor.execute(sql,value)
+        conn.commit()
+        conn.close()
+        return redirect(url_for("employee.informationuserjob",informationuserid=informationuserid,totp=totp))
 
 @employee.route("/edit_employeeinformation/<col>/<informationuserid>", methods=["GET", "POST"])
 @login_required
@@ -497,9 +510,9 @@ def uploadDocument(employeerelativeid,informationuserid):
             idaccount= (current_user.id)
             return redirect(url_for('core.userinformation',idaccount = idaccount))
         
-@employee.route("/employeepage/informationuserjob/employeerelativelist/delete/<employeerelativeid>/<informationuserid>",methods=['GET','POST'])
+@employee.route("/employeepage/informationuserjob/employeerelativelist/delete/<employeerelativeid>/<informationuserid>/<totp>",methods=['GET','POST'])
 @login_required
-def delete(employeerelativeid,informationuserid):
+def delete(employeerelativeid,informationuserid,totp):
     conn=db.connection()
     cursor=conn.cursor()
     sql="""
@@ -509,4 +522,4 @@ def delete(employeerelativeid,informationuserid):
     cursor.execute(sql,value)
     conn.commit()
     conn.close()
-    return redirect(url_for("employee.employeerelativelist",informationuserid=informationuserid))
+    return redirect(url_for("employee.employeerelativelist",informationuserid=informationuserid,totp=totp))
