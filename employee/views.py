@@ -22,6 +22,9 @@ _image_path = ""
 _fullname = ""
 _roleuser = "employee"
 _informationuserjobid = ""
+_roleadmin = ""
+_image_path_admin = ""
+_fullname_admin = ""
 @employee.route("/employeepage/<image_path>/<fullname>", methods=["GET", "POST"])
 @login_required
 def employeepage(image_path,fullname):
@@ -42,8 +45,11 @@ def employeepage(image_path,fullname):
 @employee.route("/employeepage/informationuserjob/<informationuserid>/<totp>",methods=['GET','POST'])
 @login_required
 def informationuserjob(informationuserid,totp):
-    global _informationuserjobid
+    global _informationuserjobid, _image_path_admin,_fullname_admin,_fullname,_roleuser,_image_path
+    
     if informationuserid==str(current_user.idinformationuser):
+        session['readrights']=None
+
         form=Employeeinformation(request.form)
         conn=db.connection()
         cursor=conn.cursor()
@@ -121,6 +127,11 @@ def informationuserjob(informationuserid,totp):
                                ,totp='None',idaccount=user[16],readrights=session.get('readrights'))
     
     elif str(totp)==session.get('is_admin'):
+        
+        if session.get('rolegroup')!='admin':
+            _roleadmin=""
+        else:
+            _roleadmin = "admin"
         form=Employeeinformation(request.form)
         conn=db.connection()
         cursor=conn.cursor()
@@ -195,7 +206,7 @@ def informationuserjob(informationuserid,totp):
         return render_template("core/informationuserjob.html",userjob=userjob,informationuserid=informationuserid,image_path=_image_path,fullname=_fullname,
                                form=form,Employeerelative=Employeerelative,temp1=temp1
                                ,temp2=temp2,temp3=temp3,temp4=temp4,temp5=temp5
-                               ,roleuser=_roleuser,totp=totp,idaccount=user[16],readrights=4)
+                               ,roleuser=_roleuser,totp=totp,idaccount=user[16],roleadmin = _roleadmin,image_path_admin=session.get('_image_path_admin'),fullname_admin = _fullname_admin,readrights=session.get('readrights'))
     
     else:
         flash("You are logging in illegally")
@@ -273,6 +284,11 @@ def laborcontract(informationuserjobid,informationuserid,totp):
     conn.commit()
     conn.close()
     if str(totp)==session.get('is_admin'):
+        
+        if session.get('rolegroup')!='admin':
+            _roleadmin=""
+        else:
+            _roleadmin = "admin"
         conn=db.connection()
         cursor=conn.cursor()
         sql="select l.*,i.id_useraccount from laborContract l join informationUserJob ij on ij.id=l.idinformationUserJob join informationUser i on i.id=ij.idinformationuser  where l.idinformationUserJob=? and l.is_active=1 and ij.is_active=1"
@@ -289,9 +305,13 @@ def laborcontract(informationuserjobid,informationuserid,totp):
                                 Commencementdate=None,Position=None,Employeelevel=None)
         
         return render_template("core/contract.html",contract=contracttemp,informationuserid=informationuserid
-                               ,image_path = _image_path,fullname =_fullname,
-                               roleuser=_roleuser,informationuserjobid = _informationuserjobid,idaccount=contract[9],totp=totp)
+                               ,image_path = _image_path,fullname =_fullname,image_path_admin=session.get('_image_path_admin'),fullname_admin = _fullname_admin,
+                               roleuser=_roleuser,informationuserjobid = _informationuserjobid,idaccount=contract[9],totp=totp,roleadmin = _roleadmin)
     elif informationuserjobid==str(verify_user[0]) :
+        if session.get('rolegroup')!='admin':
+            _roleadmin=""
+        else:
+            _roleadmin = "admin"
         conn=db.connection()
         cursor=conn.cursor()
         sql="select * from laborContract where idinformationUserJob=? and is_active=1"
@@ -309,7 +329,8 @@ def laborcontract(informationuserjobid,informationuserid,totp):
         
         return render_template("core/contract.html",contract=contracttemp,informationuserid=informationuserid
                                ,image_path = _image_path,fullname =_fullname,
-                               roleuser=_roleuser,informationuserjobid = _informationuserjobid,idaccount=current_user.id,totp='None')
+                               roleuser=_roleuser,informationuserjobid = _informationuserjobid,
+                               idaccount=current_user.id,totp='None')
     
     else:
         flash("You are logging in illegally")
@@ -328,6 +349,10 @@ def forexsalaryfunction(informationuserjobid,informationuserid,totp):
     conn.commit()
     conn.close()
     if str(totp)==session.get('is_admin'):
+        if session.get('rolegroup')!='admin':
+            _roleadmin=""
+        else:
+            _roleadmin = "admin"
         conn=db.connection()
         cursor=conn.cursor()
         sql="select f.*,ft.type,i.id_useraccount from forexsalary f join forextype ft on f.forextypeid=ft.id join informationUserJob ij on ij.id=f.idinformationUserJob join informationUser i on i.id=ij.idinformationuser where f.idinformationUserJob=? and f.is_active=1 and ij.is_active=1"
@@ -346,8 +371,9 @@ def forexsalaryfunction(informationuserjobid,informationuserid,totp):
                                ,informationuserid=informationuserid,
                                image_path = _image_path,fullname =_fullname,
                                roleuser=_roleuser,informationuserjobid = _informationuserjobid,
-                               idaccount=forexsalarytemp[10],totp=totp)
+                               idaccount=forexsalarytemp[10],totp=totp,roleadmin = _roleadmin,image_path_admin=session.get('_image_path_admin'),fullname_admin = _fullname_admin)
     elif informationuserjobid==str(verify_user[0]):
+
         conn=db.connection()
         cursor=conn.cursor()
         sql="select f.*,ft.type from forexsalary f join forextype ft on f.forextypeid=ft.id where idinformationUserJob=? and is_active=1"
@@ -391,6 +417,10 @@ def employeerelativelist(informationuserid,totp):
         return render_template("core/employeeRelativeList.html",employeerelativelist=employeerelativelist,informationuserid=informationuserid,
                             image_path = _image_path,fullname =_fullname,roleuser=_roleuser,totp='None',idaccount=current_user.id,readrights=session.get('readrights'))
     elif str(totp)==session.get('is_admin'):
+        if session.get('rolegroup')!='admin':
+            _roleadmin=""
+        else:
+            _roleadmin = "admin"
         conn=db.connection()
         cursor=conn.cursor()
         sql="select * from employeeRelative where idinformationuser=?"
@@ -412,7 +442,9 @@ def employeerelativelist(informationuserid,totp):
         conn.commit()
         conn.close()
         return render_template("core/employeeRelativeList.html",employeerelativelist=employeerelativelist,informationuserid=informationuserid,
-                            image_path = _image_path,fullname =_fullname,roleuser=_roleuser,totp=totp,idaccount=idaccounttemp[0],readrights=4)
+                            image_path = _image_path,fullname =_fullname,
+                            roleuser=_roleuser,totp=totp,idaccount=idaccounttemp[0],
+                            readrights=4,roleadmin = _roleadmin,image_path_admin=session.get('_image_path_admin'),fullname_admin = _fullname_admin)
 
 @employee.route("/employeepage/informationuserjob/employeerelativelist/addemployeerelationship/<informationuserid>/<totp>", methods=['GET', 'POST'])
 @login_required
@@ -466,6 +498,10 @@ def employeerelative(employeerelativeid,informationuserid,totp,idaccount):
     
     global _image_path,_fullname,_roleuser
     if str(totp)==session.get('is_admin'):
+        if session.get('rolegroup')!='admin':
+            _roleadmin=""
+        else:
+            _roleadmin = "admin"
         print("employeerelativeid is: " +employeerelativeid)
         conn=db.connection()
         cursor=conn.cursor()
@@ -503,7 +539,8 @@ def employeerelative(employeerelativeid,informationuserid,totp,idaccount):
                                             issuedon=None,address=None)
             return render_template("core/employeerelative.html",informationuserid=informationuserid,employeerelative=employeerelative,
                                 image_path = _image_path,fullname =_fullname, roleuser=_roleuser
-                                ,employeerelativeid=employeerelativeid,totp=totp,idaccount=employeerelativetemp[13],readrights=4)#, temp=temp)
+                                ,employeerelativeid=employeerelativeid,totp=totp,
+                                idaccount=employeerelativetemp[13],readrights=4,roleadmin = _roleadmin,image_path_admin=session.get('_image_path_admin'),fullname_admin = _fullname_admin)#, temp=temp)
     elif informationuserid==str(current_user.idinformationuser):
         print("employeerelativeid is: " +employeerelativeid)
         conn=db.connection()
@@ -542,7 +579,8 @@ def employeerelative(employeerelativeid,informationuserid,totp,idaccount):
                                             issuedon=None,address=None)
             return render_template("core/employeerelative.html",informationuserid=informationuserid,employeerelative=employeerelative,
                                 image_path = _image_path,fullname =_fullname, roleuser=_roleuser
-                                ,employeerelativeid=employeerelativeid,totp='None',idaccount=current_user.id,readrights=session.get('readrights'))#, temp=temp)
+                                ,employeerelativeid=employeerelativeid,totp='None',
+                                idaccount=current_user.id,readrights=session.get('readrights'))#, temp=temp)
     
         
     else:

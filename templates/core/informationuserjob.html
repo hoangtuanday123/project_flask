@@ -83,7 +83,9 @@
               {% else %}
                 <p class="text-muted mb-0">
                   {{userjob.Workingphone}}
+                  {% if readrights==4 or readrights ==None  %}
                   <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Workingphone','{{userjob.Workingphone}}')"></i>
+                  {% endif  %}
                 </p>
               {% endif %}
             </div>
@@ -111,7 +113,9 @@
               {% else %}
                 <p class="text-muted mb-0">
                   {{userjob.Bankaccount}}
+                  {% if readrights==4 or readrights ==None  %}
                   <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Bankaccount','{{userjob.Bankaccount}}')"></i>
+                  {% endif  %}
                 </p>
               {% endif %}
             </div>
@@ -165,7 +169,9 @@
               {% else %}
                 <p class="text-muted mb-0">
                   {{userjob.Taxcode}}
+                  {% if readrights==4 or readrights ==None  %}
                   <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Taxcode','{{userjob.Taxcode}}')"></i>
+                  {% endif  %}
                 </p>
               {% endif %}
             </div>
@@ -192,7 +198,9 @@
               {% else %}
                 <p class="text-muted mb-0">
                   {{userjob.Socialinsurancecode}}
+                  {% if readrights==4 or readrights ==None  %}
                   <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Socialinsurancecode','{{userjob.Socialinsurancecode}}')"></i>
+                  {% endif  %}
                 </p>
               {% endif %}
             </div>
@@ -220,7 +228,9 @@
               {% else %}
                 <p class="text-muted mb-0">
                   {{userjob.Healthinsurancecardcode}}
+                  {% if readrights==4 or readrights ==None  %}
                   <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Healthinsurancecardcode','{{userjob.Healthinsurancecardcode}}')"></i>
+                  {% endif  %}
                 </p>
               {% endif %}
             </div>
@@ -247,7 +257,9 @@
               {% else %}
                 <p class="text-muted mb-0">
                   {{userjob.Registeredhospitalname}}
+                  {% if readrights==4 or readrights ==None  %}
                   <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Registeredhospitalname','{{userjob.Registeredhospitalname}}')"></i>
+                  {% endif  %}
                 </p>
               {% endif %}
             </div>
@@ -275,7 +287,9 @@
               {% else %}
                 <p class="text-muted mb-0">
                   {{userjob.Registeredhospitalcode}}
+                  {% if readrights==4 or readrights ==None  %}
                   <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Registeredhospitalcode','{{userjob.Registeredhospitalcode}}')"></i>
+                  {% endif  %}
                 </p>
               {% endif %}
             </div>

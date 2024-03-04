@@ -3,7 +3,7 @@
     
     {%if current_user.is_authenticated and roleadmin == "admin" %}
     <div class="w3-bar w3-white w3-card" id="myNavbar" style="line-height: 2.8;font-family: Verdana,sans-serif">
-        <a href="/adminpage" class="w3-bar-item w3-button w3-wide">CONNEXUS</a>
+        <a href="/home" class="w3-bar-item w3-button w3-wide">CONNEXUS</a>
         <div class="w3-right w3-hide-small" style="display: flex; align-items: center;">
             <!-- Chỗ này chỉ hiển thị khi người dùng chưa đăng nhập -->
             <a href="{{url_for('admin.displayRoles')}}" onclick="w3_close()" class="w3-bar-item w3-button">ROLE MANAGEMENT</a>
@@ -11,8 +11,8 @@
             <a href="{{url_for('admin.groupuserpage')}}" class="w3-bar-item w3-button">GROUP USER</a>
             <div class="profile-dropdown" >
                 <div onclick="toggle()" id="profile-dropdown-btn" class="btn">
-                    <img id="avatarImage" src="{{ url_for('static', filename='source/avatar_admin.jpg') }}" alt="avatar" style="border-radius: 10%; width: 40px; height: 40px;">
-                    <span>ADMINISTRATOR<i class="fa-solid fa-angle-down"></i></span>
+                    <img id="avatarImage" src="{{ url_for('static', filename='source/' + image_path_admin) }}" alt="avatar" style="border-radius: 10%; width: 40px; height: 40px;">
+                    <span>{{fullname_admin }}<i class="fa-solid fa-angle-down"></i></span>
                 </div> 
             </div>
         </div>

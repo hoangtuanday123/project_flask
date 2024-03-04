@@ -39,10 +39,11 @@ _attachedFileName = ""
 _fullname =""
 _roleuser = ""
 _roleadmin = ""
-
+_image_path_admin = ""
+_fullname_admin = ""
 @login_required
 def authorizationUser():
-    global _image_path,_fullname,_roleuser
+    global _image_path,_fullname,_roleuser,_image_path_admin 
     conn=db.connection()
     cursor=conn.cursor()
     sql="select role_name from role_user where id=?"
@@ -64,9 +65,9 @@ def authorizationUser():
         _image_path = found_avatar[2]
     else:
         _image_path = file_path_default
-
+    #session['_image_path']=_image_path
     _fullname = user_temp[1]
-
+    #session['_fullname']=_fullname
     # conn=db.connection()
     # cursor=conn.cursor()
     # sql="""
@@ -86,7 +87,7 @@ def authorizationUser():
     session['rolegroup']=""
     
     session['readrights']=None
-
+    session['writerights']=None
 
     if user_role[0]=="candidate":
         return redirect(url_for("candidate.candidatepage",image_path = _image_path,fullname = _fullname))
@@ -103,7 +104,16 @@ def authorizationUser():
         # _image_path = "url_for('static',filename='source/avatar_admin.jpg')"
         _roleadmin = "admin"
         _roleuser = ""
-        return redirect(url_for("admin.adminpage",image_path = _image_path,fullname = _fullname,roleadmin = _roleadmin))
+        _image_path_admin = _image_path
+        #session['_image_path_admin']=_image_path_admin
+        _fullname_admin = _fullname
+        #session['_fullname_admin']=_fullname_admin
+        # _fullname = ""
+        #duoc write neu value=1 
+
+        session['writerights']=1
+
+        return redirect(url_for("admin.adminpage",image_path_admin=_image_path_admin,fullname_admin = _fullname_admin,roleadmin = _roleadmin))
         
     else:
         return "You have not been granted access to the resource"
@@ -147,9 +157,12 @@ def getcodechangepassword():
 @core_bp.route('/userinformation/<idaccount>/<totp>', methods=['post', 'get'])
 @login_required
 def userinformation(idaccount,totp):
+    global _roleuser,_roleadmin,_image_path,_fullname_admin,_fullname,_image_path_admin
+    
     if idaccount==str(current_user.id) and totp=='None':
+        
         session['readrights']=None
-        global _roleuser,_roleadmin,_image_path
+        
         form = informationUserForm()
         conn=db.connection()
         cursor=conn.cursor()
@@ -172,9 +185,18 @@ def userinformation(idaccount,totp):
             form.Ethnicgroup.data=user_temp[11]
             form.Religion.data=user_temp[12]
 
-        return render_template("core/user_information.html", form=form, image_path = _image_path,informationuserid =  user_temp[0],
-                            fullname = user_temp[1], roleuser=_roleuser,roleadmin = _roleadmin ,idaccount=current_user.id,totp='None')
+            found_avatar = user_avatar.find_picture_name_by_id(user_temp[0])
+            if found_avatar and found_avatar[2] != "":
+                _image_path = found_avatar[2]
+            else:
+                _image_path = file_path_default
+            # if user_temp[13] == "admin":
+            #    _roleadmin = "admin"
+            #    _fullname_admin = user_temp[1]
+        return render_template("core/user_information.html", form=form, image_path = _image_path,image_path_admin=_image_path_admin,informationuserid =  user_temp[0],
+                            fullname = user_temp[1], roleuser=_roleuser ,idaccount=current_user.id,totp='None',readrights=session.get('readrights'))
     elif str(totp)==session.get('is_admin') and str(totp)!='None':
+        
         # conn=db.connection()
         # cursor=conn.cursor()
         # sql="select r.role_name from role_user r join user_account u on u.role_id=r.id where u.id=?"
@@ -183,7 +205,12 @@ def userinformation(idaccount,totp):
         # user_role=cursor.fetchone()
         # _roleuser=user_role[0]
         # _roleuser=""
-        _roleadmin = "admin"
+        if session.get('rolegroup')!='admin':
+            _roleadmin=""
+        else:
+            _roleadmin = "admin"
+
+        
         session['idaccountadminmanager']=idaccount
         form = informationUserForm()
         conn=db.connection()
@@ -211,10 +238,11 @@ def userinformation(idaccount,totp):
                 _image_path = found_avatar[2]
             else:
                 _image_path = file_path_default
-
-        
+            _fullname=user_temp[1]
+            
+            session['_image_path_admin']=_image_path_admin
         return render_template("core/user_information.html", form=form, image_path = _image_path,informationuserid =  user_temp[0],
-                            fullname = user_temp[1], roleuser=_roleuser,roleadmin = _roleadmin,idaccount=idaccount,totp=totp)
+                            fullname = user_temp[1], roleuser=_roleuser,roleadmin = _roleadmin,idaccount=idaccount,totp=totp,readrights=session.get('readrights'),image_path_admin=_image_path_admin,fullname_admin = _fullname_admin)
     else:
         flash("You are logging in illegally")
         return redirect(url_for("authentication.logout"))
@@ -232,7 +260,7 @@ def latestEmployment(informationuserid,totp):
     verify_user=cursor.fetchone()
     conn.commit()
     conn.close()
-    global _image_path,_fullname,_roleuser
+    global _roleuser,_roleadmin,_image_path,_fullname_admin,_fullname,_image_path_admin,_fullname_admin
     if informationuserid==str(verify_user[0]) :
         
         
@@ -254,12 +282,16 @@ def latestEmployment(informationuserid,totp):
             form.StockOption.data=user_temp[7]
             form.StartDate.data = user_temp[8]
             form.EndDate.data=user_temp[9]
+            
             return render_template("core/latestEmployment.html", form=form,
-                image_path = _image_path,fullname=_fullname,informationuserid=informationuserid,
-                 roleuser=_roleuser,roleadmin = _roleadmin,totp='None',idaccount=current_user.id,readrights=session.get('readrights'))
+                image_path = _image_path,fullname=_fullname,informationuserid=informationuserid,image_path_admin=_image_path_admin,fullname_admin = _fullname_admin,
+                 roleuser=_roleuser,totp='None',idaccount=current_user.id,readrights=session.get('readrights'))
     elif str(totp)==session.get('is_admin'):
         #global _image_path,_fullname,_roleuser
-        
+        if session.get('rolegroup')!='admin':
+            _roleadmin=""
+        else:
+            _roleadmin = "admin"
         form = latestEmploymentForm()
         conn=db.connection()
         cursor=conn.cursor()
@@ -280,7 +312,7 @@ def latestEmployment(informationuserid,totp):
             form.EndDate.data=user_temp[9]
             return render_template("core/latestEmployment.html", form=form,
                 image_path = _image_path,fullname=_fullname,informationuserid=informationuserid,
-                  roleuser=_roleuser,roleadmin = _roleadmin,totp=totp,idaccount=session.get('idaccountadminmanager'),readrights=4)
+                  roleuser=_roleuser,roleadmin = _roleadmin,image_path_admin=_image_path_admin,fullname_admin = _fullname_admin,totp=totp,idaccount=session.get('idaccountadminmanager'),readrights=session.get('readrights'))
     else:
         flash("You are logging in illegally")
         return redirect('core/startPage.html')
@@ -333,10 +365,14 @@ def usercccd(informationuserid,totp):
             _back_cccd = ""
         print("front image is: "+ _front_cccd)
         print("back image is: "+ _front_cccd)
-        return render_template("core/user_cccd.html", form=form, image_path = _image_path,fullname=_fullname,
-                           informationuserid=informationuserid,front_cccd =_front_cccd,back_cccd =_back_cccd, roleuser=_roleuser,roleadmin = _roleadmin ,totp='None'
+        return render_template("core/user_cccd.html", form=form, image_path = _image_path,fullname=_fullname,image_path_admin=_image_path_admin,fullname_admin = _fullname_admin,
+                           informationuserid=informationuserid,front_cccd =_front_cccd,back_cccd =_back_cccd, roleuser=_roleuser ,totp='None'
                            ,idaccount=current_user.id,readrights=session.get('readrights'))
     elif str(totp)==session.get('is_admin'):
+        if session.get('rolegroup')!='admin':
+            _roleadmin=""
+        else:
+            _roleadmin = "admin"
         form = usercccdForm()
         conn=db.connection()
         cursor=conn.cursor()
@@ -372,7 +408,7 @@ def usercccd(informationuserid,totp):
         print("back image is: "+ _front_cccd)
         return render_template("core/user_cccd.html", form=form, image_path = _image_path,fullname=_fullname,
                            informationuserid=informationuserid,front_cccd =_front_cccd,back_cccd =_back_cccd,
-                             roleuser=_roleuser,roleadmin = _roleadmin ,totp=totp,idaccount=session.get('idaccountadminmanager'),readrights=4)
+                             roleuser=_roleuser,roleadmin = _roleadmin,image_path_admin=_image_path_admin,fullname_admin = _fullname_admin ,totp=totp,idaccount=session.get('idaccountadminmanager'),readrights=4)
     else:
         flash("You are logging in illegally")
         
@@ -614,9 +650,20 @@ def edit_userInformation(col,informationuserid,totp):
 
         idaccount= (current_user.id)
         return redirect(url_for('core.userinformation',idaccount = idaccount,totp=totp))
+    elif session.get('writerights')==1:
+        conn= db.connection()
+        cursor = conn.cursor()
+        sql = f"UPDATE informationUser SET {col} = ? WHERE id= ?"
+        new_value = request.form.get(col)
+        cursor.execute(sql,new_value,informationuserid)
+        cursor.commit()
+        cursor.close()
+
+        idaccount= session.get('idaccountadminmanager')
+        return redirect(url_for('core.userinformation',idaccount = idaccount,totp=totp))
     else:
         flash("You are logging in illegally")
-        return redirect(url_for("authentication.logout"))
+        #return redirect(url_for("authentication.logout"))
 
 
 # edit information user profile
@@ -817,9 +864,13 @@ def healthCheckCertificates(informationuserid,totp):
         return render_template("core/healthCheckCertificates.html",
                             image_path = _image_path,fullname=_fullname,
                             informationuserid=informationuserid, temp = temp,
-                              roleuser=_roleuser,roleadmin = _roleadmin,totp=totp,idaccount=current_user.id,
+                              roleuser=_roleuser,totp=totp,idaccount=current_user.id,
                               readrights=session.get('readrights'))
     elif str(totp)==session.get('is_admin'):
+        if session.get('rolegroup')!='admin':
+            _roleadmin=""
+        else:
+            _roleadmin = "admin"
         conn = db.connection()
         cursor = conn.cursor()
         sql = "SELECT * from healthCheckCertificates where idinformationuser = ?"
@@ -833,7 +884,7 @@ def healthCheckCertificates(informationuserid,totp):
         return render_template("core/healthCheckCertificates.html",
                             image_path = _image_path,fullname=_fullname,
                             informationuserid=informationuserid, temp = temp,
-                              roleuser=_roleuser,roleadmin = _roleadmin,totp=totp,
+                              roleuser=_roleuser,roleadmin = _roleadmin,image_path_admin=_image_path_admin,fullname_admin = _fullname_admin,totp=totp,
                               idaccount=session.get('idaccountadminmanager'),readrights=4)
     else:
         flash("You are logging in illegally")
@@ -955,9 +1006,13 @@ def educationbackground(informationuserid,totp):
         return render_template("core/educationbackground.html",
                             image_path = _image_path,fullname=_fullname
                             ,informationuserid=informationuserid,
-                              temp = temp, roleuser=_roleuser,roleadmin = _roleadmin,totp='None',
+                              temp = temp, roleuser=_roleuser,totp='None',
                               idaccount=current_user.id,readrights=session.get('readrights'))
     elif str(totp)==session.get('is_admin'):
+        if session.get('rolegroup')!='admin':
+            _roleadmin=""
+        else:
+            _roleadmin = "admin"
         conn = db.connection()
         cursor = conn.cursor()
         sql = "SELECT * from educationbackground where idinformationuser = ?"
@@ -971,8 +1026,8 @@ def educationbackground(informationuserid,totp):
         return render_template("core/educationbackground.html",
                             image_path = _image_path,fullname=_fullname,
                             informationuserid=informationuserid, temp = temp, 
-                            roleuser=_roleuser,roleadmin = _roleadmin,totp=totp,
-                            idaccount=session.get('idaccountadminmanager'),readrights=4)
+                            roleuser=_roleuser,totp=totp,
+                            idaccount=session.get('idaccountadminmanager'),readrights=4,roleadmin = _roleadmin,image_path_admin=_image_path_admin,fullname_admin = _fullname_admin)
     else:
         flash("You are logging in illegally")
         return totp
@@ -1082,8 +1137,12 @@ def qualification(informationuserid,totp):
         return render_template("core/qualification.html",
                             image_path = _image_path,fullname=_fullname,
                             informationuserid=informationuserid, temp = temp,
-                              roleuser=_roleuser,roleadmin = _roleadmin,idaccount=current_user.id,totp='None',readrights=session.get('readrights'))
+                              roleuser=_roleuser,idaccount=current_user.id,totp='None',readrights=session.get('readrights'))
     elif str(totp)==session.get('is_admin'):
+        if session.get('rolegroup')!='admin':
+            _roleadmin=""
+        else:
+            _roleadmin = "admin"
         conn = db.connection()
         cursor = conn.cursor()
         sql = "SELECT * from qualification where idinformationuser = ?"
@@ -1096,8 +1155,8 @@ def qualification(informationuserid,totp):
         conn.close()    
         return render_template("core/qualification.html",
                             image_path = _image_path,fullname=_fullname,informationuserid=informationuserid,
-                              temp = temp, roleuser=_roleuser,roleadmin = _roleadmin,totp=totp,
-                              idaccount=session.get('idaccountadminmanager'),readrights=4)
+                              temp = temp, roleuser=_roleuser,totp=totp,
+                              idaccount=session.get('idaccountadminmanager'),readrights=4,roleadmin = _roleadmin,image_path_admin=_image_path_admin,fullname_admin = _fullname_admin)
     else:
         flash("You are logging in illegally")
         return redirect(url_for("authentication.logout"))    
@@ -1116,18 +1175,18 @@ def groupuserpage(idinformationuser):
     conn.close()
     groups=[(group[0],group[1],group[2],group[8]) for group in grouptemp]
     form =groupuserForm(request.form)
-    if form.validate_on_submit():
-        conn=db.connection()
-        cursor=conn.cursor()
-        sql="""SET NOCOUNT ON;
-                DECLARE @id int;
-                insert into groupuser(name,createddate) values(?,GETDATE())
-                SET @id = SCOPE_IDENTITY();            
-                SELECT @id AS the_output;"""
-        value=(form.group.data)
-        cursor.execute(sql,value)
-        idgrouptemp=cursor.fetchone()
-        conn.commit()
-        conn.close()
-        return redirect(url_for("admin.updategropuser",idgroup=idgrouptemp[0]))
+    # if form.validate_on_submit():
+    #     conn=db.connection()
+    #     cursor=conn.cursor()
+    #     sql="""SET NOCOUNT ON;
+    #             DECLARE @id int;
+    #             insert into groupuser(name,createddate) values(?,GETDATE())
+    #             SET @id = SCOPE_IDENTITY();            
+    #             SELECT @id AS the_output;"""
+    #     value=(form.group.data)
+    #     cursor.execute(sql,value)
+    #     idgrouptemp=cursor.fetchone()
+    #     conn.commit()
+    #     conn.close()
+    #     return redirect(url_for("admin.updategropuser",idgroup=idgrouptemp[0]))
     return render_template('admin/groupuserpage.html',groups=groups,image_path=file_path_default,roleuser=_roleuser,form=form)

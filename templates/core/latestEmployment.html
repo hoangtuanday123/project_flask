@@ -27,7 +27,9 @@
                           {% else %}
                             <p class="text-muted mb-0">
                               {{ form.Employer.data }}
+                              {% if readrights==4 or readrights ==None  %}
                               <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Employer','{{ form.Employer.data }}')"></i>
+                              {% endif  %}
                             </p>
                           {% endif %}
                         </div>
@@ -53,7 +55,9 @@
                           {% else %}
                             <p class="text-muted mb-0">
                               {{ form.Jobtittle.data }}
+                              {% if readrights==4 or readrights ==None  %}
                               <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('Jobtittle','{{form.Jobtittle.data}}')"></i>
+                              {% endif  %}
                             </p>
                           {% endif %}
                         </div>
@@ -81,7 +85,9 @@
                           {% else %}
                             <p class="text-muted mb-0">
                               {{ form.AnnualSalary.data }}
+                              {% if readrights==4 or readrights ==None  %}
                               <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('AnnualSalary','{{form.AnnualSalary.data}}')"></i>
+                              {% endif  %}
                             </p>
                           {% endif %}
                         </div>
@@ -108,7 +114,9 @@
                           {% else %}
                             <p class="text-muted mb-0">
                               {{ form.AnnualBonus.data }}
+                              {% if readrights==4 or readrights ==None  %}
                               <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('AnnualBonus','{{form.AnnualBonus.data}}')"></i>
+                              {% endif  %}
                             </p>
                           {% endif %}
                         </div>
@@ -135,7 +143,9 @@
                           {% else %}
                             <p class="text-muted mb-0">
                               {{ form.RetentionBonus.data }}
+                              {% if readrights==4 or readrights ==None  %}
                               <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('RetentionBonus','{{form.RetentionBonus.data}}')"></i>
+                              {% endif  %}
                             </p>
                           {% endif %}
                         </div>
@@ -162,7 +172,9 @@
                           {% else %}
                             <p class="text-muted mb-0">
                               {{ form.RetentionBonusExpiredDate.data }}
+                              {% if readrights==4 or readrights ==None  %}
                               <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('RetentionBonusExpiredDate','{{form.RetentionBonusExpiredDate.data}}')"></i>
+                              {% endif  %}
                             </p>
                           {% endif %}
                         </div>
@@ -189,7 +201,9 @@
                           {% else %}
                             <p class="text-muted mb-0">
                               {{ form.StockOption.data }}
+                              {% if readrights==4 or readrights ==None  %}
                               <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('StockOption','{{form.StockOption.data}}')"></i>
+                              {% endif  %}
                             </p>
                           {% endif %}
                         </div>
@@ -216,7 +230,9 @@
                           {% else %}
                             <p class="text-muted mb-0">
                               {{ form.StartDate.data }}
+                              {% if readrights==4 or readrights ==None  %}
                               <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('StartDate','{{form.StartDate.data}}')"></i>
+                              {% endif  %}
                             </p>
                           {% endif %}
                         </div>
@@ -243,7 +259,9 @@
                           {% else %}
                             <p class="text-muted mb-0">
                               {{ form.EndDate.data }}
+                              {% if readrights==4 or readrights ==None  %}
                               <i class="fas fa-edit edit-icon edit_icon" onclick="enableEdit('EndDate','{{form.EndDate.data}}')"></i>
+                              {% endif  %}
                             </p>
                           {% endif %}
                         </div>
