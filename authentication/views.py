@@ -11,7 +11,7 @@ import pyotp
 from datetime import datetime
 from flask_mail import Message
 from validation.views import send_email
-
+from datetime import datetime
 from __init__ import app,mail,file_path_default
 auth = Blueprint("authentication", __name__)
 
@@ -52,7 +52,7 @@ def register():
             user = User(id=id_user[0],email=form.email.data, password=form.password.data,
                         created_date=created_date,authenticated_by="normal",
                         secret_token=secret,is_two_authentication_enabled=False,is_information_validate=False,
-                        is_validate_email=False,role_user=None,is_active=True,idinformationuser=None,is_admin=None)
+                        is_validate_email=False,role_user=None,is_active=True,idinformationuser=None,is_admin=None,getdate=str(datetime.now()))
             login_user(user)
             flash("You are registered. You have to enable 2-Factor Authentication first to login.", "success")
             
@@ -80,8 +80,10 @@ def setup_two_factor_auth():
 @login_required
 def verify_two_factor_auth():
     form = TwoFactorForm(request.form)
-    if form.validate_on_submit():
-        #return current_user.is_otp_valid(form.otp.data)
+    # totp=pyotp.TOTP(current_user.secret_token)
+    # return str(totp.now())
+    
+    if form.validate_on_submit(): 
         if current_user.is_otp_valid(form.otp.data):
             if current_user.is_two_authentication_enabled:
                 flash("2FA verification successful. You are logged in!", "success")
@@ -167,7 +169,7 @@ def login():
             user=User(id=int(user_temp[0]),email=user_temp[2],password=user_temp[3],created_date=user_temp[4],
                       authenticated_by=user_temp[5],secret_token=user_temp[6],
                       is_two_authentication_enabled=user_temp[7],is_information_validate=user_temp[8],
-                      is_validate_email=user_temp[9],role_user=user_temp[10],is_active=user_temp[11],idinformationuser=None,is_admin=None)
+                      is_validate_email=user_temp[9],role_user=user_temp[10],is_active=user_temp[11],idinformationuser=None,is_admin=None,getdate=str(datetime.now()))
             if user.role_user is None :
                 flash("waiting for admin assign role")
                 

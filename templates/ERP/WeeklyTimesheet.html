@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week Calendar</title>
+    <style>
+        .grid-container {
+          display: grid;
+          /* grid-template-columns: auto auto auto; */
+          background-color: rgba(255, 255, 255, 0.8);;
+          padding: 10px;
+          height: 100vh;
+          overflow: auto;
+        }
+        .grid-item {
+          background-color: rgba(255, 255, 255, 0.8);
+          border: 1px solid rgba(0, 0, 0, 0.8);
+          padding: 20px;
+          /* font-size: 30px; */
+          /* text-align: center; */
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        </style>
+</head>
+<body>
+    <div class="grid-container" style="grid-template-columns: 30% 30% 40%;">
+        <div class="grid-item" style="text-align: center;" >
+            <div>
+                <form method="post" >
+                    <label for="year">Select calender :</label>
+                    <select class="form-select" id="year" name="year" style="width: 200px;">
+                        <option value="{{ year }}">{{ year }}</option>
+                        {% for year in range(1900, 2101) %}
+                        <option value="{{ year }}">{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="col-md-6">
+                        <button type="submit" name="yearform" value="yearform" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+            <div class="grid-container" style="grid-template-columns: repeat(3, 1fr);grid-template-rows: repeat(20, 1fr);">
+                {% for week in weeks_in_year %}
+                <button>week {{week.week_number}} /{{week.start_of_week}} </button>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="grid-item" style="grid-column: 2 / span 2;">
+            <div class="grid-container" style="grid-template-rows: 10% 10% 10% 60% 10%; grid-template-columns: 50% 50% ; " >
+                <div class="grid-item" style="grid-column: 1/span 2;grid-row: 1;"> weekly timesheet</div>
+                <div class="grid-item" style="grid-column: 1; grid-row: 2;">
+                    <div>User: </div>
+                    <div>alex</div>
+                </div>
+                <div class="grid-item" style="grid-column: 2; grid-row: 2;">
+                    <div>Effort filled this week: </div>
+                    <div>heelo</div>
+                </div>
+                <div class="grid-item" style="grid-column: 1/span 2; grid-row: 3;">
+                    <button>Copy From Previous WTS</button>
+                    <button>Add Tasks</button>
+                    <button>Remove Tasks</button>
+                    <button>Reset values</button>
+                </div>
+                <div class="grid-item" style="grid-column: 1/span 2; grid-row: 4;">
+                    <table>
+                        <tr>
+                            <th><input type="checkbox" id="selectAll"></th>
+                            <th>Project Num</th>
+                            <th>Project Type</th>
+                            <th>Prọject</th>
+                            <th>Project Component</th>
+                            <th>Task</th>
+                            <th>(Mon)</th>
+                            <th>(Tue)</th>
+                            <th>(Wed)</th>
+                            <th>(Thu)</th>
+                            <th>(Fri)</th>
+                            <th>(Sat)</th>
+                            <th>(Sun)</th>
+                            <th>Notes</th>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>P00001</td>
+                            <td>Non-Project</td>
+                            <td>Non-Project</td>
+                            <td>Leave</td>
+                            <td>Holiday</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Sum: OH</td>
+                            <td>Sum: OH</td>
+                            <td>Sum: OH</td>
+                            <td>Sum: OH</td>
+                            <td>Sum: OH</td>
+                            <td>Sum: OH</td>
+                            <td>Sum: OH</td>
+                            <td></td>
+                            
+                        </tr>
+                    </table>
+                    <script>
+                        const selectAllCheckbox = document.getElementById("selectAll");
+                        const checkboxes = document.querySelectorAll("table input[type='checkbox']");
+                
+                        selectAllCheckbox.addEventListener("change", () => {
+                            checkboxes.forEach((checkbox) => {
+                                checkbox.checked = selectAllCheckbox.checked;
+                            });
+                        });
+                    </script>
+                </div>
+                <div class="grid-item" style="grid-column: 1/span 2; grid-row: 5;">
+                    <button>Recall</button>
+                    <button>Save</button>
+                    <button>Submit</button>
+                </div>
+            </div>
+        </div>
+            
+      </div>
+
+
+</body>

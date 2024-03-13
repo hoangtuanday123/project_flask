@@ -16,7 +16,7 @@ import requests
 from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv,dotenv_values
 import db
-
+from datetime import datetime
 import facebook
 
 from flask_mail import Mail
@@ -89,7 +89,7 @@ def authorize():
         user=User(id=int(user_temp[0]),email=user_temp[2],password=user_temp[3],created_date=user_temp[4],
                     authenticated_by=user_temp[5],secret_token=user_temp[6],is_two_authentication_enabled=user_temp[7]
                     ,is_information_validate=user_temp[8],is_validate_email=user_temp[9],role_user=user_temp[10],
-                    is_active=user_temp[11],idinformationuser=None,is_admin=None)
+                    is_active=user_temp[11],idinformationuser=None,is_admin=None,getdate=str(datetime.now()))
 
     else:
         conn=db.connection()
@@ -109,7 +109,7 @@ def authorize():
         user = User(id=id_user[0],email=id_user[2], password=id_user[3],created_date=id_user[4],
                     authenticated_by="google",secret_token=id_user[6],
                     is_two_authentication_enabled=id_user[7],is_information_validate=id_user[8],
-                    is_validate_email=id_user[9],role_user=id_user[10],is_active=id_user[11],idinformationuser=None,is_admin=None)
+                    is_validate_email=id_user[9],role_user=id_user[10],is_active=id_user[11],idinformationuser=None,is_admin=None,getdate=str(datetime.now()))
     login_user(user)
     if not user.is_information_validate:
         return redirect(url_for("validation.informationuser"))
@@ -158,7 +158,7 @@ def callback():
         user=User(id=int(user_temp[0]),email=user_temp[2],password=user_temp[3],created_date=user_temp[4],
                     authenticated_by=user_temp[5],secret_token=user_temp[6],is_two_authentication_enabled=user_temp[7],
                     is_information_validate=user_temp[8],is_validate_email=user_temp[9],role_user=user_temp[10],
-                    is_active=user_temp[11],idinformationuser=None,is_admin=None)
+                    is_active=user_temp[11],idinformationuser=None,is_admin=None,getdate=str(datetime.now()))
 
     else:
         conn=db.connection()
@@ -178,7 +178,7 @@ def callback():
         user = User(id=id_user[0],email=id_user[2], password=id_user[3],created_date=id_user[4],
                     authenticated_by="google",secret_token=id_user[6],is_two_authentication_enabled=id_user[7],
                     is_information_validate=id_user[8],is_validate_email=id_user[9],role_user=id_user[10],
-                    is_active=id_user[11],idinformationuser=None,is_admin=None)
+                    is_active=id_user[11],idinformationuser=None,is_admin=None,getdate=str(datetime.now()))
     login_user(user)
     if not user.is_information_validate:
         return redirect(url_for("validation.informationuser"))
@@ -203,7 +203,7 @@ def load_user(id):
         user=User(id=int(user_temp[0]),email=user_temp[2],password=user_temp[3],created_date=user_temp[4],
                     authenticated_by=user_temp[5],secret_token=user_temp[6],is_two_authentication_enabled=user_temp[7],
                     is_information_validate=user_temp[8],is_validate_email=user_temp[9],role_user=user_temp[10],
-                    is_active=user_temp[11],idinformationuser=None,is_admin=None)
+                    is_active=user_temp[11],idinformationuser=None,is_admin=None,getdate=str(datetime.now()))
         if user.is_information_validate==True:
             conn=db.connection()
             cursor=conn.cursor()
@@ -230,6 +230,7 @@ def load_user(id):
             is_active=True,
             idinformationuser=None,
             is_admin=None
+            ,getdate=str(datetime.now())
         )
     
     return user
@@ -254,3 +255,5 @@ with app.app_context():
 
     from candidate.views import candidate
     app.register_blueprint(candidate)
+    from ERP.views import ERP
+    app.register_blueprint(ERP)

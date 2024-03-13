@@ -17,9 +17,10 @@ class User(UserMixin):
     is_active=True,
     idinformationuser=""
     is_admin=""
+    getdate=""
     
     def __init__(self,id, email, password,authenticated_by,created_date,secret_token
-                 ,is_two_authentication_enabled,is_information_validate,is_validate_email,role_user,is_active,idinformationuser,is_admin):
+                 ,is_two_authentication_enabled,is_information_validate,is_validate_email,role_user,is_active,idinformationuser,is_admin,getdate):
         self.id=id
         self.email = email
         self.password = password
@@ -33,6 +34,7 @@ class User(UserMixin):
         self.is_active=is_active
         self.idinformationuser=idinformationuser
         self.is_admin=is_admin
+        self.getdate=getdate
 
     def get_authentication_setup_uri(self):
         return pyotp.totp.TOTP(self.secret_token).provisioning_uri(

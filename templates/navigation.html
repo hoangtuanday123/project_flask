@@ -58,7 +58,8 @@
                 <div class="profile-dropdown" >
                     <div onclick="toggle()" class="profile-dropdown-btn">
                         <img id="avatarImage" src="{{ url_for('static', filename='source/' + image_path) }}" alt="avatar" style="border-radius: 50%; width: 40px; height: 40px;">
-                        <span>{{fullname }}<i class="fa-solid fa-angle-down"></i></span>
+                        <span>{{fullname }} {{current_user.getdate}}<i class="fa-solid fa-angle-down"></i></span>
+                        <!-- <span>{{current_user.getdate}}</span> -->
                     </div> 
                 </div>
             </div>

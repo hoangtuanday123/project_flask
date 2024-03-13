@@ -1,6 +1,20 @@
 {% extends "_base.html" %}
 
 {% block content %}
+<style>
+  table {
+            border-collapse: collapse;
+            width: 100%;
+  }
+  th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+  }
+  th {
+      background-color: #f2f2f2;
+  }
+</style>
 <div >
     
 
@@ -17,6 +31,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                        
                         <th style="text-align: center;">Email</th>
                         <th style="text-align: center;">Role</th>
                         <th style="text-align: center;">Is Active</th>
@@ -123,7 +138,7 @@
             <table class="table">
               <thead>
                 <tr>
-                    <th>Check</th>
+                    <th><input type="checkbox" id="selectAll"></th>
                     <th hidden> id</th>
                     <th  style="padding: 20px;">fullname</th>
                     <th style="padding: 20px;">Nickname</th>
@@ -148,12 +163,7 @@
                     
                     <tr>
                       
-                      <td style="text-align: center;">
-                        
-                        <input type="checkbox" name="{{user[0]}}" value="{{user[0]}}">
-                        
-                        
-                      </td>
+                      <td><input type="checkbox"></td>
                       <td hidden><div hidden>{{user[0]}}</div></td>
                       <td  >
                         <div >
@@ -242,6 +252,16 @@
                 </form>
               </tbody>
             </table>
+            <script>
+              const selectAllCheckbox = document.getElementById("selectAll");
+              const checkboxes = document.querySelectorAll("table input[type='checkbox']");
+      
+              selectAllCheckbox.addEventListener("change", () => {
+                  checkboxes.forEach((checkbox) => {
+                      checkbox.checked = selectAllCheckbox.checked;
+                  });
+              });
+          </script>
           </div>
       </main>
     </div>

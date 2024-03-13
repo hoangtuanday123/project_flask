@@ -4,8 +4,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for,
 from core.models import informationUserJob,laborContract,forexsalary,employeeRelative
 from core.forms import EmployeeRelativeForm
 from .forms import Employeeinformation
-from flask import Blueprint, render_template,redirect,url_for,flash,get_flashed_messages
-from flask_login import login_required, current_user
+#from flask import Blueprint, render_template,redirect,url_for,flash,get_flashed_messages
 from authentication.models import verifyPassword
 import img2pdf
 from PIL import Image
